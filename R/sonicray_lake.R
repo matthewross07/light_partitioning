@@ -545,7 +545,7 @@ draw_composite_frame <- function(out_png, lake_img, gpu_renders, st, trail_df, t
 build_sonicray_titration_visuals <- function(
   out_mp4   = "figs/sonicray_optical_titration.mp4",
   out_sheet = "figs/sonicray_optical_titration_sheet.png",
-  fps       = 15L,
+  fps       = 12L,
   duration_s = 28.0,
   sheet_only = FALSE
 ) {
@@ -579,7 +579,7 @@ build_sonicray_titration_visuals <- function(
   state_names <- names(gpu_renders$states)
   mask_mat <- gpu_renders$states[[1]]$mask
 
-  render_one_idx <- function(i) {
+  for (i in render_indices) {
     f_png <- file.path(frames_dir, sprintf("frame_%04d.png", i))
     st_i <- states[[i]]
     w_vec <- st_i$w_states
@@ -592,13 +592,6 @@ build_sonicray_titration_visuals <- function(
     }
     img3d <- tonemap_sr_water(lin_blend, mask_mat)
     draw_composite_frame(f_png, img3d, gpu_renders, st_i, trail_all[1:i, , drop = FALSE], tgrid)
-    f_png
-  }
-
-  if (sheet_only) {
-    lapply(render_indices, render_one_idx)
-  } else {
-    parallel::mclapply(render_indices, render_one_idx, mc.cores = min(8L, parallel::detectCores()))
   }
 
   # Assemble 3x2 contact sheet of the 6 key stages
