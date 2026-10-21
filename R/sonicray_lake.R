@@ -237,22 +237,20 @@ render_native_water_states <- function(scene, width = 1140L, height = 1080L,
                                        amb_spp = 768L, light_spp = 4096L,
                                        cache_dir = "data/derived/sonicray_lake_layers") {
   dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
-  cache_rds <- file.path(cache_dir, sprintf("native_sr_water_states_%dx%d_hq_v4.rds", width, height))
+  cache_rds <- file.path(cache_dir, sprintf("native_sr_water_states_%dx%d_hq_v5_exaggerated.rds", width, height))
   if (file.exists(cache_rds)) {
     message("[sonicray_lake] Loading cached high-quality native {sonicray} water renders from ", cache_rds)
     return(readRDS(cache_rds))
   }
 
-  p_algal <- sr_water_preset("algal")
-
   water_configs <- list(
-    clear     = list(absorption = c(0.68, 0.140, 0.012), scattering = c(0.002, 0.015, 0.055)),
-    clear_chl = list(absorption = c(0.65, 0.110, 0.180), scattering = c(0.018, 0.065, 0.035)),
-    clear_doc = list(absorption = c(0.55, 0.220, 0.480), scattering = c(0.018, 0.014, 0.006)),
-    clear_tss = list(absorption = c(0.48, 0.180, 0.280), scattering = c(0.130, 0.100, 0.045)),
-    algal     = list(absorption = p_algal$absorption * c(1.30, 0.88, 1.50), scattering = c(0.05, 0.40, 0.10)),
-    brown     = list(absorption = c(0.42, 1.10, 2.90),                      scattering = c(0.15, 0.06, 0.01)),
-    turbid    = list(absorption = c(0.38, 0.72, 1.65),                      scattering = c(0.95, 0.56, 0.14))
+    clear     = list(absorption = c(0.55, 0.110, 0.010), scattering = c(0.002, 0.012, 0.045)),
+    clear_chl = list(absorption = c(0.88, 0.240, 0.620), scattering = c(0.065, 0.260, 0.085)),
+    clear_doc = list(absorption = c(0.68, 0.620, 1.450), scattering = c(0.045, 0.030, 0.010)),
+    clear_tss = list(absorption = c(0.58, 0.450, 0.850), scattering = c(0.420, 0.330, 0.150)),
+    algal     = list(absorption = c(2.65, 0.780, 3.300), scattering = c(0.300, 1.950, 0.440)),
+    brown     = list(absorption = c(1.75, 3.600, 7.200), scattering = c(0.200, 0.080, 0.020)),
+    turbid    = list(absorption = c(1.20, 2.050, 4.000), scattering = c(2.850, 1.750, 0.550))
   )
 
   render_one <- function(nm, cfg) {
@@ -341,50 +339,77 @@ bio_optical_state <- function(chl_a, doc, nap,
   )
 }
 
-#' 28-second movie loop: Act I (Clear Water Regime) -> Act II (Dark/Turbid Water Regime)
-titration_schedule <- function(t_sec, total_s = 28.0) {
+#' Smooth plateau envelope: rises over `ramp`, holds flat at 1.0 across `[ramp, 1 - ramp]`,
+#' and falls smoothly over `ramp`, so each optical state is held steady for inspection.
+trap_pulse <- function(u, ramp = 0.20) {
+  u <- pmin(pmax(u, 0), 1)
+  if (u < ramp) {
+    smooth01(u / ramp)
+  } else if (u <= 1 - ramp) {
+    1.0
+  } else {
+    smooth01((1 - u) / ramp)
+  }
+}
+
+#' 56-second (~1 minute) movie loop: each state is held 2x as long with exaggerated low-clarity states
+titration_schedule <- function(t_sec, total_s = 56.0) {
   chl0 <- 0.30; doc0 <- 0.35; nap0 <- 0.35
 
-  if (t_sec < 4.5) {
+  if (t_sec < 9.0) {
     phase <- "Act I (Clear State): Oligotrophic Lake"
     chl <- chl0; doc <- doc0; nap <- nap0
     w_states <- c(clear = 1.0, clear_chl = 0, clear_doc = 0, clear_tss = 0, algal = 0, brown = 0, turbid = 0)
-  } else if (t_sec < 12.0) {
-    u <- (t_sec - 4.5) / 7.5
-    a1 <- exp(-((u - 0.22) / 0.16)^2)
-    a2 <- exp(-((u - 0.52) / 0.16)^2)
-    a3 <- exp(-((u - 0.82) / 0.16)^2)
-    chl <- chl0 + 14.0 * a1 + 1.5 * a2 + 1.5 * a3
-    doc <- doc0 + 0.3 * a1  + 2.2 * a2 + 0.3 * a3
-    nap <- nap0 + 0.4 * a1  + 0.4 * a2 + 3.8 * a3
-    phase <- "Act I (Clear State): Low-Load Ternary Sweep"
-    w_c <- pmax(0, 1 - 0.75 * (a1 + a2 + a3))
-    w_states <- c(clear = w_c, clear_chl = 0.75 * a1, clear_doc = 0.75 * a2, clear_tss = 0.75 * a3,
-                  algal = 0, brown = 0, turbid = 0)
-    w_states <- w_states / sum(w_states)
-  } else if (t_sec < 17.5) {
-    u <- (t_sec - 12.0) / 5.5
-    p <- sin(pi * smooth01(u))^1.15
-    chl <- chl0 + 135.0 * p
+  } else if (t_sec < 14.0) {
+    u <- (t_sec - 9.0) / 5.0
+    p <- trap_pulse(u, ramp = 0.22)
+    chl <- chl0 + 68.0 * p
     doc <- doc0 + 0.4 * p
     nap <- nap0 + 0.5 * p
-    phase <- "Act II (Dark State): Algal Bloom (High Chl a)"
+    phase <- "Act I (Moderate Load): Chl a Addition"
+    w_states <- c(clear = 1 - 0.90 * p, clear_chl = 0.90 * p, clear_doc = 0, clear_tss = 0,
+                  algal = 0, brown = 0, turbid = 0)
+  } else if (t_sec < 19.0) {
+    u <- (t_sec - 14.0) / 5.0
+    p <- trap_pulse(u, ramp = 0.22)
+    chl <- chl0 + 1.5 * p
+    doc <- doc0 + 9.5 * p
+    nap <- nap0 + 0.5 * p
+    phase <- "Act I (Moderate Load): DOC Addition"
+    w_states <- c(clear = 1 - 0.90 * p, clear_chl = 0, clear_doc = 0.90 * p, clear_tss = 0,
+                  algal = 0, brown = 0, turbid = 0)
+  } else if (t_sec < 24.0) {
+    u <- (t_sec - 19.0) / 5.0
+    p <- trap_pulse(u, ramp = 0.22)
+    chl <- chl0 + 1.5 * p
+    doc <- doc0 + 0.4 * p
+    nap <- nap0 + 16.5 * p
+    phase <- "Act I (Moderate Load): NAP / TSS Addition"
+    w_states <- c(clear = 1 - 0.90 * p, clear_chl = 0, clear_doc = 0, clear_tss = 0.90 * p,
+                  algal = 0, brown = 0, turbid = 0)
+  } else if (t_sec < 34.5) {
+    u <- (t_sec - 24.0) / 10.5
+    p <- trap_pulse(u, ramp = 0.20)
+    chl <- chl0 + 240.0 * p
+    doc <- doc0 + 0.6 * p
+    nap <- nap0 + 0.8 * p
+    phase <- "Act II (Low Clarity): Algal Bloom (High Chl a)"
     w_states <- c(clear = 1 - p, clear_chl = 0, clear_doc = 0, clear_tss = 0, algal = p, brown = 0, turbid = 0)
-  } else if (t_sec < 23.0) {
-    u <- (t_sec - 17.5) / 5.5
-    p <- sin(pi * smooth01(u))^1.15
-    chl <- chl0 + 0.6 * p
-    doc <- doc0 + 28.0 * p
-    nap <- nap0 + 0.4 * p
-    phase <- "Act II (Dark State): Brownification (High DOC)"
+  } else if (t_sec < 45.0) {
+    u <- (t_sec - 34.5) / 10.5
+    p <- trap_pulse(u, ramp = 0.20)
+    chl <- chl0 + 0.8 * p
+    doc <- doc0 + 45.0 * p
+    nap <- nap0 + 0.6 * p
+    phase <- "Act II (Low Clarity): Brownification (High DOC)"
     w_states <- c(clear = 1 - p, clear_chl = 0, clear_doc = 0, clear_tss = 0, algal = 0, brown = p, turbid = 0)
   } else {
-    u <- (t_sec - 23.0) / 5.0
-    p <- sin(pi * smooth01(u))^1.15
-    chl <- chl0 + 0.6 * p
-    doc <- doc0 + 0.4 * p
-    nap <- nap0 + 75.0 * p
-    phase <- "Act II (Dark State): Sediment Plume (High TSS)"
+    u <- (t_sec - 45.0) / 11.0
+    p <- trap_pulse(u, ramp = 0.20)
+    chl <- chl0 + 0.8 * p
+    doc <- doc0 + 0.6 * p
+    nap <- nap0 + 140.0 * p
+    phase <- "Act II (Low Clarity): Sediment Plume (High TSS)"
     w_states <- c(clear = 1 - p, clear_chl = 0, clear_doc = 0, clear_tss = 0, algal = 0, brown = 0, turbid = p)
   }
 
@@ -502,9 +527,9 @@ draw_composite_frame <- function(out_png, lake_img, gpu_renders, st, trail_df, t
     w <- pmin(1, pmax(0.015, frac)) * (1876 - 1184)
     rect(1184, yc - 12, 1184 + w, yc, col = col_bar, border = NA)
   }
-  draw_dark_bar(984, "Chl a (Algae)", sprintf("%.1f ug/L", st$chl_a), sprintf("%.0f%% kd", 100 * st$f_chl), (st$chl_a / 135)^0.60, "#22c55e")
-  draw_dark_bar(918, "DOC (Brown)",   sprintf("%.1f mg/L", st$doc),   sprintf("%.0f%% kd", 100 * st$f_doc), (st$doc   / 28)^0.60,  "#d97706")
-  draw_dark_bar(852, "NAP / TSS",     sprintf("%.1f mg/L", st$nap),   sprintf("%.0f%% kd", 100 * st$f_nap), (st$nap   / 75)^0.60,  "#facc15")
+  draw_dark_bar(984, "Chl a (Algae)", sprintf("%.1f ug/L", st$chl_a), sprintf("%.0f%% kd", 100 * st$f_chl), (st$chl_a / 240)^0.60, "#22c55e")
+  draw_dark_bar(918, "DOC (Brown)",   sprintf("%.1f mg/L", st$doc),   sprintf("%.0f%% kd", 100 * st$f_doc), (st$doc   / 45)^0.60,  "#d97706")
+  draw_dark_bar(852, "NAP / TSS",     sprintf("%.1f mg/L", st$nap),   sprintf("%.0f%% kd", 100 * st$f_nap), (st$nap   / 140)^0.60, "#facc15")
 
   # 100% Partition Bar
   x0 <- 1184; xw <- 692
@@ -632,24 +657,17 @@ downsample_aa <- function(img, sh, sw) {
   0.25 * (img[y0, x0, 1:3] + img[y1, x0, 1:3] + img[y0, x1, 1:3] + img[y1, x1, 1:3])
 }
 
-#' Build the high-resolution 6-keyframe contact sheet and full 28-second MP4
+#' Build the high-resolution 6-keyframe contact sheet and full 56-second (~1 minute) MP4
 build_sonicray_titration_visuals <- function(
   out_mp4   = "figs/sonicray_optical_titration.mp4",
   out_sheet = "figs/sonicray_optical_titration_sheet.png",
   fps       = 12L,
-  duration_s = 28.0,
+  duration_s = 56.0,
   sheet_only = FALSE
 ) {
   t0 <- Sys.time()
-  cache_rds <- file.path(tempdir(), "sonicray_gpu_renders_1140x1080_4096spp.rds")
-  if (file.exists(cache_rds)) {
-    message("[sonicray_lake] Loading cached GPU water renders from ", cache_rds)
-    gpu_renders <- readRDS(cache_rds)
-  } else {
-    scene <- build_sonicray_water_scene(n = 240L, tex = 2048L)
-    gpu_renders <- render_native_water_states(scene, width = 1140L, height = 1080L, amb_spp = 768L, light_spp = 4096L)
-    saveRDS(gpu_renders, cache_rds)
-  }
+  scene <- build_sonicray_water_scene(n = 240L, tex = 2048L)
+  gpu_renders <- render_native_water_states(scene, width = 1140L, height = 1080L, amb_spp = 768L, light_spp = 4096L)
   tmesh <- build_paper_ternary_mesh(res = 36L)
 
   times <- seq(0, duration_s, by = 1 / fps)
@@ -657,7 +675,7 @@ build_sonicray_titration_visuals <- function(
   xy_all <- do.call(rbind, lapply(states, function(s) tern_xy_paper(s$f_chl, s$f_doc, s$f_nap)))
   trail_all <- tibble(x = xy_all[, "x"], y = xy_all[, "y"])
 
-  key_times <- c(2.0, 6.2, 10.6, 14.8, 20.2, 25.5)
+  key_times <- c(4.0, 11.5, 21.5, 29.2, 39.7, 50.5)
   key_idx <- vapply(key_times, function(kt) which.min(abs(times - kt)), 1L)
 
   frames_dir <- file.path(tempdir(), "sonicray_titration_frames_hq")

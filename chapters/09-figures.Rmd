@@ -71,7 +71,7 @@ save_fig(p4, 'fig4_area_cdf', 9.5, 6.8)
 p4
 ```
 
-For each station with $> `r P$fig4_min_obs`$ simultaneous matchups (**`r fmt_n(nrow(areas))` sites** across the U.S.), the **ternary area fraction** (`tern_area_fraction()`) measures the share of the equilateral ternary triangle enclosed within $\pm 2\text{ SD}$ of that site's mean composition. Streams (median **`r percent(median(areas$area[areas$type == 'Stream']), 0.1)`**) and estuaries (median **`r percent(median(areas$area[areas$type == 'Estuary']), 0.1)`**) are more temporally compact (*lucistatic*) than lakes (median **`r percent(median(areas$area[areas$type == 'Lake']), 0.1)`**, *lucidynamic*). Fewer than **5%** of lakes (`4.2%`), **3%** of streams (`2.4%`), and **1%** of estuaries (`0.8%`) span $\ge 50\%$ of ternary space.
+For each station with $> `r P$fig4_min_obs`$ simultaneous matchups (**`r fmt_n(nrow(areas))` sites** across the U.S.), the **ternary area fraction** (`tern_area_fraction()`) measures the share of the equilateral ternary triangle enclosed within $\pm 2\text{ SD}$ of that site's mean composition. Streams (median **`r percent(median(areas$area[areas$type == 'Stream']), 0.1)`**) and estuaries (median **`r percent(median(areas$area[areas$type == 'Estuary']), 0.1)`**) are more temporally compact (*lucistatic*) than lakes (median **`r percent(median(areas$area[areas$type == 'Lake']), 0.1)`**, *lucidynamic*). Fewer than **5%** of lakes (`4.1%`), **3%** of streams (`2.4%`), and **2%** of estuaries (`1.1%`) span $\ge 50\%$ of ternary space.
 
 ```{r fig4-medians, echo = FALSE}
 areas %>%

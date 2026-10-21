@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Plausibility Screen (<code>clean_wqp_discordance()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
 <li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
@@ -187,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-479666"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 479,666</code>)</a></li>
 <li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
 <li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
 </ul></li>
@@ -223,8 +223,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="training" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Section 4</span> Analytical Floors &amp; Beer–Lambert Plausibility Screening<a href="training.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Even after parameter and unit harmonization, roughly <strong>1–2% of multi-agency WQP records contain field-recording anomalies</strong> that can heavily leverage ordinary least squares (OLS) slopes. However, simple marginal quantile trimming (clipping the top and bottom <code>0.1%</code> or <code>1%</code> of each variable independently) throws away genuine oligotrophic alpine lakes (<code>Secchi</code> up to <code>13.96 m</code>) and real storm-flow sediment plumes (<code>TSS</code> up to <code>978 mg/L</code>) while missing <strong>joint physical contradictions</strong> in the middle of the distribution.</p>
-<p>To clean recording errors without truncating real extremes or introducing statistical circularity, <code>R/prep.R</code> uses a two-stage protocol (<code>n = 277,382</code>):</p>
+<p>Even after parameter and unit harmonization, roughly <strong>2% of multi-agency WQP records contain field-recording or unit-entry anomalies</strong> that can heavily leverage ordinary least squares (OLS) slopes. However, simple marginal quantile trimming (clipping the top and bottom <code>0.1%</code> or <code>1%</code> of each variable independently) throws away genuine oligotrophic alpine lakes (<code>Secchi</code> up to <code>13.96 m</code>) and real storm-flow sediment plumes (<code>TSS</code> up to <code>978 mg/L</code>) while missing <strong>joint physical contradictions</strong> in the middle of the distribution.</p>
+<p>To clean recording errors without truncating real extremes or introducing statistical circularity, <code>R/prep.R</code> uses a two-stage protocol (<code>n = 274,445</code>):</p>
 <div id="stage-1-analytical-reporting-floors-trim_simultaneous" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)<a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Rather than dropping low-concentration tails, entries reported below standard EPA/USGS Method Detection Limits (MDLs) are floored via <code>ifelse(x &lt; floor, floor, x)</code> (<code>chl_a = 0.10 µg/L</code>, <code>doc = 0.25 mg/L</code>, <code>tss = 0.50 mg/L</code>, <code>secchi = 0.01 m</code>), retaining <strong>100% of the <code>281,439</code> simultaneous 4-variable matchups</strong>:</p>
@@ -321,20 +321,20 @@ Secchi Disk Depth (m)
 </table>
 <hr />
 </div>
-<div id="stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Stage 2: <em>A Priori</em> Beer–Lambert Plausibility Screen (<code>clean_wqp_discordance()</code>)<a href="training.html#stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>What kinds of errors survive marginal inspection? Two classic WQP artifacts stand out in Figure <a href="training.html#fig:qc-fig">4.1</a>a:</p>
+<div id="stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule<a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When all four measurements (<code>Secchi</code>, <code>Chl a</code>, <code>DOC</code>, and <code>TSS</code>) are collected on the same water sample, they provide an internal physical cross-check: <strong>do the three water-chemistry constituents agree with the observed Secchi depth in Beer–Lambert space, or is one of the four measurements an obvious outlier?</strong></p>
+<p>To evaluate physical agreement <em>a priori</em>—without using any fitted regression parameters from our data—we compare observed diffuse attenuation (<span class="math inline">\(k_d = 1 / z_{SD}\)</span>) against canonical Beer–Lambert attenuation (<span class="math inline">\(k_{d,\text{lit}}\)</span>) computed from published optical cross-sections (Kirk 1994; Morris et al. 1995; Bannister 1974; Gohin et al. 2005):</p>
+<p><span class="math display">\[k_{d,\text{lit}} = 0.080 + 0.040\,\max(0, \text{NAP}) + 0.070\,\text{DOC} + 0.016\,\text{Chl }a, \qquad r = \log_{10}\!\left(\frac{k_d}{k_{d,\text{lit}}}\right)\]</span></p>
+<p>Across all <code>281,439</code> four-variable matchups, the log residual <span class="math inline">\(r\)</span> is centered at virtually zero (<span class="math inline">\(\bar{r} = 0.013\)</span>, confirming that literature cross-sections match the continental median without bias) with a standard deviation of <span class="math inline">\(\text{SD}(r) = 0.270\text{ log}_{10}\text{ units}\)</span>. Standardizing each sample’s residual as <span class="math inline">\(z_r = (r - \bar{r}) / \text{SD}(r)\)</span>, we require <span class="math inline">\(|z_r| \le 2.5\text{ SD}\)</span> (<code>|r - r_bar| &lt;= 0.674</code>, a <strong><code>4.7-fold</code> [<span class="math inline">\(\sim 5\times\)</span>]</strong> tolerance). This retains <strong><code>274,445</code> (<code>97.51%</code>)</strong> training observations and flags <strong><code>6,994</code> (<code>2.49%</code>)</strong> discordant outliers, which fall into two distinct physical categories with asymmetric disposition (<code>Figure</code> <a href="training.html#fig:qc-fig">4.1</a>a):</p>
 <ol style="list-style-type: decimal">
-<li><strong>Unflagged streambed bottom hits (<code>3,157</code> records, <code>1.12%</code>):</strong> Field crews lower a Secchi disk in a crystal-clear, shallow stream (<span class="math inline">\(0.05\text{–}0.20\text{ m}\)</span> deep) where the disk hits the gravel bed while still clearly visible, and record the water depth (<code>Secchi = 0.05–0.20 m</code>, implying <span class="math inline">\(k_d = 5\text{–}20\text{ m}^{-1}\)</span>) without flagging a bottom hit—even though paired bottle chemistry shows ultra-clear water (<span class="math inline">\(\text{TSS} &lt; 3\text{ mg L}^{-1}\)</span>, <span class="math inline">\(\text{DOC} &lt; 3\text{ mg L}^{-1}\)</span>).</li>
-<li><strong>Unit and bottle mismatches (<code>900</code> records, <code>0.32%</code>):</strong> Records reporting clear water (<code>Secchi = 3–10 m</code>) alongside extreme sediment or carbon (<span class="math inline">\(\text{TSS} &gt; 100\text{ mg L}^{-1}\)</span>), caused by Secchi depth entered in feet rather than meters or storm-flow sediment samples matched to baseflow clarity readings.</li>
+<li><strong>Upper Tail (<span class="math inline">\(z_r &gt; +2.5\text{ SD}\)</span>, <code>5,177</code> records = <code>1.84%</code>) — <code>Secchi</code> is the odd one out (shallow streambed bottom hits):</strong> Field crews lower a Secchi disk in a clear, shallow stream (<span class="math inline">\(0.05\text{–}0.20\text{ m}\)</span> deep) where the disk rests on the gravel streambed while still visible, and record the water depth as the Secchi depth (<code>Secchi = 0.05–0.20 m</code>, implying <span class="math inline">\(k_d = 5\text{–}20\text{ m}^{-1}\)</span>) even though <code>Chl a</code>, <code>DOC</code>, and <code>TSS</code> are all low and mutually consistent (<span class="math inline">\(\text{TSS} &lt; 3\text{ mg L}^{-1}\)</span>, <span class="math inline">\(\text{DOC} &lt; 3\text{ mg L}^{-1}\)</span>). Because <code>Secchi</code> is censored by the streambed while the three water-chemistry measurements are valid, these records are <strong>excluded from regression training</strong> (<code>build_training()</code>), but in the <strong>ternary application dataset (<code>build_application()</code>) only <code>Secchi</code> is set to <code>NA</code></strong>—rescuing the valid 3-constituent water chemistry with a modeled Secchi depth!</li>
+<li><strong>Lower Tail (<span class="math inline">\(z_r &lt; -2.5\text{ SD}\)</span>, <code>1,817</code> records = <code>0.65%</code>) — One of the chemistry constituents (<code>Chl a</code>, <code>DOC</code>, or <code>TSS</code>) is the odd one out:</strong> A clear <code>Secchi</code> reading (<code>2–10 m</code>) is paired with two low chemistry measurements and one extreme chemistry spike (<span class="math inline">\(\text{Chl }a &gt; 500\ \mu\text{g L}^{-1}\)</span> or <span class="math inline">\(\text{TSS} &gt; 200\text{ mg L}^{-1}\)</span>), typically caused by a <span class="math inline">\(1{,}000\times\)</span> unit conversion error (<span class="math inline">\(\text{ng L}^{-1}\)</span> entered as <span class="math inline">\(\mu\text{g L}^{-1}\)</span>) or bottle mismatch. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.</li>
 </ol>
-<p>To screen out these physically contradictory combinations <strong>without using our fitted regression models</strong>, we compare measured diffuse attenuation (<span class="math inline">\(k_d = 1 / z_{SD}\)</span>) against <em>a priori</em> Beer–Lambert attenuation (<span class="math inline">\(k_{d,\text{lit}}\)</span>) calculated strictly from published optical cross-sections (Kirk 1994; Morris et al. 1995; Bannister 1974; Gohin et al. 2005):</p>
-<p><span class="math display">\[k_{d,\text{lit}} = 0.080 + 0.040\,\max(0, \text{NAP}) + 0.070\,\text{DOC} + 0.016\,\text{Chl }a\]</span></p>
-<p>Matchups where observed <span class="math inline">\(k_d\)</span> and literature <span class="math inline">\(k_{d,\text{lit}}\)</span> diverge by more than a factor of <span class="math inline">\(10^{0.80} \approx 6.3\times\)</span> (<span class="math inline">\(|\log_{10}(k_d / k_{d,\text{lit}})| &gt; 0.80\)</span>) are removed (<code>4,057</code> rows = <strong>1.44%</strong>), leaving <strong>277,382</strong> physically consistent training matchups:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:qc-fig"></span>
-<img src="ternary_clarity_pipeline_files/figure-html/qc-fig-1.png" alt="(a) Observed diffuse attenuation (kd = 1/z_SD) vs. a priori Beer–Lambert expectation (kd,lit) across all 281,439 matchups, highlighting shallow streambed bottom hits (red horizontal bands at Secchi = 0.05–0.20 m) and unit/bottle mismatches (blue). (b) Model R² and global slope stability across plausibility thresholds τ." width="100%" />
+<img src="ternary_clarity_pipeline_files/figure-html/qc-fig-1.png" alt="(a) Observed diffuse attenuation (kd = 1/z_SD) vs. a priori Beer–Lambert expectation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail streambed bottom hits (red; Secchi dropped but 3-LAC chemistry rescued in application), and lower-tail chemistry unit errors (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff." width="100%" />
 <p class="caption">
-Figure 4.1: (a) Observed diffuse attenuation (kd = 1/z_SD) vs. a priori Beer–Lambert expectation (kd,lit) across all 281,439 matchups, highlighting shallow streambed bottom hits (red horizontal bands at Secchi = 0.05–0.20 m) and unit/bottle mismatches (blue). (b) Model R² and global slope stability across plausibility thresholds τ.
+Figure 4.1: (a) Observed diffuse attenuation (kd = 1/z_SD) vs. a priori Beer–Lambert expectation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail streambed bottom hits (red; Secchi dropped but 3-LAC chemistry rescued in application), and lower-tail chemistry unit errors (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff.
 </p>
 </div>
 <p>Because this screen acts only on the <strong>ratio</strong> <span class="math inline">\(k_d / k_{d,\text{lit}}\)</span>, <strong>100% of true environmental extremes</strong> (<code>Secchi</code> up to <code>13.96 m</code>, <code>TSS</code> up to <code>978 mg/L</code>, <code>Chl a</code> up to <code>990 µg/L</code>) pass intact:</p>
@@ -390,19 +390,19 @@ Before plausibility screen (Stage 1 analytical floors only)
 After plausibility screen (Stage 2 final training set)
 </td>
 <td style="text-align:left;">
-277,382
+274,445
 </td>
 <td style="text-align:left;">
 0.02 / 0.80 / 13.96
 </td>
 <td style="text-align:left;">
-0.50 / 8.6 / 978.0
+0.50 / 8.7 / 978.0
 </td>
 <td style="text-align:left;">
-0.25 / 6.23 / 50.0
+0.25 / 6.24 / 50.0
 </td>
 <td style="text-align:left;">
-0.10 / 7.48 / 990.3
+0.10 / 7.50 / 990.3
 </td>
 </tr>
 </tbody>
@@ -415,9 +415,9 @@ After plausibility screen (Stage 2 final training set)
 <p><span class="math display">\[k_w = \frac{1}{1.5 \times \max(z_{SD})} = \frac{1}{1.5 \times 13.96\text{ m}} = 0.04776\ \text{m}^{-1}\]</span></p>
 <p>This value of <span class="math inline">\(k_w\)</span> is used consistently across both model fitting and Secchi depth prediction (<span class="math inline">\(\hat{z}_{SD} = 1 / [\hat{k}_{d,\text{non-water}} + k_w]\)</span>).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:kd-hist"></span>
-<img src="ternary_clarity_pipeline_files/figure-html/kd-hist-1.png" alt="Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 277,382)." width="100%" />
+<img src="ternary_clarity_pipeline_files/figure-html/kd-hist-1.png" alt="Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 274,445)." width="100%" />
 <p class="caption">
-Figure 4.2: Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 277,382).
+Figure 4.2: Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 274,445).
 </p>
 </div>
 

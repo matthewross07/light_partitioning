@@ -129,24 +129,51 @@ trim_simultaneous <- function(simul) {
   out
 }
 
-#' A priori Beer-Lambert physical plausibility filter for WQP training records.
-#' Removes discordant WQP outlier records (~1.4% of rows) where measured
-#' kd = 1/z_SD and canonical literature Beer-Lambert attenuation kd_lit disagree
-#' by more than 10^(P$max_log10_kd_discordance) (~6.3x), such as unflagged Secchi
-#' bottom hits in shallow clear streams or unit/bottle mismatches, while preserving
-#' 100% of true environmental extremes where Secchi and LACs are physically consistent.
-clean_wqp_discordance <- function(df, max_log10_disc = P$max_log10_kd_discordance) {
-  if (is.null(max_log10_disc) || !is.finite(max_log10_disc)) return(df)
+#' Compute the mean and SD of the log10 Beer-Lambert residual r = log10(kd / kd_lit)
+#' across the simultaneous 4-variable dataset (`trimmed`) so residuals can be
+#' standardized into z-scores (|z_r| <= P$kd_discordance_sd, i.e., +/- 2.5 SD ~ 5-fold).
+kd_discordance_stats <- function(trimmed = get_trimmed()) {
+  d <- trimmed %>%
+    add_nap() %>%
+    mutate(
+      secchi_r = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits),
+      kd_obs   = round(1 / secchi_r, P$kd_digits),
+      kd_lit   = P$lit_kw +
+                 P$lit_alpha_nap * pmax(0, tss_dead) +
+                 P$lit_alpha_doc * doc +
+                 P$lit_alpha_chl * chl_a,
+      log10_r  = log10(kd_obs / kd_lit)
+    )
+  mean_r <- mean(d$log10_r, na.rm = TRUE)
+  sd_r   <- sd(d$log10_r, na.rm = TRUE)
+  max_sd <- if (!is.null(P$kd_discordance_sd)) P$kd_discordance_sd else 2.5
+  list(
+    mean_r    = mean_r,
+    sd_r      = sd_r,
+    max_sd    = max_sd,
+    tol_log10 = max_sd * sd_r,
+    tol_fold  = 10^(max_sd * sd_r)
+  )
+}
+
+#' A priori Beer-Lambert physical plausibility filter for WQP training records (Rule 1).
+#' Standardizes the log Beer-Lambert residual r = log10(kd / kd_lit) across the
+#' 4-variable dataset (mean(r) = 0.013, SD(r) = 0.270 log10 units) and retains
+#' observations within +/- 2.5 SD (|z_r| <= 2.5, equivalent to a ~4.7-fold [~5x]
+#' tolerance, retaining 97.51% of records and removing 2.49% discordant outliers).
+clean_wqp_discordance <- function(df, max_sd = P$kd_discordance_sd) {
+  if (is.null(max_sd) || !is.finite(max_sd)) return(df)
   df %>%
     mutate(
-      kd_lit = P$lit_kw +
-               P$lit_alpha_nap * pmax(0, tss_dead) +
-               P$lit_alpha_doc * doc +
-               P$lit_alpha_chl * chl_a,
-      log10_kd_disc = abs(log10(kd / kd_lit))
+      kd_lit  = P$lit_kw +
+                P$lit_alpha_nap * pmax(0, tss_dead) +
+                P$lit_alpha_doc * doc +
+                P$lit_alpha_chl * chl_a,
+      log10_r = log10(kd / kd_lit),
+      z_r     = (log10_r - mean(log10_r, na.rm = TRUE)) / sd(log10_r, na.rm = TRUE)
     ) %>%
-    filter(log10_kd_disc <= max_log10_disc) %>%
-    select(-kd_lit, -log10_kd_disc)
+    filter(abs(z_r) <= max_sd) %>%
+    select(-kd_lit, -log10_r, -z_r)
 }
 
 #' Step 2 of training data:
@@ -157,7 +184,7 @@ build_training <- function(trimmed) {
   trimmed %>%
     add_nap() %>%
     mutate(secchi = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits),
-           kd = round(1 / secchi, P$kd_digits)) %>%
+            kd = round(1 / secchi, P$kd_digits)) %>%
     clean_wqp_discordance()
 }
 
@@ -167,12 +194,19 @@ k_w_from_training <- function(training_or_trimmed) 1 / P$k_w_divisor / max(train
 #' Application data: every record with all 3 LACs (Secchi optional) whose LAC
 #' values fall inside the range spanned by the training data, with NAP > 0.01 mg/L.
 #' Sub-detection / zero values are floored via ifelse() to match the training set.
-#' If a measured Secchi depth is present, it must also pass the a priori physical
-#' plausibility check so erroneous bottom-hit Secchi readings are not plotted as
-#' 'Measured' in Figure 1a.
+#' Applies Rule 2 ("Odd-One-Out" asymmetric disposition) when a measured Secchi
+#' depth is present:
+#'   - Upper tail (z_r > +2.5 SD): Secchi is much too shallow for the clear water
+#'     chemistry (Chl a, DOC, and TSS are low and mutually consistent, e.g. a
+#'     streambed bottom hit). Only `secchi` is set to NA_real_ so the valid
+#'     3-constituent chemistry is retained in the ternary application dataset!
+#'   - Lower tail (z_r < -2.5 SD): One of Chl a, DOC, or TSS is implausibly high
+#'     relative to a clear Secchi reading (e.g. a 1000x unit error). The row is
+#'     dropped because all 3 constituents are required for ternary partitioning.
 build_application <- function(no_secchi, trimmed) {
   rng <- function(v) range(trimmed[[v]], na.rm = TRUE)
   r_chl <- rng('chl_a'); r_tss <- rng('tss'); r_doc <- rng('doc'); r_sec <- rng('secchi')
+  stats <- kd_discordance_stats(trimmed)
   out <- no_secchi %>%
     filter(if_all(c(chl_a, doc, tss), ~ !is.na(.) & . >= 0)) %>%
     mutate(
@@ -188,12 +222,20 @@ build_application <- function(no_secchi, trimmed) {
     mutate(type = ifelse(grepl('Lake', type), 'Lake', type)) %>%
     add_nap() %>%
     filter(tss_dead > P$apply_min_nap)
-  if (!is.null(P$max_log10_kd_discordance) && is.finite(P$max_log10_kd_discordance)) {
+  if (!is.null(stats$max_sd) && is.finite(stats$max_sd)) {
     kd_lit <- P$lit_kw + P$lit_alpha_nap * pmax(0, out$tss_dead) +
               P$lit_alpha_doc * out$doc + P$lit_alpha_chl * out$chl_a
-    kd_obs <- ifelse(!is.na(out$secchi) & out$secchi > 0, round(1 / round(out$secchi, P$secchi_digits), P$kd_digits), NA_real_)
-    bad_sdd <- !is.na(kd_obs) & abs(log10(kd_obs / kd_lit)) > P$max_log10_kd_discordance
-    out <- out %>% filter(!bad_sdd)
+    kd_obs <- ifelse(!is.na(out$secchi) & out$secchi > 0,
+                     round(1 / round(out$secchi, P$secchi_digits), P$kd_digits),
+                     NA_real_)
+    z_r <- (log10(kd_obs / kd_lit) - stats$mean_r) / stats$sd_r
+    # Rule 2a: Upper tail (z_r > +2.5 SD) -> Secchi is the odd one out (bottom hit);
+    #          drop only `secchi` (set to NA) and retain the 3-constituent chemistry!
+    out$secchi <- ifelse(!is.na(z_r) & z_r > stats$max_sd, NA_real_, out$secchi)
+    # Rule 2b: Lower tail (z_r < -2.5 SD) -> Chemistry constituent is the odd one out;
+    #          remove the row from ternary application.
+    bad_chem <- !is.na(z_r) & z_r < -stats$max_sd
+    out <- out %>% filter(!bad_chem)
   }
   out
 }

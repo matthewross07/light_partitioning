@@ -280,14 +280,22 @@ fig_qc_discordance <- function(trimmed) {
         P$lit_alpha_doc * doc + P$lit_alpha_chl * chl_a,
       log_ratio = log10(kd_obs / kd_lit)
     )
-  n_ret <- sum(abs(d$log_ratio) <= P$max_log10_kd_discordance)
+  mean_r <- mean(d$log_ratio, na.rm = TRUE)
+  sd_r   <- sd(d$log_ratio, na.rm = TRUE)
+  max_sd <- P$kd_discordance_sd
+  d <- d %>% mutate(z_r = (log_ratio - mean_r) / sd_r)
+
+  n_ret <- sum(abs(d$z_r) <= max_sd)
   pct_ret <- 100 * n_ret / nrow(d)
-  ret_lbl <- sprintf('Retained (%.2f%%, n = %s)', pct_ret, fmt_n(n_ret))
+  ret_lbl <- sprintf('Retained within +/-%.1f SD (%.2f%%, n = %s)', max_sd, pct_ret, fmt_n(n_ret))
+  up_lbl  <- sprintf('Upper tail (> +%.1f SD, ~5x): Secchi odd-one-out (shallow bottom hits; LACs rescued)', max_sd)
+  lo_lbl  <- sprintf('Lower tail (< -%.1f SD, ~1/5x): Chemistry odd-one-out (unit/bottle errors; dropped)', max_sd)
+
   d <- d %>%
     mutate(
       status = case_when(
-        log_ratio >  P$max_log10_kd_discordance ~ 'Removed: high kd (>6.3x; e.g. shallow bottom hits)',
-        log_ratio < -P$max_log10_kd_discordance ~ 'Removed: low kd (<1/6.3x; e.g. unit/bottle errors)',
+        z_r >  max_sd ~ up_lbl,
+        z_r < -max_sd ~ lo_lbl,
         TRUE ~ ret_lbl
       )
     )
@@ -300,22 +308,20 @@ fig_qc_discordance <- function(trimmed) {
 
   col_vals <- setNames(
     c('grey45', 'firebrick', 'steelblue4'),
-    c(ret_lbl,
-      'Removed: high kd (>6.3x; e.g. shallow bottom hits)',
-      'Removed: low kd (<1/6.3x; e.g. unit/bottle errors)')
+    c(ret_lbl, up_lbl, lo_lbl)
   )
 
   pa <- ggplot(d_sub, aes(kd_lit, kd_obs, colour = status)) +
     geom_point(size = 0.55, alpha = 0.45, shape = 16) +
-    geom_abline(slope = 1, intercept = 0, colour = 'black', linewidth = 0.7) +
-    geom_abline(slope = 1, intercept =  P$max_log10_kd_discordance, colour = 'firebrick', linetype = 'dashed', linewidth = 0.65) +
-    geom_abline(slope = 1, intercept = -P$max_log10_kd_discordance, colour = 'steelblue4', linetype = 'dashed', linewidth = 0.65) +
+    geom_abline(slope = 1, intercept = mean_r, colour = 'black', linewidth = 0.7) +
+    geom_abline(slope = 1, intercept = mean_r + max_sd * sd_r, colour = 'firebrick', linetype = 'dashed', linewidth = 0.65) +
+    geom_abline(slope = 1, intercept = mean_r - max_sd * sd_r, colour = 'steelblue4', linetype = 'dashed', linewidth = 0.65) +
     scale_x_log10(labels = label_number(drop0trailing = TRUE)) +
     scale_y_log10(labels = label_number(drop0trailing = TRUE)) +
     scale_colour_manual(values = col_vals, name = NULL) +
     guides(colour = guide_legend(override.aes = list(size = 2.5, alpha = 0.9))) +
     labs(
-      title = 'a) A priori Beer-Lambert physical plausibility screen',
+      title = 'a) Beer-Lambert residual screen (+/-2.5 SD ~ 5-fold)',
       x = expression(Canonical~literature~k[d*","*lit]~(m^-1)),
       y = expression(Observed~k[d] == 1/z[SD]~(m^-1))
     ) +
@@ -324,9 +330,9 @@ fig_qc_discordance <- function(trimmed) {
           legend.direction = 'vertical', legend.margin = margin(0, 0, 0, 0))
 
   d_eco3 <- eco_join(d, get_eco()$eco3, l3code) %>% mutate(code = l3code) %>% select(-any_of(c('l3code', 'l3name')))
-  taus <- c(0.50, 0.60, 0.70, 0.80, 0.90, 1.00, 1.20, Inf)
-  sens <- map_dfr(taus, function(tau) {
-    sub <- d_eco3 %>% filter(abs(log_ratio) <= tau)
+  z_cuts <- c(1.8, 2.0, 2.2, 2.5, 3.0, 3.5, 4.5, Inf)
+  sens <- map_dfr(z_cuts, function(z_cut) {
+    sub <- d_eco3 %>% filter(abs(z_r) <= z_cut)
     kw <- 1 / P$k_w_divisor / max(sub$secchi)
     fit1 <- lm.fit(cbind(sub$tss_dead, sub$doc, sub$chl_a), sub$kd - kw)
     pred1 <- fit1$fitted.values + kw
@@ -338,8 +344,8 @@ fig_qc_discordance <- function(trimmed) {
       select(SiteID, date_unity, kd, kd_hat)
     comb7 <- bind_rows(fitted_m7, left_m7)
     tibble(
-      tau = ifelse(is.infinite(tau), 1.45, tau),
-      label = ifelse(is.infinite(tau), 'Unscreened', sprintf('%.2f', tau)),
+      z_cut = ifelse(is.infinite(z_cut), 5.2, z_cut),
+      label = ifelse(is.infinite(z_cut), 'Unscreened', sprintf('%.1f SD', z_cut)),
       pct_removed = 100 * (1 - nrow(sub) / nrow(d_eco3)),
       R2_Model7 = cor(comb7$kd, comb7$kd_hat)^2,
       R2_Model1 = cor(sub$kd, pred1)^2,
@@ -349,10 +355,10 @@ fig_qc_discordance <- function(trimmed) {
     )
   })
 
-  x_lbls <- map2_chr(sens$tau, sens$pct_removed, function(t_val, pct) {
-    if (t_val > 1.3) sprintf('None\n(0%%)')
-    else if (abs(t_val - P$max_log10_kd_discordance) < 1e-6) sprintf('%.1f*\n(%.1f%%)', t_val, pct)
-    else sprintf('%.1f\n(%.1f%%)', t_val, pct)
+  x_lbls <- map2_chr(sens$z_cut, sens$pct_removed, function(z_val, pct) {
+    if (z_val > 5.0) sprintf('None\n(0%%)')
+    else if (abs(z_val - max_sd) < 1e-6) sprintf('%.1f*\n(%.1f%%)', z_val, pct)
+    else sprintf('%.1f\n(%.1f%%)', z_val, pct)
   })
 
   sens_long <- sens %>%
@@ -366,12 +372,12 @@ fig_qc_discordance <- function(trimmed) {
     ), levels = c('Model 7 (Level III Ecoregion) R²', 'Model 1 (Continental Global) R²',
                   '10 × α_Chl a (m²/mg)', 'α_DOC (m²/g)', 'α_NAP (m²/g)')))
 
-  pb <- ggplot(sens_long, aes(tau, val, colour = metric, group = metric)) +
-    geom_vline(xintercept = P$max_log10_kd_discordance, linetype = 'dashed', colour = 'firebrick', linewidth = 0.65) +
+  pb <- ggplot(sens_long, aes(z_cut, val, colour = metric, group = metric)) +
+    geom_vline(xintercept = max_sd, linetype = 'dashed', colour = 'firebrick', linewidth = 0.65) +
     geom_line(linewidth = 0.85) +
     geom_point(size = 2.2) +
     scale_x_continuous(
-      breaks = sens$tau,
+      breaks = sens$z_cut,
       labels = x_lbls
     ) +
     scale_colour_manual(
@@ -383,8 +389,8 @@ fig_qc_discordance <- function(trimmed) {
       name = NULL
     ) +
     labs(
-      title = 'b) Sensitivity of R² and fitted slopes to threshold τ',
-      x = 'Plausibility threshold τ = |log10(kd / kd,lit)| (% removed)',
+      title = 'b) Sensitivity of R² and fitted slopes to SD threshold',
+      x = 'Beer-Lambert residual threshold |z_r| in SD units (% removed)',
       y = 'Metric / coefficient value'
     ) +
     theme_bw(base_size = 10.5) +

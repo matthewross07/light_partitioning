@@ -23,7 +23,7 @@ s1     <- table_s1(models)
 write_csv(s1, file.path(PATH$figs, 'tables/tableS1_coefficients_aquamatch.csv'))
 ```
 
-```{r models-fig, echo = FALSE, fig.width = 10, fig.height = 4.3, fig.cap = '(a) Explained variance (R²) across Models 1–10, comparing ecoregion-only models (circles) against ecoregion × water-type models (triangles). (b) Distribution of fitted specific attenuation coefficients across the 37 strictly positive Level III ecoregions in Model 7 compared with the continental global fit (Model 1, vertical dashed lines).'}
+```{r models-fig, echo = FALSE, fig.width = 10, fig.height = 4.3, fig.cap = '(a) Explained variance (R²) across Models 1–10, comparing ecoregion-only models (circles) against ecoregion × water-type models (triangles). (b) Distribution of fitted specific attenuation coefficients across the 39 strictly positive Level III ecoregions in Model 7 compared with the continental global fit (Model 1, vertical dashed lines).'}
 p_r2 <- perf %>%
   mutate(
     level_f = factor(level, c('USA', 'Level 1', 'Level 2', 'Level 3', 'Level 4')),
@@ -35,7 +35,7 @@ p_r2 <- perf %>%
   geom_text(aes(label = paste0('M', model)), vjust = -0.9, size = 3.2, fontface = 'bold', show.legend = FALSE) +
   scale_colour_manual(values = c('#1d6996', '#d95f0e'), name = NULL) +
   scale_shape_manual(values = c(16, 17), name = NULL) +
-  scale_y_continuous(limits = c(0.38, 0.56), breaks = seq(0.40, 0.55, by = 0.05)) +
+  scale_y_continuous(limits = c(0.42, 0.60), breaks = seq(0.45, 0.60, by = 0.05)) +
   theme_bw(base_size = 11) +
   theme(legend.position = 'bottom', legend.direction = 'vertical', panel.grid.minor = element_blank()) +
   labs(x = 'Spatial Ecoregion Hierarchy', y = expression(Explained~Variance~(R^2)),
@@ -57,7 +57,7 @@ p_slopes <- s1 %>%
   theme_bw(base_size = 10) +
   theme(panel.grid.minor = element_blank()) +
   labs(x = 'Specific Attenuation Coefficient (dashed = Global Model 1)', y = 'Ecoregions',
-       title = '(b) Model 7 Regional Coefficients (37 Positive Level III Ecoregions)')
+       title = '(b) Model 7 Regional Coefficients (39 Positive Level III Ecoregions)')
 
 p_r2 + p_slopes + patchwork::plot_layout(widths = c(1.25, 1))
 ```
@@ -82,21 +82,21 @@ perf %>%
     `Strictly Positive Groups` = sprintf('%d / %d', n_groups - n_neg_groups, n_groups),
     `ΔBIC vs. Model 1` = fmt_n(round(bic_common - bic_common[1]))
   ) %>%
-  kable(caption = 'Table 1: Summary of the 10 hierarchical general linear models evaluated across all 277,382 training observations.') %>%
+  kable(caption = 'Table 1: Summary of the 10 hierarchical general linear models evaluated across all 274,445 training observations.') %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 
 ::: {.decision}
 **Why We Select Model 7 (`Level III Ecoregions`) for Continental Ternary Analysis**
 
-1. **Strong regional skill and parsimony:** Moving from the global model (Model 1, $R^2 = 0.41$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.50$) increases $R^2$ by $+0.09$ and improves BIC by **$\Delta\text{BIC} = -53{,}653$**, while preserving a median group size of $n = 687$ (`109–121,842`).
-2. **Physical positivity:** In Model 7, **37 of 47 Level III ecoregions** (representing **98.04%** of modeled training matchups) have strictly positive, highly significant ($p < 0.001$) slopes for all three constituents. Subdividing further to Level IV (Models 9–10) pushes median group size down to $n = 343\text{–}349$—well below the $n \approx 1{,}000$ convergence threshold (`Figure S1`)—for only $+0.02\text{ to }+0.03$ gain in $R^2$.
-3. **Seamless river–estuary continuity:** Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only $+0.02$ in $R^2$ (`0.50` $\rightarrow$ `0.52`). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (`Figure 3`).
+1. **Strong regional skill and parsimony:** Moving from the global model (Model 1, $R^2 = 0.45$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.54$) increases $R^2$ by $+0.09$ and improves BIC by **$\Delta\text{BIC} = -55{,}486$**, while preserving a median group size of $n = 685$ (`107–120,350`).
+2. **Physical positivity:** In Model 7, **39 of 47 Level III ecoregions** have strictly positive, highly significant ($p < 0.001$) slopes for all three constituents. Subdividing further to Level IV (Models 9–10) pushes median group size down to $n = 341\text{–}364$—well below the $n \approx 1{,}000$ convergence threshold (`Figure S1`)—for only $+0.02\text{ to }+0.03$ gain in $R^2$.
+3. **Seamless river–estuary continuity:** Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only $+0.02$ in $R^2$ (`0.54` $\rightarrow$ `0.56`). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (`Figure 3`).
 :::
 
 ## Comparison with Published Bio-Optical Benchmarks
 
-In global Model 1 ($n = 277{,}382$), $\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2.4\,\alpha_{\text{NAP}} \approx 12\,\alpha_{\text{Chl }a}$ across all regional groups in Table S1). These empirically fitted values align closely with first-principles biophysical derivations and field optics studies:
+In global Model 1 ($n = 274{,}445$), $\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}$ across all regional groups in Table S1). These empirically fitted values align closely with first-principles biophysical derivations and field optics studies:
 
 ```{r bannister-table, echo = FALSE}
 compare_bannister_literature(models) %>%
@@ -106,7 +106,7 @@ compare_bannister_literature(models) %>%
 
 ## Table S1: Fitted Coefficients, Standard Errors, and Significance {#tableS1}
 
-All ten models' group sample sizes ($n$), specific attenuation coefficients, standard errors, and two-sided $t$-test $p$-values are exported to `figs/tables/tableS1_coefficients_aquamatch.csv`. Below are Models 1, 2, and the 37 strictly positive Level III ecoregion groups of Model 7:
+All ten models' group sample sizes ($n$), specific attenuation coefficients, standard errors, and two-sided $t$-test $p$-values are exported to `figs/tables/tableS1_coefficients_aquamatch.csv`. Below are Models 1, 2, and the 39 strictly positive Level III ecoregion groups of Model 7:
 
 ```{r tableS1, echo = FALSE}
 s1 %>%
@@ -118,7 +118,7 @@ s1 %>%
   kable_styling(full_width = FALSE, bootstrap_options = c('condensed', 'striped'), font_size = 11)
 ```
 
-In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative ($p \ge 0.10$) due to narrow local concentration ranges; during continental ternary projection (`Section 8`), those ecoregions automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:
+In the remaining 8 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative ($p \ge 0.10$) due to narrow local concentration ranges; during continental ternary projection (`Section 8`), those ecoregions automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:
 
 ```{r m7-neg, echo = FALSE}
 s1 %>%
@@ -126,6 +126,6 @@ s1 %>%
   select(code, n_group, NAP, p_NAP, DOC, p_DOC, Chl_a, p_Chl_a) %>%
   mutate(n_group = fmt_n(n_group)) %>%
   kable(digits = 4, col.names = c('Level III Ecoregion', 'n', 'α_NAP', 'p (NAP)', 'α_DOC', 'p (DOC)', 'α_Chl a', 'p (Chl a)'),
-        caption = 'The 10 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p >= 0.10) and falls back to global Model 1 during ternary application.') %>%
+        caption = 'The 8 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p >= 0.10) and falls back to global Model 1 during ternary application.') %>%
   kable_styling(full_width = FALSE, bootstrap_options = 'condensed', font_size = 11)
 ```

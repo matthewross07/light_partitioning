@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Plausibility Screen (<code>clean_wqp_discordance()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
 <li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
@@ -187,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-479666"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 479,666</code>)</a></li>
 <li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
 <li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
 </ul></li>
@@ -223,9 +223,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="application" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Section 8</span> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)<a href="application.html#application" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="continental-3-constituent-application-dataset-n-478929" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Continental 3-Constituent Application Dataset (<code>n = 478,929</code>)<a href="application.html#continental-3-constituent-application-dataset-n-478929" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Once Model 7 is calibrated on the <code>277,382</code> four-variable training matchups, it requires only the three constituent concentrations (<span class="math inline">\(\text{NAP}\)</span>, <span class="math inline">\(\text{DOC}\)</span>, and <span class="math inline">\(\text{Chl }a\)</span>) to partition non-water light attenuation. We can therefore apply Model 7 across all <strong>478,929</strong> simultaneous 3-constituent matchups in the harmonized AquaMatch dataset (with or without a paired Secchi measurement) that lie within the empirical concentration bounds of the training set and have strictly positive <span class="math inline">\(\text{NAP} &gt; 0.01\text{ mg L}^{-1}\)</span>:</p>
+<div id="continental-3-constituent-application-dataset-n-479666" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Continental 3-Constituent Application Dataset (<code>n = 479,666</code>)<a href="application.html#continental-3-constituent-application-dataset-n-479666" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Once Model 7 is calibrated on the <code>274,445</code> four-variable training matchups, it requires only the three constituent concentrations (<span class="math inline">\(\text{NAP}\)</span>, <span class="math inline">\(\text{DOC}\)</span>, and <span class="math inline">\(\text{Chl }a\)</span>) to partition non-water light attenuation. Under our asymmetric <strong>“odd-one-out” rule (Rule 2)</strong>, when a shallow stream sample has a streambed bottom-hit Secchi reading (<span class="math inline">\(z_r &gt; +2.5\text{ SD}\)</span>, <code>5,177</code> training records) alongside low, mutually consistent water chemistry (<code>Chl a</code>, <code>DOC</code>, and <code>TSS</code>), only the <code>secchi</code> field is set to <code>NA</code> so the valid 3-constituent chemistry is retained with a modeled Secchi depth. Conversely, lower-tail chemistry unit errors (<span class="math inline">\(z_r &lt; -2.5\text{ SD}\)</span>, <code>1,817</code> records) are dropped. Applying Model 7 across all simultaneous 3-constituent matchups within the training concentration bounds with <span class="math inline">\(\text{NAP} &gt; 0.01\text{ mg L}^{-1}\)</span> yields <strong>479,666 observations across 39,423 stations</strong>:</p>
 <table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -243,13 +243,13 @@ Unique Monitoring Sites
 <tbody>
 <tr>
 <td style="text-align:left;">
-4-Variable Training Dataset (Secchi + 3 LACs measured, screened)
+4-Variable Training Dataset (Secchi + 3 LACs measured, &amp;#124;z_r&amp;#124; &lt;= 2.5 SD)
 </td>
 <td style="text-align:left;">
-277,382
+274,445
 </td>
 <td style="text-align:left;">
-22,567
+22,357
 </td>
 </tr>
 <tr>
@@ -257,10 +257,10 @@ Unique Monitoring Sites
 Continental 3-LAC Application Dataset (within training bounds &amp; NAP &gt; 0.01 mg/L)
 </td>
 <td style="text-align:left;">
-478,929
+479,666
 </td>
 <td style="text-align:left;">
-39,396
+39,423
 </td>
 </tr>
 <tr>
@@ -268,33 +268,33 @@ Continental 3-LAC Application Dataset (within training bounds &amp; NAP &gt; 0.0
 ├── Application matchups with Measured Secchi depth
 </td>
 <td style="text-align:left;">
-275,287
+267,895
 </td>
 <td style="text-align:left;">
-22,541
+22,012
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-└── Application matchups with Modeled Secchi depth only (no measured Secchi)
+└── Application matchups with Modeled Secchi depth (incl. rescued shallow stream LACs)
 </td>
 <td style="text-align:left;">
-203,642
+211,771
 </td>
 <td style="text-align:left;">
-22,718
+24,039
 </td>
 </tr>
 </tbody>
 </table>
 <p>For each observation <span class="math inline">\(r\)</span>, the non-water light attenuation share of constituent <span class="math inline">\(i \in \{\text{NAP}, \text{DOC}, \text{Chl }a\}\)</span> and the modeled Secchi depth (<span class="math inline">\(\hat{z}_{SD,r}\)</span>) are:</p>
 <p><span class="math display">\[f_{i,r} = \frac{\alpha_i C_{i,r}}{\alpha_{\text{NAP}}\,\text{NAP}_r + \alpha_{\text{DOC}}\,\text{DOC}_r + \alpha_{\text{Chl }a}\,\text{Chl }a_r}, \qquad \hat{z}_{SD,r} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP}_r + \alpha_{\text{DOC}}\,\text{DOC}_r + \alpha_{\text{Chl }a}\,\text{Chl }a_r}\]</span></p>
-<p>Across all <strong>478,929</strong> application matchups, <strong>89.7%</strong> (429,414 records) use Level III ecoregion-specific Model 7 slopes and <strong>10.3%</strong> (49,515 records) use the global Model 1 fallback.</p>
+<p>Across all <strong>479,666</strong> application matchups, <strong>90.2%</strong> (432,887 records) use Level III ecoregion-specific Model 7 slopes and <strong>9.8%</strong> (46,779 records) use the global Model 1 fallback.</p>
 <hr />
 </div>
 <div id="intext" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Continental Mean Ternary Partitioning by Water-Body Type<a href="application.html#intext" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Across all <strong>478,929</strong> matchups, average non-water light attenuation is led by <strong>DOC (<code>58.8%</code>)</strong>, followed by <strong>NAP (<code>33.0%</code>)</strong> and <strong>Chl <em>a</em> (<code>8.2%</code>)</strong>. Streams (<code>58.7% DOC, 34.6% NAP, 6.7% Chl a</code>) and estuaries (<code>57.1% DOC, 37.0% NAP, 5.8% Chl a</code>) cluster tightly along the DOC–NAP axis, whereas lakes (<code>60.5% DOC, 23.1% NAP, 16.5% Chl a</code>) exhibit more than double the phytoplankton attenuation share and span the full ternary triangle:</p>
+<p>Across all <strong>479,666</strong> matchups, average non-water light attenuation is led by <strong>DOC (<code>57.7%</code>)</strong>, followed by <strong>NAP (<code>34.1%</code>)</strong> and <strong>Chl <em>a</em> (<code>8.2%</code>)</strong>. Streams (<code>57.6% DOC, 35.7% NAP, 6.7% Chl a</code>) and estuaries (<code>56.1% DOC, 37.9% NAP, 6.0% Chl a</code>) cluster tightly along the DOC–NAP axis, whereas lakes (<code>59.3% DOC, 24.5% NAP, 16.1% Chl a</code>) exhibit more than double the phytoplankton attenuation share and span the full ternary triangle:</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:means">Table 8.1: </span><span id="tab:means">Table 8.2: </span>Arithmetic mean and standard deviation of non-water light-attenuation fractions across the continental dataset (blue centroids in Figure 2).
@@ -336,28 +336,28 @@ SD Chl a
 All Waters
 </td>
 <td style="text-align:left;">
-478,929
+479,666
 </td>
 <td style="text-align:left;">
-39,396
+39,423
 </td>
 <td style="text-align:left;">
-58.8%
+57.7%
 </td>
 <td style="text-align:left;">
-33.0%
+34.1%
 </td>
 <td style="text-align:left;">
 8.2%
 </td>
 <td style="text-align:left;">
-25.0%
+24.9%
 </td>
 <td style="text-align:left;">
 24.4%
 </td>
 <td style="text-align:left;">
-10.4%
+10.3%
 </td>
 </tr>
 <tr>
@@ -365,16 +365,16 @@ All Waters
 Stream
 </td>
 <td style="text-align:left;">
-318,091
+320,411
 </td>
 <td style="text-align:left;">
-21,513
+21,647
 </td>
 <td style="text-align:left;">
-58.7%
+57.6%
 </td>
 <td style="text-align:left;">
-34.6%
+35.7%
 </td>
 <td style="text-align:left;">
 6.7%
@@ -386,7 +386,7 @@ Stream
 25.3%
 </td>
 <td style="text-align:left;">
-8.8%
+8.7%
 </td>
 </tr>
 <tr>
@@ -394,28 +394,28 @@ Stream
 Lake
 </td>
 <td style="text-align:left;">
-82,517
+82,062
 </td>
 <td style="text-align:left;">
-8,942
+8,906
 </td>
 <td style="text-align:left;">
-60.5%
+59.3%
 </td>
 <td style="text-align:left;">
-23.1%
+24.5%
 </td>
 <td style="text-align:left;">
-16.5%
+16.1%
 </td>
 <td style="text-align:left;">
-22.7%
+22.5%
 </td>
 <td style="text-align:left;">
-19.0%
+19.2%
 </td>
 <td style="text-align:left;">
-14.5%
+14.3%
 </td>
 </tr>
 <tr>
@@ -423,25 +423,25 @@ Lake
 Estuary
 </td>
 <td style="text-align:left;">
-78,321
+77,193
 </td>
 <td style="text-align:left;">
-8,941
+8,870
 </td>
 <td style="text-align:left;">
-57.1%
+56.1%
 </td>
 <td style="text-align:left;">
-37.0%
+37.9%
 </td>
 <td style="text-align:left;">
-5.8%
+6.0%
 </td>
 <td style="text-align:left;">
 22.2%
 </td>
 <td style="text-align:left;">
-22.7%
+22.6%
 </td>
 <td style="text-align:left;">
 6.6%
@@ -455,8 +455,8 @@ Estuary
 <h2><span class="header-section-number">8.3</span> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)<a href="application.html#dominance-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>How does absolute water clarity (<span class="math inline">\(z_{SD}\)</span>) vary when a single constituent dominates light attenuation? Grouping observations into four dominance regimes based on an <span class="math inline">\(80\%\)</span> threshold (<strong>NAP-dominant</strong> <span class="math inline">\(f_{\text{NAP}} &gt; 0.80\)</span>, <strong>Chl <em>a</em>-dominant</strong> <span class="math inline">\(f_{\text{Chl }a} &gt; 0.80\)</span>, <strong>DOC-dominant</strong> <span class="math inline">\(f_{\text{DOC}} &gt; 0.80\)</span>, and <strong>Mixed</strong>) reveals an important distinction between <strong>frequency of dominance</strong> and <strong>severity of turbidity</strong>:</p>
 <ul>
-<li><strong>DOC</strong> is the most <em>frequent</em> single dominant attenuator (<code>116,567</code> samples, mean <span class="math inline">\(z_{SD} = 1.10\text{ m}\)</span>), because background humic DOC absorbs light even in relatively clear streams and lakes when suspended sediment and algal biomass are low.</li>
-<li><strong>NAP-dominant</strong> waters (<code>25,793</code> samples, typically storm-flow sediment plumes and erosive rivers) have the <strong>lowest water clarity</strong> (mean <span class="math inline">\(z_{SD} = 0.40\text{ m}\)</span>, median <span class="math inline">\(0.24\text{ m}\)</span>), followed by hyper-eutrophic <strong>Chl <em>a</em>-dominant</strong> blooms (mean <span class="math inline">\(z_{SD} = 0.71\text{ m}\)</span>, median <span class="math inline">\(0.38\text{ m}\)</span>), <strong>DOC-dominant</strong> waters (<span class="math inline">\(1.10\text{ m}\)</span>), and <strong>Mixed</strong> waters (<span class="math inline">\(1.23\text{ m}\)</span>).</li>
+<li><strong>DOC</strong> is the most <em>frequent</em> single dominant attenuator (<code>108,916</code> samples, mean <span class="math inline">\(z_{SD} = 1.08\text{ m}\)</span>), because background humic DOC absorbs light even in relatively clear streams and lakes when suspended sediment and algal biomass are low.</li>
+<li><strong>NAP-dominant</strong> waters (<code>27,052</code> samples, typically storm-flow sediment plumes and erosive rivers) have the <strong>lowest water clarity</strong> (mean <span class="math inline">\(z_{SD} = 0.44\text{ m}\)</span>, median <span class="math inline">\(0.25\text{ m}\)</span>), followed by hyper-eutrophic <strong>Chl <em>a</em>-dominant</strong> blooms (mean <span class="math inline">\(z_{SD} = 0.66\text{ m}\)</span>, median <span class="math inline">\(0.34\text{ m}\)</span>), <strong>DOC-dominant</strong> waters (<span class="math inline">\(1.08\text{ m}\)</span>), and <strong>Mixed</strong> waters (<span class="math inline">\(1.24\text{ m}\)</span>).</li>
 </ul>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:dom-fig"></span>
 <img src="ternary_clarity_pipeline_files/figure-html/dom-fig-1.png" alt="(a) Proportion of samples in each &gt;80% dominance regime by water-body type. (b) Modeled Secchi disk depth (z_SD, log scale) across the four dominance regimes; all six pairwise comparisons are significant at p &lt; 0.01." width="100%" />
@@ -502,25 +502,25 @@ Mean Measured Secchi (m)
 NAP dominant
 </td>
 <td style="text-align:left;">
-25,793
+27,052
 </td>
 <td style="text-align:left;">
-5,316
+5,563
 </td>
 <td style="text-align:right;">
-0.40
+0.44
 </td>
 <td style="text-align:right;">
-0.52
+0.69
 </td>
 <td style="text-align:right;">
-0.24
+0.25
 </td>
 <td style="text-align:right;">
-0.41
+0.45
 </td>
 <td style="text-align:right;">
-0.52
+0.57
 </td>
 </tr>
 <tr>
@@ -528,25 +528,25 @@ NAP dominant
 Chl a dominant
 </td>
 <td style="text-align:left;">
-129
+109
 </td>
 <td style="text-align:left;">
-102
+90
 </td>
 <td style="text-align:right;">
-0.71
+0.66
 </td>
 <td style="text-align:right;">
-0.90
+0.86
 </td>
 <td style="text-align:right;">
-0.38
+0.34
 </td>
 <td style="text-align:right;">
-1.04
+0.96
 </td>
 <td style="text-align:right;">
-1.63
+1.56
 </td>
 </tr>
 <tr>
@@ -554,25 +554,25 @@ Chl a dominant
 DOC dominant
 </td>
 <td style="text-align:left;">
-116,567
+108,916
 </td>
 <td style="text-align:left;">
-16,651
+15,781
 </td>
 <td style="text-align:right;">
-1.10
+1.08
 </td>
 <td style="text-align:right;">
-0.98
+0.95
 </td>
 <td style="text-align:right;">
 0.79
 </td>
 <td style="text-align:right;">
-1.20
+1.18
 </td>
 <td style="text-align:right;">
-1.02
+1.01
 </td>
 </tr>
 <tr>
@@ -580,22 +580,22 @@ DOC dominant
 Mixed
 </td>
 <td style="text-align:left;">
-336,440
+343,589
 </td>
 <td style="text-align:left;">
-29,780
+30,298
 </td>
 <td style="text-align:right;">
-1.23
+1.24
 </td>
 <td style="text-align:right;">
-1.10
+1.11
 </td>
 <td style="text-align:right;">
-0.90
+0.91
 </td>
 <td style="text-align:right;">
-1.23
+1.25
 </td>
 <td style="text-align:right;">
 0.99
@@ -632,13 +632,13 @@ Significant at p &lt; 0.01?
 Chl a dominant vs. NAP dominant
 </td>
 <td style="text-align:right;">
-0.311
+0.222
 </td>
 <td style="text-align:left;">
-0.000149
+0.00808
 </td>
 <td style="text-align:left;">
-3.27e-07
+0.000404
 </td>
 <td style="text-align:left;">
 ✔ Yes (p &lt; 0.01)
@@ -649,7 +649,7 @@ Chl a dominant vs. NAP dominant
 DOC dominant vs. NAP dominant
 </td>
 <td style="text-align:right;">
-0.704
+0.643
 </td>
 <td style="text-align:left;">
 &lt; 1e-300
@@ -666,13 +666,13 @@ DOC dominant vs. NAP dominant
 DOC dominant vs. Chl a dominant
 </td>
 <td style="text-align:right;">
-0.393
+0.422
 </td>
 <td style="text-align:left;">
-4.65e-06
+2.49e-06
 </td>
 <td style="text-align:left;">
-8.60e-24
+3.10e-23
 </td>
 <td style="text-align:left;">
 ✔ Yes (p &lt; 0.01)
@@ -683,7 +683,7 @@ DOC dominant vs. Chl a dominant
 Mixed vs. NAP dominant
 </td>
 <td style="text-align:right;">
-0.831
+0.801
 </td>
 <td style="text-align:left;">
 &lt; 1e-300
@@ -700,13 +700,13 @@ Mixed vs. NAP dominant
 Mixed vs. Chl a dominant
 </td>
 <td style="text-align:right;">
-0.520
+0.579
 </td>
 <td style="text-align:left;">
-3.79e-09
+5.03e-10
 </td>
 <td style="text-align:left;">
-9.51e-25
+5.21e-24
 </td>
 <td style="text-align:left;">
 ✔ Yes (p &lt; 0.01)
@@ -717,10 +717,10 @@ Mixed vs. Chl a dominant
 Mixed vs. DOC dominant
 </td>
 <td style="text-align:right;">
-0.127
+0.158
 </td>
 <td style="text-align:left;">
-2.39e-298
+&lt; 1e-300
 </td>
 <td style="text-align:left;">
 &lt; 1e-300

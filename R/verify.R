@@ -32,10 +32,18 @@ run_verification <- function() {
     '3. Training set', 'Analytical-floor & Beer-Lambert screened training obs.', '> 250,000',
       fmt_n(nrow(tr)), nrow(tr) > 250000 && all(tr$secchi >= P$secchi_floor & tr$secchi < P$max_secchi_m),
 
-    '3. Training set', 'A priori Beer-Lambert physical plausibility (|log10(kd/kd_lit)| <= 0.80)',
-      '<= 0.80 (max 6.3x)',
-      sprintf('max = %.3f', max(abs(log10(tr$kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tr$tss_dead) + P$lit_alpha_doc * tr$doc + P$lit_alpha_chl * tr$chl_a))))),
-      max(abs(log10(tr$kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tr$tss_dead) + P$lit_alpha_doc * tr$doc + P$lit_alpha_chl * tr$chl_a)))) <= P$max_log10_kd_discordance + 1e-9,
+    '3. Training set', 'A priori Beer-Lambert residual screen (|z_r| <= 2.5 SD, ~5-fold)',
+      '<= 2.50 SD (~4.7x)',
+      {
+        st_d <- kd_discordance_stats(get_trimmed())
+        r_tr <- log10(tr$kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tr$tss_dead) + P$lit_alpha_doc * tr$doc + P$lit_alpha_chl * tr$chl_a))
+        sprintf('max |z_r| = %.2f SD', max(abs((r_tr - st_d$mean_r) / st_d$sd_r)))
+      },
+      {
+        st_d <- kd_discordance_stats(get_trimmed())
+        r_tr <- log10(tr$kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tr$tss_dead) + P$lit_alpha_doc * tr$doc + P$lit_alpha_chl * tr$chl_a))
+        max(abs((r_tr - st_d$mean_r) / st_d$sd_r)) <= P$kd_discordance_sd + 1e-9
+      },
 
     '3. Training set', 'Pure-water offset k_w = 1 / (1.5 * max Secchi) [m^-1]',
       sprintf('%.5f', 1 / 1.5 / max(tr$secchi)),

@@ -31,7 +31,7 @@ nap
 sensitivity-to-biomass-formulation-method-tiers
 training
 stage-1-analytical-reporting-floors-trim_simultaneous
-stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance
+stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule
 pure-water-attenuation-offset-k_w-and-k_d-distributions
 ecoregions
 minimum-sample-size-rule-zone_min-100
@@ -42,7 +42,7 @@ comparison-with-published-bio-optical-benchmarks
 tableS1
 stability
 application
-continental-3-constituent-application-dataset-n-478929
+continental-3-constituent-application-dataset-n-479666
 intext
 dominance-test
 figures

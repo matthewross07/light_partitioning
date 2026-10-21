@@ -23,7 +23,7 @@ Across inland and coastal waters, diffuse light attenuation ($k_d = 1 / z_{SD}$;
 
 $$z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a}$$
 
-To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the **AquaMatch** data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to **AquaSat** (Ross et al. 2019). Combining **`277,382` simultaneous four-variable matchups** (`Secchi + Chl a + DOC + TSS/SSC`) for model calibration with **`478,929` three-constituent matchups** across **`39,396` monitoring stations** (`1970–2025`), we estimate regional specific attenuation coefficients ($\alpha_i$) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.
+To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the **AquaMatch** data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to **AquaSat** (Ross et al. 2019). Combining **`274,445` simultaneous four-variable matchups** (`Secchi + Chl a + DOC + TSS/SSC`) for model calibration with **`479,666` three-constituent matchups** across **`39,423` monitoring stations** (`1970–2025`), we estimate regional specific attenuation coefficients ($\alpha_i$) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.
 
 ---
 
@@ -57,9 +57,9 @@ if (file.exists('figs/sonicray_optical_titration_sheet.png')) {
 
 ## Continental Ternary Partitioning at a Glance {-}
 
-Across `478,929` co-located U.S. water quality samples, dissolved organic matter (**DOC**, `58.8%`) and non-algal suspended sediment (**NAP**, `33.0%`) dominate average non-water light attenuation in streams and estuaries, whereas lakes span the full ternary simplex with more than double the phytoplankton attenuation share (**Chl *a***, `16.5%` vs. `6.7%` in streams and `5.8%` in estuaries):
+Across `479,666` co-located U.S. water quality samples, dissolved organic matter (**DOC**, `57.7%`) and non-algal suspended sediment (**NAP**, `34.1%`) dominate average non-water light attenuation in streams and estuaries, whereas lakes span the full ternary simplex with more than double the phytoplankton attenuation share (**Chl *a***, `16.1%` vs. `6.7%` in streams and `6.0%` in estuaries):
 
-```{r overview-fig2-preview, echo = FALSE, fig.cap = 'Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 478,929), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics).'}
+```{r overview-fig2-preview, echo = FALSE, fig.cap = 'Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 479,666), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics).'}
 if (file.exists('figs/fig2_ternary_by_type.png')) {
   knitr::include_graphics('figs/fig2_ternary_by_type.png')
 }
@@ -83,7 +83,7 @@ tribble(
   '2. 3-Constituent Matchups', 'Same-site, same-day Chl a + DOC + TSS/SSC', fmt_n(nrow(no_sdd)), fmt_n(n_distinct(no_sdd$SiteID)), 'Ambient Stream, Lake, and Estuary stations (Section 2)',
   '3. 4-Variable Matchups', 'Same-site, same-day Secchi + Chl a + DOC + TSS/SSC', fmt_n(nrow(simul)), fmt_n(n_distinct(simul$SiteID)), 'Excludes turbidity tubes & <=0.01 m floor flags (Section 2)',
   '4. Analytical Floor Step', 'Sub-detection values floored at EPA/USGS MDLs', fmt_n(nrow(trimmed)), fmt_n(n_distinct(trimmed$SiteID)), 'Chl a 0.10 µg/L, DOC 0.25 mg/L, TSS 0.50 mg/L (Section 4)',
-  '5. Beer–Lambert QC Screen', 'A priori optical plausibility |log10(kd / kd,lit)| <= 0.80', fmt_n(nrow(tr)), fmt_n(n_distinct(tr$SiteID)), 'Final Training Set: removes 1.44% discordant outliers (Section 4)',
+  '5. Beer–Lambert QC Screen', 'A priori residual screen |z_r| <= 2.5 SD (~5-fold)', fmt_n(nrow(tr)), fmt_n(n_distinct(tr$SiteID)), 'Final Training Set: removes 2.49% discordant outliers (Section 4)',
   '6. Continental Application', 'All 3-constituent matchups inside training bounds (Model 7)', fmt_n(nrow(fd)), fmt_n(n_distinct(fd$SiteID)), sprintf('%s Measured + %s Modeled Secchi (Section 8)', fmt_n(sum(fd$secchi_status == 'Measured')), fmt_n(sum(fd$secchi_status == 'Modeled'))),
   '7. Temporal Stability Set', 'Long-term stations with > 7 matchups (Fig. 4)', fmt_n(sum(areas$n)), fmt_n(nrow(areas)), sprintf('%s streams, %s lakes, %s estuaries (Section 9)', fmt_n(sum(areas$type == 'Stream')), fmt_n(sum(areas$type == 'Lake')), fmt_n(sum(areas$type == 'Estuary')))
 ) %>%

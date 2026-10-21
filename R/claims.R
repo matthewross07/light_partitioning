@@ -142,11 +142,11 @@ verified_literature_table <- function() {
 
     'Specific Chl a attenuation benchmark', 'k_c = 0.016 m^2 (mg Chl a)^-1 (range 0.008 - 0.020)',
     'Bannister (1974); Kirk (1994)', '10.4319/lo.1974.19.1.0001',
-    'Matches AquaMatch global alpha_Chl = 0.0089 m^2/mg and Estuary alpha_Chl = 0.0138 m^2/mg.',
+    'Matches AquaMatch global alpha_Chl = 0.0088 m^2/mg and Estuary alpha_Chl = 0.0136 m^2/mg.',
 
-    'A priori WQP Beer-Lambert plausibility screen', '|log10(K_d / K_d,lit)| <= 0.80 (~6.3x) using published k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016',
+    'A priori WQP Beer-Lambert residual screen', '|z_r| <= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using published k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016',
     'Bannister (1974); Kirk (1994); Morris et al. (1995); Gohin et al. (2005)', '10.4319/lo.1974.19.1.0001; 10.4319/lo.1995.40.8.1381',
-    'Removes 1.33% discordant WQP records (e.g., streambed bottom hits in clear shallow streams) without reducing real environmental extremes.',
+    'Flags 2.49% discordant records: 1.84% upper-tail shallow bottom hits (Secchi set to NA so valid 3-LAC chemistry is retained in application) and 0.65% lower-tail chemistry unit errors.',
 
     'DOC as CDOM proxy & regional SUVA variation', 'alpha_DOC varies across ecoregions with DOM aromaticity',
     'Spencer et al. (2012); Griffin et al. (2018)', '10.1029/2011JG001928; 10.1016/j.watres.2018.07.066',

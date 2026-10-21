@@ -47,24 +47,33 @@ P <- list(
   exclude_sdd_approx = TRUE,
   dedup_same_day     = TRUE,
 
-  # -- A priori bio-optical physical plausibility screen for WQP training data:
-  #    Screens the ~1.3% of WQP records where reported Secchi depth (kd = 1/z_SD)
-  #    and simultaneously measured LACs violate Beer-Lambert physics by > 6.3x
-  #    (|log10(kd / kd_lit)| > 0.80), e.g. unflagged streambed bottom hits in
-  #    shallow clear streams (Secchi = 0.06 m when TSS < 5 mg/L, DOC < 5 mg/L)
-  #    or unit/bottle mismatches, while preserving 100% of true environmental
-  #    extremes (Secchi 0.06-7.62 m, TSS up to 339 mg/L, DOC up to 48 mg/L,
-  #    Chl a up to 322 ug/L). Uses independent published bio-optical constants
-  #    (zero fitted parameters from our data):
+  # -- A priori bio-optical physical plausibility screen (Rules 1 & 2):
+  #    Rule 1 (Standard Deviation Screen): Across simultaneous 4-variable matchups,
+  #    compute the log Beer-Lambert residual r = log10(kd / kd_lit) using
+  #    independent published bio-optical constants (zero fitted parameters):
   #      k_w,lit   = 0.080 m^-1      (Kirk 1994; Lee et al. 2015)
   #      k_NAP,lit = 0.040 m^2 g^-1  (Kirk 1994; Gohin et al. 2005)
   #      k_DOC,lit = 0.070 m^2 g^-1  (Morris et al. 1995; Griffin et al. 2018)
   #      k_Chl,lit = 0.016 m^2 mg^-1 (Bannister 1974; Kirk 1994)
-  lit_kw         = 0.080,
-  lit_alpha_nap  = 0.040,
-  lit_alpha_doc  = 0.070,
-  lit_alpha_chl  = 0.016,
-  max_log10_kd_discordance = 0.80,
+  #    Across the 281,439 matchups, mean(r) = 0.013 and SD(r) = 0.270 log10 units.
+  #    Standardizing z_r = (r - mean(r)) / SD(r), we require |z_r| <= 2.5 SD
+  #    (equivalent to |r - mean(r)| <= 0.675 log10 units, a ~4.7-fold [~5x] tolerance),
+  #    retaining 97.51% (274,445) of training observations and flagging 2.49% (6,994).
+  #    Rule 2 ("Odd-One-Out" Disposition in Application):
+  #      - Upper tail (z_r > +2.5 SD, 1.84%): Secchi is the odd one out (shallow
+  #        streambed bottom hit in clear water where Chl a, DOC, and TSS agree).
+  #        Excluded from regression training, but in ternary application only
+  #        Secchi is set to NA so the valid 3-constituent chemistry is retained.
+  #      - Lower tail (z_r < -2.5 SD, 0.65%): One of the chemistry constituents
+  #        (Chl a, DOC, or TSS) is the odd one out (e.g., 1000x unit error
+  #        contradicting a clear Secchi reading). Excluded from both training
+  #        and ternary application.
+  lit_kw                   = 0.080,
+  lit_alpha_nap            = 0.040,
+  lit_alpha_doc            = 0.070,
+  lit_alpha_chl            = 0.016,
+  kd_discordance_sd        = 2.5,
+  max_log10_kd_discordance = 0.675, # 2.5 * SD(r) = 2.5 * 0.2700 = 0.675 log10 units (~4.7-fold)
 
   # -- Chl a -> algal dry biomass (Gohin et al. 2005, Int. J. Remote Sens. 26:1639-1663)
   #    biomass [mg/L] = (234/1000) * chl_a[ug/L]^0.57
