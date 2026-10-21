@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 6 Hierarchical Bio-Optical Models (models.R) | Ternary Partitioning of Continental-Scale Water Clarity</title>
-  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 6 Hierarchical Bio-Optical Models (models.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta property="og:description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Section 6 Hierarchical Bio-Optical Models (models.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
   
-  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="twitter:description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   
 
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
@@ -143,80 +143,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
-<ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation"><i class="fa fa-check"></i>Why Optical Partitioning &amp; Total Visibility Both Matter (<code>{sonicray}</code> 3D Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#continental-ternary-partitioning-at-a-glance"><i class="fa fa-check"></i>Continental Ternary Partitioning at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#pipeline-funnel-dataset-summary"><i class="fa fa-check"></i>Pipeline Funnel &amp; Dataset Summary</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-workflow-code-architecture"><i class="fa fa-check"></i>Reproducing the Workflow &amp; Code Architecture</a></li>
 </ul></li>
 <li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
 <li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#temporal-water-body-coverage-across-the-conterminous-u.s."><i class="fa fa-check"></i><b>1.1</b> Temporal &amp; Water-Body Coverage Across the Conterminous U.S.</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Matchups &amp; Initial Hygiene (<code>prep.R</code>)</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
-<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
-<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#four-initial-hygiene-filters"><i class="fa fa-check"></i><b>2.1</b> Four Initial Hygiene Filters</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#spatial-seasonal-footprint-of-matchups"><i class="fa fa-check"></i><b>2.2</b> Spatial &amp; Seasonal Footprint of Matchups</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-covariance-structure"><i class="fa fa-check"></i><b>2.3</b> Log-Log Covariance Structure</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Separating Non-Algal Particles (NAP) from Bulk TSS</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
-<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-biomass-formulation-method-tiers"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to Biomass Formulation &amp; Method Tiers</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
-<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Plausibility Screen (<code>clean_wqp_discordance()</code>)</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-sample-size-rule-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Sample-Size Rule (<code>zone_min = 100</code>)</a></li>
 </ul></li>
 <li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
 <li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
 <li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
-<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
-<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-published-bio-optical-benchmarks"><i class="fa fa-check"></i><b>6.3</b> Comparison with Published Bio-Optical Benchmarks</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Coefficients, Standard Errors, and Significance</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
-</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a></li>
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
-<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
-<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
-<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
 <li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
 <li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
-<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
-<ul>
-<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
-</ul></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
 <ul>
@@ -245,229 +225,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Section 6</span> Hierarchical Bio-Optical Models (<code>models.R</code>)<a href="models.html#models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="additive-beerlambert-model-formulation" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Additive Beer–Lambert Model Formulation<a href="models.html#additive-beerlambert-model-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>All ten candidate models estimate specific light-attenuation coefficients (<span class="math inline">\(\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}\)</span>) via ordinary least squares (OLS) with a fixed pure-water attenuation offset <span class="math inline">\(k_w = 0.04776\text{ m}^{-1}\)</span> and <strong>no intercept</strong>:</p>
+<p>We test ten candidate linear models that estimate specific light-attenuation coefficients (<span class="math inline">\(\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}\)</span>) via ordinary least squares (OLS) with a fixed pure-water attenuation offset <span class="math inline">\(k_w = 0.04776\text{ m}^{-1}\)</span> and <strong>no intercept</strong>:</p>
 <p><span class="math display">\[k_d - k_w = \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a, \qquad z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a}\]</span></p>
-<p>where <span class="math inline">\(g\)</span> indexes the stratification group: continental USA (Model 1), water-body type alone (Model 2), EPA Ecoregion Levels I–IV without water-type separation (Models 3, 5, 7, 9), or EPA Ecoregion Levels I–IV crossed with water-body type (Models 4, 6, 8, 10). Because interaction-only terms with no shared main effects form a strictly block-diagonal design matrix, per-group QR decomposition (<code>lm.fit()</code>) is mathematically identical to a joint <code>glm()</code> fit (to machine precision <span class="math inline">\(\sim 10^{-15}\)</span>) while executing orders of magnitude faster. Every modeled group requires <span class="math inline">\(&gt; 100\)</span> training observations.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="models.html#cb19-1" tabindex="-1"></a>MODEL_KEY <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">by_type =</span> <span class="fu">ifelse</span>(by_type, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="models.html#cb19-2" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Model&#39;</span>, <span class="st">&#39;Ecoregion Level&#39;</span>, <span class="st">&#39;Stratified by Water Type?&#39;</span>, <span class="st">&#39;Dataset Key&#39;</span>, <span class="st">&#39;Spatial / Typological Scope&#39;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="models.html#cb19-3" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:right;">
-Model
-</th>
-<th style="text-align:left;">
-Ecoregion Level
-</th>
-<th style="text-align:left;">
-Stratified by Water Type?
-</th>
-<th style="text-align:left;">
-Dataset Key
-</th>
-<th style="text-align:left;">
-Spatial / Typological Scope
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-USA
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-global
-</td>
-<td style="text-align:left;">
-Continental (all waters)
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-USA
-</td>
-<td style="text-align:left;">
-Yes
-</td>
-<td style="text-align:left;">
-global
-</td>
-<td style="text-align:left;">
-Continental × water-body type
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-Level 1
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-L1
-</td>
-<td style="text-align:left;">
-EPA Level I ecoregion
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-Level 1
-</td>
-<td style="text-align:left;">
-Yes
-</td>
-<td style="text-align:left;">
-L1
-</td>
-<td style="text-align:left;">
-EPA Level I × water-body type
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:left;">
-Level 2
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-L2
-</td>
-<td style="text-align:left;">
-EPA Level II ecoregion
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:left;">
-Level 2
-</td>
-<td style="text-align:left;">
-Yes
-</td>
-<td style="text-align:left;">
-L2
-</td>
-<td style="text-align:left;">
-EPA Level II × water-body type
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:left;">
-Level 3
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-L3
-</td>
-<td style="text-align:left;">
-EPA Level III ecoregion
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:left;">
-Level 3
-</td>
-<td style="text-align:left;">
-Yes
-</td>
-<td style="text-align:left;">
-L3
-</td>
-<td style="text-align:left;">
-EPA Level III × water-body type
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:left;">
-Level 4
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-L4
-</td>
-<td style="text-align:left;">
-EPA Level IV ecoregion
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:left;">
-Level 4
-</td>
-<td style="text-align:left;">
-Yes
-</td>
-<td style="text-align:left;">
-L4
-</td>
-<td style="text-align:left;">
-EPA Level IV × water-body type
-</td>
-</tr>
-</tbody>
-</table>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="models.html#cb20-1" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">get_models</span>()</span>
-<span id="cb20-2"><a href="models.html#cb20-2" tabindex="-1"></a>perf   <span class="ot">&lt;-</span> <span class="fu">model_performance</span>(models, <span class="fu">get_training</span>())</span>
-<span id="cb20-3"><a href="models.html#cb20-3" tabindex="-1"></a><span class="fu">write_csv</span>(perf, <span class="fu">file.path</span>(PATH<span class="sc">$</span>figs, <span class="st">&#39;tables/table1_aquamatch.csv&#39;</span>))</span></code></pre></div>
+<p>Here <span class="math inline">\(g\)</span> indexes the stratification group: continental USA (Model 1), water-body type alone (Model 2), EPA Ecoregion Levels I–IV without water-type separation (Models 3, 5, 7, 9), or EPA Ecoregion Levels I–IV crossed with water-body type (Models 4, 6, 8, 10). Every modeled group requires <span class="math inline">\(&gt; 100\)</span> training matchups.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:models-fig"></span>
+<img src="ternary_clarity_pipeline_files/figure-html/models-fig-1.png" alt="(a) Explained variance (R²) across Models 1–10, comparing ecoregion-only models (circles) against ecoregion × water-type models (triangles). (b) Distribution of fitted specific attenuation coefficients across the 37 strictly positive Level III ecoregions in Model 7 compared with the continental global fit (Model 1, vertical dashed lines)." width="100%" />
+<p class="caption">
+Figure 6.1: (a) Explained variance (R²) across Models 1–10, comparing ecoregion-only models (circles) against ecoregion × water-type models (triangles). (b) Distribution of fitted specific attenuation coefficients across the 37 strictly positive Level III ecoregions in Model 7 compared with the continental global fit (Model 1, vertical dashed lines).
+</p>
+</div>
 </div>
 <div id="table1" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)<a href="models.html#table1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across <strong>all 277,382 training observations</strong> (observations in groups with <span class="math inline">\(\le 100\)</span> rows fall back to Model 1 for type-agnostic models or Model 2 for type-stratified models):</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="models.html#cb21-1" tabindex="-1"></a>perf <span class="sc">%&gt;%</span></span>
-<span id="cb21-2"><a href="models.html#cb21-2" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb21-3"><a href="models.html#cb21-3" tabindex="-1"></a>    <span class="at">Level =</span> level,</span>
-<span id="cb21-4"><a href="models.html#cb21-4" tabindex="-1"></a>    <span class="at">Model =</span> model,</span>
-<span id="cb21-5"><a href="models.html#cb21-5" tabindex="-1"></a>    <span class="st">`</span><span class="at">By Type?</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(by_type, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>),</span>
-<span id="cb21-6"><a href="models.html#cb21-6" tabindex="-1"></a>    <span class="st">`</span><span class="at">Groups (G)</span><span class="st">`</span> <span class="ot">=</span> n_groups,</span>
-<span id="cb21-7"><a href="models.html#cb21-7" tabindex="-1"></a>    <span class="st">`</span><span class="at">Group Size Median (Min – Max)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(n_groups <span class="sc">==</span> <span class="dv">1</span>, <span class="fu">fmt_n</span>(group_median),</span>
-<span id="cb21-8"><a href="models.html#cb21-8" tabindex="-1"></a>      <span class="fu">sprintf</span>(<span class="st">&#39;%s (%s – %s)&#39;</span>, <span class="fu">fmt_n</span>(group_median), <span class="fu">fmt_n</span>(group_min), <span class="fu">fmt_n</span>(group_max))),</span>
-<span id="cb21-9"><a href="models.html#cb21-9" tabindex="-1"></a>    <span class="st">`</span><span class="at">R²</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(r2, <span class="dv">2</span>),</span>
-<span id="cb21-10"><a href="models.html#cb21-10" tabindex="-1"></a>    <span class="st">`</span><span class="at">R² (exact)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(r2, <span class="dv">3</span>),</span>
-<span id="cb21-11"><a href="models.html#cb21-11" tabindex="-1"></a>    <span class="st">`</span><span class="at">RMSE kd (m⁻¹)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(rmse_kd, <span class="dv">2</span>),</span>
-<span id="cb21-12"><a href="models.html#cb21-12" tabindex="-1"></a>    <span class="st">`</span><span class="at">Fitted Coefs</span><span class="st">`</span> <span class="ot">=</span> n_coef,</span>
-<span id="cb21-13"><a href="models.html#cb21-13" tabindex="-1"></a>    <span class="st">`</span><span class="at">Strictly Positive Groups</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&#39;%d / %d&#39;</span>, n_groups <span class="sc">-</span> n_neg_groups, n_groups),</span>
-<span id="cb21-14"><a href="models.html#cb21-14" tabindex="-1"></a>    <span class="st">`</span><span class="at">ΔBIC vs. Model 1</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">fmt_n</span>(<span class="fu">round</span>(bic_common <span class="sc">-</span> bic_common[<span class="dv">1</span>]))</span>
-<span id="cb21-15"><a href="models.html#cb21-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb21-16"><a href="models.html#cb21-16" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&#39;Table 1: Summary of the 10 hierarchical general linear models evaluated across all 277,382 training observations.&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-17"><a href="models.html#cb21-17" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across all <strong>277,382</strong> training matchups:</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:table1-aquamatch">Table 6.1: </span><span id="tab:table1-aquamatch">Table 6.2: </span>Table 1: Summary of the 10 hierarchical general linear models evaluated across all 277,382 training observations.
@@ -863,20 +633,17 @@ Yes
 </tbody>
 </table>
 <div class="decision">
-<p><strong>Model Selection Rationale: Why Model 7 (<code>Level III Ecoregions</code>) Is Selected for Continental &amp; Longitudinal Applications</strong></p>
+<p><strong>Why We Select Model 7 (<code>Level III Ecoregions</code>) for Continental Ternary Analysis</strong></p>
 <ol style="list-style-type: decimal">
-<li><strong>Substantial gain in regional predictive skill and parsimony.</strong> Moving from the continental global model (Model 1, <span class="math inline">\(R^2 = 0.41\)</span>) to Level III ecoregions (Model 7, <code>47</code> groups, <span class="math inline">\(R^2 = 0.50\)</span>) improves <span class="math inline">\(R^2\)</span> by <span class="math inline">\(+0.09\)</span> and reduces common-sample BIC by <strong><span class="math inline">\(\Delta\text{BIC} = -53{,}682\)</span></strong>, while maintaining a robust median group size of <span class="math inline">\(n = 687\)</span> (<code>109–121,842</code>).</li>
-<li><strong>Physical positivity and statistical significance across modeled ecoregions.</strong> In Model 7, <strong>37 of the 47 Level III ecoregions</strong> yield strictly positive, highly significant (<span class="math inline">\(p &lt; 0.001\)</span>) specific attenuation slopes for all three constituents (<span class="math inline">\(\alpha_{\text{NAP}} &gt; 0, \alpha_{\text{DOC}} &gt; 0, \alpha_{\text{Chl }a} &gt; 0\)</span>), and none of the non-positive slope estimates in the remaining groups is statistically significant at <span class="math inline">\(p &lt; 0.01\)</span> (all <span class="math inline">\(p \ge 0.10\)</span>). In contrast, subdividing to Level IV ecoregions (Model 9, <code>123</code> groups, median <span class="math inline">\(n = 343\)</span>) or Level IV <span class="math inline">\(\times\)</span> water type (Model 10, <code>163</code> groups, median <span class="math inline">\(n = 349\)</span>) pushes median sample sizes well below the <span class="math inline">\(n \approx 1{,}000\)</span> stability threshold (<code>Figure S1</code>) and substantially increases the number of small groups with unconstrained negative slope estimates caused by narrow local predictor ranges.</li>
-<li><strong>Seamless application across river–lake–estuary continuums.</strong> Differentiating by discrete water-body type at the ecoregion level (Model 8 vs. Model 7) increases <span class="math inline">\(R^2\)</span> by only <span class="math inline">\(+0.02\)</span> (<code>0.50</code> <span class="math inline">\(\rightarrow\)</span> <code>0.52</code>), and within Model 7 each individual water-body type is well predicted (<code>R² = 0.46–0.54</code>). Because Model 7 does not impose artificial parameter discontinuities at water-body type boundaries, it can be applied continuously across linked river-to-estuary networks (<code>Figure 3</code>).</li>
+<li><strong>Strong regional skill and parsimony:</strong> Moving from the global model (Model 1, <span class="math inline">\(R^2 = 0.41\)</span>) to Level III ecoregions (Model 7, <code>47</code> groups, <span class="math inline">\(R^2 = 0.50\)</span>) increases <span class="math inline">\(R^2\)</span> by <span class="math inline">\(+0.09\)</span> and improves BIC by <strong><span class="math inline">\(\Delta\text{BIC} = -53{,}653\)</span></strong>, while preserving a median group size of <span class="math inline">\(n = 687\)</span> (<code>109–121,842</code>).</li>
+<li><strong>Physical positivity:</strong> In Model 7, <strong>37 of 47 Level III ecoregions</strong> (representing <strong>98.04%</strong> of modeled training matchups) have strictly positive, highly significant (<span class="math inline">\(p &lt; 0.001\)</span>) slopes for all three constituents. Subdividing further to Level IV (Models 9–10) pushes median group size down to <span class="math inline">\(n = 343\text{–}349\)</span>—well below the <span class="math inline">\(n \approx 1{,}000\)</span> convergence threshold (<code>Figure S1</code>)—for only <span class="math inline">\(+0.02\text{ to }+0.03\)</span> gain in <span class="math inline">\(R^2\)</span>.</li>
+<li><strong>Seamless river–estuary continuity:</strong> Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only <span class="math inline">\(+0.02\)</span> in <span class="math inline">\(R^2\)</span> (<code>0.50</code> <span class="math inline">\(\rightarrow\)</span> <code>0.52</code>). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (<code>Figure 3</code>).</li>
 </ol>
 </div>
 </div>
-<div id="comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)<a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Across models and water types, fitted specific attenuation coefficients demonstrate strongest per-mass attenuation by <strong>DOC</strong>, followed by <strong>NAP</strong> and <strong>Chl <em>a</em></strong>. In global Model 1 (<span class="math inline">\(n = 277{,}382\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span> (ratios <span class="math inline">\(\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}\)</span> in Model 1, and <span class="math inline">\(\alpha_{\text{DOC}} \approx 2\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}\)</span> across all regional groups in Table S1). These empirically derived continental coefficients agree closely with first-principles biophysical derivations and local optical studies:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="models.html#cb22-1" tabindex="-1"></a><span class="fu">compare_bannister_literature</span>(models) <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="models.html#cb22-2" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&#39;Comparison of empirically fitted specific attenuation coefficients (Models 1 &amp; 2) against theoretical and field bio-optical benchmarks.&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb22-3"><a href="models.html#cb22-3" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="comparison-with-published-bio-optical-benchmarks" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Comparison with Published Bio-Optical Benchmarks<a href="models.html#comparison-with-published-bio-optical-benchmarks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In global Model 1 (<span class="math inline">\(n = 277{,}382\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span> (ratios <span class="math inline">\(\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}\)</span> in Model 1, and <span class="math inline">\(\alpha_{\text{DOC}} \approx 2.4\,\alpha_{\text{NAP}} \approx 12\,\alpha_{\text{Chl }a}\)</span> across all regional groups in Table S1). These empirically fitted values align closely with first-principles biophysical derivations and field optics studies:</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:bannister-table">Table 6.3: </span><span id="tab:bannister-table">Table 6.4: </span>Comparison of empirically fitted specific attenuation coefficients (Models 1 &amp; 2) against theoretical and field bio-optical benchmarks.
@@ -968,17 +735,8 @@ Morris et al. (1995) L&amp;O 40:1381; Spencer et al. (2012) JGR 117:G03001; Gr
 </table>
 </div>
 <div id="tableS1" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance<a href="models.html#tableS1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">6.4</span> Table S1: Fitted Coefficients, Standard Errors, and Significance<a href="models.html#tableS1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All ten models’ group sample sizes (<span class="math inline">\(n\)</span>), specific attenuation coefficients, standard errors, and two-sided <span class="math inline">\(t\)</span>-test <span class="math inline">\(p\)</span>-values are exported to <code>figs/tables/tableS1_coefficients_aquamatch.csv</code>. Below are Models 1, 2, and the 37 strictly positive Level III ecoregion groups of Model 7:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="models.html#cb23-1" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">table_s1</span>(models)</span>
-<span id="cb23-2"><a href="models.html#cb23-2" tabindex="-1"></a><span class="fu">write_csv</span>(s1, <span class="fu">file.path</span>(PATH<span class="sc">$</span>figs, <span class="st">&#39;tables/tableS1_coefficients_aquamatch.csv&#39;</span>))</span>
-<span id="cb23-3"><a href="models.html#cb23-3" tabindex="-1"></a>s1 <span class="sc">%&gt;%</span></span>
-<span id="cb23-4"><a href="models.html#cb23-4" tabindex="-1"></a>  <span class="fu">filter</span>(model <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>) <span class="sc">|</span> (model <span class="sc">==</span> <span class="dv">7</span> <span class="sc">&amp;</span> NAP <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> DOC <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> Chl_a <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-5"><a href="models.html#cb23-5" tabindex="-1"></a>  <span class="fu">select</span>(model, code, type, n_group, NAP, DOC, Chl_a, p_NAP, p_DOC, p_Chl_a) <span class="sc">%&gt;%</span></span>
-<span id="cb23-6"><a href="models.html#cb23-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(p_NAP, p_DOC, p_Chl_a), <span class="sc">~</span> <span class="fu">format.pval</span>(.x, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">eps =</span> <span class="fl">1e-16</span>)),</span>
-<span id="cb23-7"><a href="models.html#cb23-7" tabindex="-1"></a>         <span class="at">n_group =</span> <span class="fu">fmt_n</span>(n_group)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-8"><a href="models.html#cb23-8" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Model&#39;</span>, <span class="st">&#39;Ecoregion&#39;</span>, <span class="st">&#39;Water Type&#39;</span>, <span class="st">&#39;n&#39;</span>, <span class="st">&#39;α_NAP (m²/g)&#39;</span>, <span class="st">&#39;α_DOC (m²/g)&#39;</span>, <span class="st">&#39;α_Chl a (m²/mg)&#39;</span>, <span class="st">&#39;p (NAP)&#39;</span>, <span class="st">&#39;p (DOC)&#39;</span>, <span class="st">&#39;p (Chl a)&#39;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-9"><a href="models.html#cb23-9" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">font_size =</span> <span class="dv">11</span>)</span></code></pre></div>
 <table class="table table-condensed table-striped" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2329,14 +2087,7 @@ All
 </tr>
 </tbody>
 </table>
-<p>In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative (<span class="math inline">\(p \ge 0.10\)</span>) due to narrow local concentration ranges; during continental ternary projection (<code>Section 8</code>), these groups automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="models.html#cb24-1" tabindex="-1"></a>s1 <span class="sc">%&gt;%</span></span>
-<span id="cb24-2"><a href="models.html#cb24-2" tabindex="-1"></a>  <span class="fu">filter</span>(model <span class="sc">==</span> <span class="dv">7</span>, <span class="sc">!</span>(NAP <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> DOC <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> Chl_a <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-3"><a href="models.html#cb24-3" tabindex="-1"></a>  <span class="fu">select</span>(code, n_group, NAP, p_NAP, DOC, p_DOC, Chl_a, p_Chl_a) <span class="sc">%&gt;%</span></span>
-<span id="cb24-4"><a href="models.html#cb24-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_group =</span> <span class="fu">fmt_n</span>(n_group)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-5"><a href="models.html#cb24-5" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Level III Ecoregion&#39;</span>, <span class="st">&#39;n&#39;</span>, <span class="st">&#39;α_NAP&#39;</span>, <span class="st">&#39;p (NAP)&#39;</span>, <span class="st">&#39;α_DOC&#39;</span>, <span class="st">&#39;p (DOC)&#39;</span>, <span class="st">&#39;α_Chl a&#39;</span>, <span class="st">&#39;p (Chl a)&#39;</span>),</span>
-<span id="cb24-6"><a href="models.html#cb24-6" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">&#39;The 10 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p &gt;= 0.10) and falls back to global Model 1 during ternary application.&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-7"><a href="models.html#cb24-7" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">bootstrap_options =</span> <span class="st">&#39;condensed&#39;</span>, <span class="at">font_size =</span> <span class="dv">11</span>)</span></code></pre></div>
+<p>In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative (<span class="math inline">\(p \ge 0.10\)</span>) due to narrow local concentration ranges; during continental ternary projection (<code>Section 8</code>), those ecoregions automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:</p>
 <table class="table table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 <span id="tab:m7-neg">Table 6.5: </span><span id="tab:m7-neg">Table 6.6: </span>The 10 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p &gt;= 0.10) and falls back to global Model 1 during ternary application.

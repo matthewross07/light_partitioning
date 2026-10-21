@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 9 Manuscript Figures Gallery (Figs. 1–4) | Ternary Partitioning of Continental-Scale Water Clarity</title>
-  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 9 Manuscript Figures Gallery (Figs. 1–4) | Ternary Partitioning of Continental-Scale Water Clarity" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta property="og:description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Section 9 Manuscript Figures Gallery (Figs. 1–4) | Ternary Partitioning of Continental-Scale Water Clarity" />
   
-  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="twitter:description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   
 
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
@@ -143,80 +143,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
-<ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation"><i class="fa fa-check"></i>Why Optical Partitioning &amp; Total Visibility Both Matter (<code>{sonicray}</code> 3D Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#continental-ternary-partitioning-at-a-glance"><i class="fa fa-check"></i>Continental Ternary Partitioning at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#pipeline-funnel-dataset-summary"><i class="fa fa-check"></i>Pipeline Funnel &amp; Dataset Summary</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-workflow-code-architecture"><i class="fa fa-check"></i>Reproducing the Workflow &amp; Code Architecture</a></li>
 </ul></li>
 <li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
 <li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#temporal-water-body-coverage-across-the-conterminous-u.s."><i class="fa fa-check"></i><b>1.1</b> Temporal &amp; Water-Body Coverage Across the Conterminous U.S.</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Matchups &amp; Initial Hygiene (<code>prep.R</code>)</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
-<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
-<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#four-initial-hygiene-filters"><i class="fa fa-check"></i><b>2.1</b> Four Initial Hygiene Filters</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#spatial-seasonal-footprint-of-matchups"><i class="fa fa-check"></i><b>2.2</b> Spatial &amp; Seasonal Footprint of Matchups</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-covariance-structure"><i class="fa fa-check"></i><b>2.3</b> Log-Log Covariance Structure</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Separating Non-Algal Particles (NAP) from Bulk TSS</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
-<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-biomass-formulation-method-tiers"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to Biomass Formulation &amp; Method Tiers</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
-<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Plausibility Screen (<code>clean_wqp_discordance()</code>)</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-sample-size-rule-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Sample-Size Rule (<code>zone_min = 100</code>)</a></li>
 </ul></li>
 <li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
 <li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
 <li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
-<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
-<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-published-bio-optical-benchmarks"><i class="fa fa-check"></i><b>6.3</b> Comparison with Published Bio-Optical Benchmarks</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Coefficients, Standard Errors, and Significance</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
-</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a></li>
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
-<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
-<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
-<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
 <li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
 <li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
-<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
-<ul>
-<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
-</ul></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
 <ul>
@@ -243,49 +223,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="figures" class="section level1 hasAnchor" number="9">
 <h1><span class="header-section-number">Section 9</span> Manuscript Figures Gallery (Figs. 1–4)<a href="figures.html#figures" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Every manuscript figure is assembled programmatically in R (<code>patchwork</code> + <code>R/ternary.R</code> + <code>R/figures.R</code>) and written to <code>figs/</code> as 300 dpi PNG and vector PDF files.</p>
+<p>All manuscript figures are built directly from the harmonized dataset in <code>R/figures.R</code> and <code>R/ternary.R</code> and saved to <code>figs/</code> as 300 dpi PNG and vector PDF files.</p>
 <hr />
 <div id="fig1" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> Figure 1: Continental Data Distributions and Ecoregion Coverage<a href="figures.html#fig1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="figures.html#cb33-1" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">fig1</span>(fd, eco)</span>
-<span id="cb33-2"><a href="figures.html#cb33-2" tabindex="-1"></a><span class="fu">save_fig</span>(p1, <span class="st">&#39;fig1_distributions_map&#39;</span>, <span class="dv">11</span>, <span class="fl">9.5</span>)</span>
-<span id="cb33-3"><a href="figures.html#cb33-3" tabindex="-1"></a>p1</span></code></pre></div>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig1-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
 <ul>
-<li><strong>(a)</strong> Kernel density distributions of <code>Chl a</code> (<span class="math inline">\(\mu\text{g L}^{-1}\)</span>), <code>DOC</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>), <code>Secchi</code> (<span class="math inline">\(\text{m}\)</span>), and <code>TSS</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>) by water-body type (<code>Estuary</code>, <code>Lake</code>, <code>Stream</code>) across all <strong>478,929</strong> application observations, contrasting samples with measured Secchi depth (<code>Measured</code>, solid lines; <span class="math inline">\(n = 275,287\)</span>) against samples where Secchi depth is modeled by Model 7 (<code>Modeled</code>, dashed lines; <span class="math inline">\(n = 203,642\)</span>) using the consistent pure-water offset <span class="math inline">\(k_w = 0.04776\text{ m}^{-1}\)</span>.</li>
-<li><strong>(b)</strong> Spatial density of simultaneous observations aggregated to <span class="math inline">\(0.1^\circ \times 0.1^\circ\)</span> grid cells over U.S. EPA Level III ecoregions.</li>
+<li><strong>(a)</strong> Probability density distributions of <code>Chl a</code> (<span class="math inline">\(\mu\text{g L}^{-1}\)</span>), <code>DOC</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>), <code>Secchi</code> (<span class="math inline">\(\text{m}\)</span>), and <code>TSS</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>) by water-body type (<code>Estuary</code>, <code>Lake</code>, <code>Stream</code>) across all <strong>478,929</strong> application matchups, comparing samples with measured Secchi depth (<code>Measured</code>, solid lines; <span class="math inline">\(n = 275,287\)</span>) against samples where Secchi depth is modeled (<code>Modeled</code>, dashed lines; <span class="math inline">\(n = 203,642\)</span>).</li>
+<li><strong>(b)</strong> Spatial density of matchups aggregated to <span class="math inline">\(0.1^\circ \times 0.1^\circ\)</span> cells over U.S. EPA Level III ecoregions.</li>
 </ul>
 <hr />
 </div>
 <div id="fig2" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Figure 2: Continental Ternary Partitioning by Water-Body Type<a href="figures.html#fig2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="figures.html#cb34-1" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">fig2</span>(fd)</span>
-<span id="cb34-2"><a href="figures.html#cb34-2" tabindex="-1"></a><span class="fu">save_fig</span>(p2, <span class="st">&#39;fig2_ternary_by_type&#39;</span>, <span class="dv">9</span>, <span class="fl">8.4</span>)</span>
-<span id="cb34-3"><a href="figures.html#cb34-3" tabindex="-1"></a>p2</span></code></pre></div>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig2-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
-<p>Individual points represent per-sample non-water light-attenuation fractions <span class="math inline">\((f_{\text{Chl }a}, f_{\text{DOC}}, f_{\text{NAP}})\)</span> predicted by Model 7 across <strong>(a)</strong> all water types (<span class="math inline">\(n = 478,929\)</span>), <strong>(b)</strong> streams (<span class="math inline">\(n = 318,091\)</span>), <strong>(c)</strong> lakes (<span class="math inline">\(n = 82,517\)</span>), and <strong>(d)</strong> estuaries (<span class="math inline">\(n = 78,321\)</span>). Blue circles mark arithmetic mean compositions; red and black polygons enclose the exact simplex regions within <span class="math inline">\(\pm 1\text{ SD}\)</span> and <span class="math inline">\(\pm 2\text{ SD}\)</span> of each group mean (<code>tern_sd_region()</code>).</p>
+<p>Each point represents a sample’s non-water light-attenuation fractions <span class="math inline">\((f_{\text{Chl }a}, f_{\text{DOC}}, f_{\text{NAP}})\)</span> from Model 7 across <strong>(a)</strong> all waters (<span class="math inline">\(n = 478,929\)</span>), <strong>(b)</strong> streams (<span class="math inline">\(n = 318,091\)</span>), <strong>(c)</strong> lakes (<span class="math inline">\(n = 82,517\)</span>), and <strong>(d)</strong> estuaries (<span class="math inline">\(n = 78,321\)</span>). Blue circles mark arithmetic means; red and black polygons enclose <span class="math inline">\(\pm 1\text{ SD}\)</span> and <span class="math inline">\(\pm 2\text{ SD}\)</span> around each mean (<code>tern_sd_region()</code>).</p>
 <hr />
 </div>
 <div id="fig3" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay<a href="figures.html#fig3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="figures.html#cb35-1" tabindex="-1"></a>f3 <span class="ot">&lt;-</span> <span class="fu">get_fig3_data</span>()</span>
-<span id="cb35-2"><a href="figures.html#cb35-2" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">fig3</span>(f3)</span>
-<span id="cb35-3"><a href="figures.html#cb35-3" tabindex="-1"></a><span class="fu">save_fig</span>(p3, <span class="st">&#39;fig3_delaware&#39;</span>, <span class="dv">13</span>, <span class="fl">5.6</span>)</span>
-<span id="cb35-4"><a href="figures.html#cb35-4" tabindex="-1"></a>p3</span></code></pre></div>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig3-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
-<p>Longitudinal shift in light-attenuation partitioning along <strong>231 km</strong> of the Delaware River and Delaware Bay across <strong>22</strong> Delaware River Basin Commission (<code>31DELRBC_WQX</code>) long-term monitoring stations with <span class="math inline">\(\ge 8\)</span> distinct years of data (2005–2017). Because Model 7 assigns attenuation coefficients by Level III ecoregion (<code>8.5.1</code> Middle Atlantic Coastal Plain for Sites 1–5; <code>8.5.4</code> Atlantic Coastal Pine Barrens at the bay mouth for Site 6) without imposing an artificial categorical break between <code>Stream</code> and <code>Estuary</code>, it seamlessly resolves the continuum from <strong>DOC dominance</strong> in the tidal freshwater river at Trenton (<code>Site 1, 0 km</code>) through increasing <strong>NAP dominance</strong> along the upper and lower tidal river (<code>Sites 2–4, 41–123 km</code>, classified as <code>Stream</code> in WQP) to <strong>DOC–NAP co-dominance and interannual switching</strong> driven by tidal and wind resuspension in Delaware Bay (<code>Sites 5–6, 180–231 km</code>, classified as <code>Estuary</code> in WQP).</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="figures.html#cb36-1" tabindex="-1"></a>f3<span class="sc">$</span>sites <span class="sc">%&gt;%</span> <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> <span class="fu">inner_join</span>(DELAWARE_EXEMPLARS, <span class="at">by =</span> <span class="st">&#39;SiteID&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-2"><a href="figures.html#cb36-2" tabindex="-1"></a>  <span class="fu">left_join</span>(f3<span class="sc">$</span>year_avg <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(SiteID) <span class="sc">%&gt;%</span></span>
-<span id="cb36-3"><a href="figures.html#cb36-3" tabindex="-1"></a>              <span class="fu">summarize</span>(<span class="at">years =</span> <span class="fu">paste</span>(<span class="fu">min</span>(year), <span class="fu">max</span>(year), <span class="at">sep =</span> <span class="st">&#39;–&#39;</span>),</span>
-<span id="cb36-4"><a href="figures.html#cb36-4" tabindex="-1"></a>                        <span class="at">n_years =</span> <span class="fu">n</span>(),</span>
-<span id="cb36-5"><a href="figures.html#cb36-5" tabindex="-1"></a>                        <span class="at">mean_DOC =</span> <span class="fu">percent</span>(<span class="fu">mean</span>(doc_kd), <span class="fl">0.1</span>),</span>
-<span id="cb36-6"><a href="figures.html#cb36-6" tabindex="-1"></a>                        <span class="at">mean_NAP =</span> <span class="fu">percent</span>(<span class="fu">mean</span>(tss_kd), <span class="fl">0.1</span>),</span>
-<span id="cb36-7"><a href="figures.html#cb36-7" tabindex="-1"></a>                        <span class="at">mean_Chl =</span> <span class="fu">percent</span>(<span class="fu">mean</span>(chl_kd), <span class="fl">0.1</span>)),</span>
-<span id="cb36-8"><a href="figures.html#cb36-8" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">&#39;SiteID&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-9"><a href="figures.html#cb36-9" tabindex="-1"></a>  <span class="fu">select</span>(num, SiteID, label, type, dist_trenton, years, n_years, mean_DOC, mean_NAP, mean_Chl) <span class="sc">%&gt;%</span></span>
-<span id="cb36-10"><a href="figures.html#cb36-10" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">0</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Panel #&#39;</span>, <span class="st">&#39;WQP SiteID&#39;</span>, <span class="st">&#39;Panel Title&#39;</span>, <span class="st">&#39;WQP Type&#39;</span>, <span class="st">&#39;Distance from Trenton (km)&#39;</span>, <span class="st">&#39;Years Sampled&#39;</span>, <span class="st">&#39;Distinct Years&#39;</span>, <span class="st">&#39;Mean DOC %&#39;</span>, <span class="st">&#39;Mean NAP %&#39;</span>, <span class="st">&#39;Mean Chl a %&#39;</span>),</span>
-<span id="cb36-11"><a href="figures.html#cb36-11" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">&#39;Long-term Delaware River and Bay monitoring stations highlighted in Panels 1–6 of Figure 3.&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb36-12"><a href="figures.html#cb36-12" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>Longitudinal shift in light-attenuation partitioning along <strong>231 km</strong> of the Delaware River and Bay across <strong>22</strong> long-term monitoring stations (<code>31DELRBC_WQX</code>, <span class="math inline">\(\ge 8\)</span> distinct years during 2005–2017). Because Model 7 assigns attenuation slopes by Level III ecoregion without imposing a categorical break between <code>Stream</code> and <code>Estuary</code>, it captures the transition from <strong>DOC dominance</strong> at the head of tide in Trenton (<code>Site 1, 0 km</code>) through increasing <strong>NAP dominance</strong> down the tidal river (<code>Sites 2–4, 41–123 km</code>) to <strong>DOC–NAP co-dominance and interannual switching</strong> driven by wind and tidal resuspension in Delaware Bay (<code>Sites 5–6, 180–231 km</code>).</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:fig3-table">Table 9.1: </span><span id="tab:fig3-table">Table 9.2: </span>Long-term Delaware River and Bay monitoring stations highlighted in Panels 1–6 of Figure 3.
@@ -535,26 +493,8 @@ Estuary
 </div>
 <div id="fig4" class="section level2 hasAnchor" number="9.4">
 <h2><span class="header-section-number">9.4</span> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes<a href="figures.html#fig4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="figures.html#cb37-1" tabindex="-1"></a>areas <span class="ot">&lt;-</span> <span class="fu">get_fig4_areas</span>()</span>
-<span id="cb37-2"><a href="figures.html#cb37-2" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">fig4</span>(fd, areas)</span>
-<span id="cb37-3"><a href="figures.html#cb37-3" tabindex="-1"></a><span class="fu">save_fig</span>(p4, <span class="st">&#39;fig4_area_cdf&#39;</span>, <span class="fl">9.5</span>, <span class="fl">6.8</span>)</span>
-<span id="cb37-4"><a href="figures.html#cb37-4" tabindex="-1"></a>p4</span></code></pre></div>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig4-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
-<p>For each monitoring station with <span class="math inline">\(&gt; 7\)</span> simultaneous observations (<strong>9,128 sites</strong> across the conterminous U.S.), the <strong>ternary area fraction</strong> (<code>tern_area_fraction()</code>) is the exact area of its <span class="math inline">\(\pm 2\text{ SD}\)</span> simplex polygon (clipped to <span class="math inline">\([0, 1]^3\)</span> via Sutherland–Hodgman half-plane clipping) divided by the total area of the equilateral unit-side triangle (<span class="math inline">\(\sqrt{3}/4 \approx 0.4330\)</span>). Empirical cumulative distribution functions (CDFs) by water-body type demonstrate that streams (median <strong>10.2%</strong>) and estuaries (median <strong>10.9%</strong>) are more temporally concentrated in ternary space (<em>lucistatic</em>) than lakes (median <strong>15.7%</strong>, <em>lucidynamic</em>). Fewer than <strong>5%</strong> of lakes (<code>4.5%</code>) and fewer than <strong>2%</strong> of streams (<code>1.6%</code>) and estuaries (<code>0.4%</code>) occupy <span class="math inline">\(\ge 50\%\)</span> of ternary space.</p>
-<div id="fig4-sites" class="section level3 hasAnchor" number="9.4.1">
-<h3><span class="header-section-number">9.4.1</span> Summary of Figure 4 CDFs and Exemplar Stations<a href="figures.html#fig4-sites" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="figures.html#cb38-1" tabindex="-1"></a>areas <span class="sc">%&gt;%</span></span>
-<span id="cb38-2"><a href="figures.html#cb38-2" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Water-Body Type</span><span class="st">`</span> <span class="ot">=</span> type) <span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="figures.html#cb38-3" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb38-4"><a href="figures.html#cb38-4" tabindex="-1"></a>    <span class="st">`</span><span class="at">Sites (&gt; 7 obs)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">fmt_n</span>(<span class="fu">n</span>()),</span>
-<span id="cb38-5"><a href="figures.html#cb38-5" tabindex="-1"></a>    <span class="st">`</span><span class="at">25th Percentile</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">quantile</span>(area, <span class="fl">0.25</span>), <span class="fl">0.1</span>),</span>
-<span id="cb38-6"><a href="figures.html#cb38-6" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median Area Fraction</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">median</span>(area), <span class="fl">0.1</span>),</span>
-<span id="cb38-7"><a href="figures.html#cb38-7" tabindex="-1"></a>    <span class="st">`</span><span class="at">Mean Area Fraction</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">mean</span>(area), <span class="fl">0.1</span>),</span>
-<span id="cb38-8"><a href="figures.html#cb38-8" tabindex="-1"></a>    <span class="st">`</span><span class="at">75th Percentile</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">quantile</span>(area, <span class="fl">0.75</span>), <span class="fl">0.1</span>),</span>
-<span id="cb38-9"><a href="figures.html#cb38-9" tabindex="-1"></a>    <span class="st">`</span><span class="at">% Sites &gt;= 50% Area</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">mean</span>(area <span class="sc">&gt;=</span> <span class="fl">0.50</span>), <span class="fl">0.1</span>)</span>
-<span id="cb38-10"><a href="figures.html#cb38-10" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb38-11"><a href="figures.html#cb38-11" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&#39;Distribution of site-level ternary area fractions across water-body types (Figure 4 CDFs).&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-12"><a href="figures.html#cb38-12" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>))</span></code></pre></div>
+<p>For each station with <span class="math inline">\(&gt; 7\)</span> simultaneous matchups (<strong>9,128 sites</strong> across the U.S.), the <strong>ternary area fraction</strong> (<code>tern_area_fraction()</code>) measures the share of the equilateral ternary triangle enclosed within <span class="math inline">\(\pm 2\text{ SD}\)</span> of that site’s mean composition. Streams (median <strong>10.2%</strong>) and estuaries (median <strong>10.9%</strong>) are more temporally compact (<em>lucistatic</em>) than lakes (median <strong>15.7%</strong>, <em>lucidynamic</em>). Fewer than <strong>5%</strong> of lakes (<code>4.2%</code>), <strong>3%</strong> of streams (<code>2.4%</code>), and <strong>1%</strong> of estuaries (<code>0.8%</code>) span <span class="math inline">\(\ge 50\%\)</span> of ternary space.</p>
 <table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:fig4-medians">Table 9.3: </span><span id="tab:fig4-medians">Table 9.4: </span>Distribution of site-level ternary area fractions across water-body types (Figure 4 CDFs).
@@ -656,21 +596,6 @@ Stream
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="figures.html#cb39-1" tabindex="-1"></a>FIG4_SITES <span class="sc">%&gt;%</span></span>
-<span id="cb39-2"><a href="figures.html#cb39-2" tabindex="-1"></a>  <span class="fu">left_join</span>(areas, <span class="at">by =</span> <span class="st">&#39;SiteID&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb39-3"><a href="figures.html#cb39-3" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb39-4"><a href="figures.html#cb39-4" tabindex="-1"></a>    <span class="at">Inset =</span> inset,</span>
-<span id="cb39-5"><a href="figures.html#cb39-5" tabindex="-1"></a>    <span class="st">`</span><span class="at">CDF Label</span><span class="st">`</span> <span class="ot">=</span> label,</span>
-<span id="cb39-6"><a href="figures.html#cb39-6" tabindex="-1"></a>    <span class="st">`</span><span class="at">WQP SiteID</span><span class="st">`</span> <span class="ot">=</span> SiteID,</span>
-<span id="cb39-7"><a href="figures.html#cb39-7" tabindex="-1"></a>    <span class="st">`</span><span class="at">Station Name</span><span class="st">`</span> <span class="ot">=</span> site_name,</span>
-<span id="cb39-8"><a href="figures.html#cb39-8" tabindex="-1"></a>    <span class="st">`</span><span class="at">Water Type</span><span class="st">`</span> <span class="ot">=</span> type,</span>
-<span id="cb39-9"><a href="figures.html#cb39-9" tabindex="-1"></a>    <span class="st">`</span><span class="at">Observations (n)</span><span class="st">`</span> <span class="ot">=</span> n,</span>
-<span id="cb39-10"><a href="figures.html#cb39-10" tabindex="-1"></a>    <span class="st">`</span><span class="at">Ternary Area Fraction</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(area, <span class="fl">0.1</span>),</span>
-<span id="cb39-11"><a href="figures.html#cb39-11" tabindex="-1"></a>    <span class="st">`</span><span class="at">CDF Percentile</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(<span class="fu">map2_dbl</span>(type, area, <span class="sc">~</span> <span class="fu">ecdf</span>(areas<span class="sc">$</span>area[areas<span class="sc">$</span>type <span class="sc">==</span> .x])(.y)), <span class="fl">0.1</span>),</span>
-<span id="cb39-12"><a href="figures.html#cb39-12" tabindex="-1"></a>    <span class="st">`</span><span class="at">Optical Regime</span><span class="st">`</span> <span class="ot">=</span> role</span>
-<span id="cb39-13"><a href="figures.html#cb39-13" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb39-14"><a href="figures.html#cb39-14" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&#39;The five exemplar monitoring stations highlighted on the CDF curves and Insets 1–3 of Figure 4.&#39;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb39-15"><a href="figures.html#cb39-15" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">font_size =</span> <span class="dv">12</span>, <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <table class="table table-condensed table-striped" style="font-size: 12px; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 <span id="tab:fig4-sites">Table 9.5: </span><span id="tab:fig4-sites">Table 9.6: </span>The five exemplar monitoring stations highlighted on the CDF curves and Insets 1–3 of Figure 4.
@@ -855,7 +780,6 @@ seasonal cycle
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
             </section>

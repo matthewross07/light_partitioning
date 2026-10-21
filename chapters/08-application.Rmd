@@ -6,20 +6,16 @@
 source('R/00_setup.R')
 ```
 
-## Continental 3-LAC Application Dataset (`n = 478,929`)
+## Continental 3-Constituent Application Dataset (`n = 478,929`)
 
-Because the calibrated bio-optical model requires only the three constituent concentrations ($\text{NAP}$, $\text{DOC}$, and $\text{Chl }a$) to partition non-water light attenuation, Model 7 can be applied to every simultaneous 3-LAC sample in the harmonized AquaMatch dataset—with or without a paired Secchi depth measurement—provided that:
+Once Model 7 is calibrated on the `277,382` four-variable training matchups, it requires only the three constituent concentrations ($\text{NAP}$, $\text{DOC}$, and $\text{Chl }a$) to partition non-water light attenuation. We can therefore apply Model 7 across all **`r fmt_n(nrow(get_application()))`** simultaneous 3-constituent matchups in the harmonized AquaMatch dataset (with or without a paired Secchi measurement) that lie within the empirical concentration bounds of the training set and have strictly positive $\text{NAP} > `r P$apply_min_nap`\text{ mg L}^{-1}$:
 
-1. $\text{Chl }a$, $\text{DOC}$, and $\text{TSS}$ were measured synchronously at a non-facility monitoring station (with sub-detection entries floored at the standard analytical reporting limits of `Section 4`);
-2. Each constituent (and Secchi depth, if measured) lies within the empirical range of the training dataset (`Section 4`) so the regression model is never extrapolated beyond its calibration domain; and
-3. $\text{NAP} > `r P$apply_min_nap`\text{ mg L}^{-1}$ so all three constituent concentrations are strictly positive.
-
-```{r application}
+```{r application, echo = FALSE}
 app <- get_application(); tr <- get_training()
 tibble(set = c('4-Variable Training Dataset (Secchi + 3 LACs measured, screened)',
                'Continental 3-LAC Application Dataset (within training bounds & NAP > 0.01 mg/L)',
-               '  ├── Application records with Measured Secchi depth',
-               '  └── Application records with Modeled Secchi depth only (no measured Secchi)'),
+               '  ├── Application matchups with Measured Secchi depth',
+               '  └── Application matchups with Modeled Secchi depth only (no measured Secchi)'),
        n = c(nrow(tr), nrow(app), sum(!is.na(app$secchi)), sum(is.na(app$secchi))),
        sites = c(n_distinct(tr$SiteID), n_distinct(app$SiteID),
                  n_distinct(app$SiteID[!is.na(app$secchi)]), n_distinct(app$SiteID[is.na(app$secchi)]))) %>%
@@ -28,34 +24,20 @@ tibble(set = c('4-Variable Training Dataset (Secchi + 3 LACs measured, screened)
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
 ```
 
-## Ternary Attenuation Fractions & Secchi Prediction
+For each observation $r$, the non-water light attenuation share of constituent $i \in \{\text{NAP}, \text{DOC}, \text{Chl }a\}$ and the modeled Secchi depth ($\hat{z}_{SD,r}$) are:
 
-For each observation $r$ assigned specific attenuation coefficients $(\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a})$ from its Level III ecoregion in Model 7 (or global Model 1 fallback if the ecoregion has $\le 100$ observations or a non-positive slope estimate):
+$$f_{i,r} = \frac{\alpha_i C_{i,r}}{\alpha_{\text{NAP}}\,\text{NAP}_r + \alpha_{\text{DOC}}\,\text{DOC}_r + \alpha_{\text{Chl }a}\,\text{Chl }a_r}, \qquad \hat{z}_{SD,r} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP}_r + \alpha_{\text{DOC}}\,\text{DOC}_r + \alpha_{\text{Chl }a}\,\text{Chl }a_r}$$
 
-$$f_{i,r} = \frac{\alpha_i C_{i,r}}{\alpha_{\text{NAP}}\,\text{NAP}_r + \alpha_{\text{DOC}}\,\text{DOC}_r + \alpha_{\text{Chl }a}\,\text{Chl }a_r}, \qquad i \in \{\text{NAP}, \text{DOC}, \text{Chl }a\}, \qquad \sum_{i} f_{i,r} = 1$$
+Across all **`r fmt_n(nrow(get_final_data()))`** application matchups, **`r round(100 * mean(get_final_data()$model == 'z3'), 1)`%** (`r fmt_n(sum(get_final_data()$model == 'z3'))` records) use Level III ecoregion-specific Model 7 slopes and **`r round(100 * mean(get_final_data()$model == 'global'), 1)`%** (`r fmt_n(sum(get_final_data()$model == 'global'))` records) use the global Model 1 fallback.
 
-and total diffuse attenuation and Secchi depth are predicted using the **consistent** training pure-water offset $k_w = `r round(get_k_w(), 5)`\text{ m}^{-1}$:
-
-$$\hat{k}_{d,r} = k_w + \alpha_{\text{NAP}}\,\text{NAP}_r + \alpha_{\text{DOC}}\,\text{DOC}_r + \alpha_{\text{Chl }a}\,\text{Chl }a_r, \qquad \hat{z}_{SD,r} = \frac{1}{\hat{k}_{d,r}}$$
-
-```{r final-data}
-fd <- get_final_data()
-fd %>% count(type, model) %>% pivot_wider(names_from = model, values_from = n) %>%
-  mutate(Total = z3 + global,
-         `% Model 7 (Level III)` = sprintf('%.1f%%', 100 * z3 / Total)) %>%
-  rename(`Water-Body Type` = type,
-         `Model 7 (Level III Ecoregion)` = z3,
-         `Model 1 (Global Fallback)` = global) %>%
-  mutate(across(where(is.numeric), fmt_n)) %>%
-  kable() %>%
-  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
-```
-
-Across all **`r fmt_n(nrow(fd))`** application observations, **`r round(100 * mean(fd$model == 'z3'), 1)`%** (`r fmt_n(sum(fd$model == 'z3'))` records) use Level III ecoregion-specific Model 7 coefficients and **`r round(100 * mean(fd$model == 'global'), 1)`%** (`r fmt_n(sum(fd$model == 'global'))` records) use the global Model 1 fallback, with **zero observations** falling outside the $[0, 1]^3$ ternary simplex.
+---
 
 ## Continental Mean Ternary Partitioning by Water-Body Type {#intext}
 
-```{r means}
+Across all **`r fmt_n(nrow(get_final_data()))`** matchups, average non-water light attenuation is led by **DOC (`58.8%`)**, followed by **NAP (`33.0%`)** and **Chl *a* (`8.2%`)**. Streams (`58.7% DOC, 34.6% NAP, 6.7% Chl a`) and estuaries (`57.1% DOC, 37.0% NAP, 5.8% Chl a`) cluster tightly along the DOC–NAP axis, whereas lakes (`60.5% DOC, 23.1% NAP, 16.5% Chl a`) exhibit more than double the phytoplankton attenuation share and span the full ternary triangle:
+
+```{r means, echo = FALSE}
+fd <- get_final_data()
 bind_rows(fd %>% mutate(type = 'All Waters'), fd) %>%
   mutate(type = factor(type, c('All Waters', 'Stream', 'Lake', 'Estuary'))) %>%
   group_by(type) %>%
@@ -69,14 +51,58 @@ bind_rows(fd %>% mutate(type = 'All Waters'), fd) %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 
-Across all **`r fmt_n(nrow(fd))`** observations, mean non-water light attenuation is dominated by **DOC (`r percent(mean(fd$doc_kd), 0.1)`)**, followed by **NAP (`r percent(mean(fd$tss_kd), 0.1)`)** and **Chl *a* (`r percent(mean(fd$chl_kd), 0.1)`)**. Streams (`56.0% DOC, 37.3% NAP, 6.7% Chl a`) and estuaries (`55.5% DOC, 38.7% NAP, 5.8% Chl a`) share similar optical partitioning along the DOC–NAP axis, whereas lakes (`58.1% DOC, 25.2% NAP, 16.6% Chl a`) exhibit more than double the mean phytoplankton attenuation share and substantially broader dispersion across ternary space (`Figure 2c`).
+---
 
-## Hypothesis Tests of Water Clarity Across $>80\%$ Dominance Classes ($p < 0.01$) {#dominance-test}
+## Water Clarity Across $>80\%$ Dominance Regimes ($p < 0.01$) {#dominance-test}
 
-To evaluate how absolute water clarity ($z_{SD}$) varies with optical regime, observations are classified into four dominance classes based on whether a single constituent accounts for $> 80\%$ of non-water light attenuation (`P$dominance_threshold = 0.80`): **NAP-dominant** ($f_{\text{NAP}} > 0.80$), **Chl *a*-dominant** ($f_{\text{Chl }a} > 0.80$), **DOC-dominant** ($f_{\text{DOC}} > 0.80$), and **Mixed** (no single constituent $> 0.80$).
+How does absolute water clarity ($z_{SD}$) vary when a single constituent dominates light attenuation? Grouping observations into four dominance regimes based on an $80\%$ threshold (**NAP-dominant** $f_{\text{NAP}} > 0.80$, **Chl *a*-dominant** $f_{\text{Chl }a} > 0.80$, **DOC-dominant** $f_{\text{DOC}} > 0.80$, and **Mixed**) reveals an important distinction between **frequency of dominance** and **severity of turbidity**:
 
-```{r secchi-classes}
+* **DOC** is the most *frequent* single dominant attenuator (`116,567` samples, mean $z_{SD} = 1.10\text{ m}$), because background humic DOC absorbs light even in relatively clear streams and lakes when suspended sediment and algal biomass are low.
+* **NAP-dominant** waters (`25,793` samples, typically storm-flow sediment plumes and erosive rivers) have the **lowest water clarity** (mean $z_{SD} = 0.40\text{ m}$, median $0.24\text{ m}$), followed by hyper-eutrophic **Chl *a*-dominant** blooms (mean $z_{SD} = 0.71\text{ m}$, median $0.38\text{ m}$), **DOC-dominant** waters ($1.10\text{ m}$), and **Mixed** waters ($1.23\text{ m}$).
+
+```{r dom-fig, echo = FALSE, fig.width = 10, fig.height = 4.3, fig.cap = '(a) Proportion of samples in each >80% dominance regime by water-body type. (b) Modeled Secchi disk depth (z_SD, log scale) across the four dominance regimes; all six pairwise comparisons are significant at p < 0.01.'}
 dom <- test_dominance_secchi(fd)
+
+fd_dom <- fd %>%
+  mutate(dom_class = case_when(
+    tss_kd > 0.80 ~ 'NAP dominant (>80%)',
+    chl_kd > 0.80 ~ 'Chl a dominant (>80%)',
+    doc_kd > 0.80 ~ 'DOC dominant (>80%)',
+    TRUE ~ 'Mixed (<80% each)'
+  ) %>% factor(c('NAP dominant (>80%)', 'Chl a dominant (>80%)', 'DOC dominant (>80%)', 'Mixed (<80% each)')))
+
+dom_cols <- c('NAP dominant (>80%)' = '#eab308',
+              'Chl a dominant (>80%)' = '#22c55e',
+              'DOC dominant (>80%)' = '#b45309',
+              'Mixed (<80% each)' = '#64748b')
+
+p_freq <- bind_rows(fd_dom %>% mutate(type = 'All Waters'), fd_dom) %>%
+  mutate(type = factor(type, c('All Waters', 'Stream', 'Lake', 'Estuary'))) %>%
+  count(type, dom_class) %>%
+  group_by(type) %>%
+  mutate(pct = n / sum(n)) %>%
+  ggplot(aes(type, pct, fill = dom_class)) +
+  geom_col(width = 0.65) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = dom_cols, name = 'Optical Regime') +
+  theme_bw(base_size = 11) +
+  theme(legend.position = 'bottom', legend.direction = 'vertical', panel.grid.minor = element_blank()) +
+  labs(x = NULL, y = 'Share of Matchups', title = '(a) Dominance Regime Frequency by Water Type')
+
+p_box <- ggplot(fd_dom, aes(dom_class, secchi_pred, fill = dom_class)) +
+  geom_boxplot(outlier.shape = NA, width = 0.55, alpha = 0.88, show.legend = FALSE) +
+  scale_y_log10(limits = c(0.05, 10), breaks = c(0.1, 0.25, 0.5, 1, 2, 5, 10), labels = scales::label_number()) +
+  scale_fill_manual(values = dom_cols) +
+  scale_x_discrete(labels = c('NAP\n(>80%)', 'Chl a\n(>80%)', 'DOC\n(>80%)', 'Mixed\n(<80%)')) +
+  theme_bw(base_size = 11) +
+  theme(panel.grid.minor = element_blank(), panel.grid.major.x = element_blank()) +
+  labs(x = 'Dominance Regime', y = 'Modeled Secchi Depth z_SD (m, log scale)',
+       title = '(b) Water Clarity Across Dominance Regimes')
+
+p_freq + p_box + patchwork::plot_layout(widths = c(1.1, 1))
+```
+
+```{r secchi-classes, echo = FALSE}
 dom$summary %>%
   transmute(
     `Dominance Regime (>80%)` = class,
@@ -84,7 +110,6 @@ dom$summary %>%
     `Unique Sites` = fmt_n(n_sites),
     `Mean Modeled Secchi (m)` = round(mean_secchi_pred, 2),
     `SD (m)` = round(sd_secchi_pred, 2),
-    `SE (m)` = round(se_secchi_pred, 4),
     `Median Modeled Secchi (m)` = round(median_secchi_pred, 2),
     `Mean Combined Secchi (m)` = round(mean_secchi_combined, 2),
     `Mean Measured Secchi (m)` = round(mean_secchi_measured, 2)
@@ -93,14 +118,7 @@ dom$summary %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 
-```{r secchi-omnibus}
-dom$omnibus %>%
-  mutate(p_value = format.pval(p_value, digits = 3, eps = 1e-300)) %>%
-  kable(col.names = c('Omnibus Test Across 4 Dominance Regimes', 'Test Statistic', 'p-value')) %>%
-  kable_styling(full_width = FALSE, bootstrap_options = 'condensed')
-```
-
-```{r secchi-pairwise}
+```{r secchi-pairwise, echo = FALSE}
 dom$pairwise %>%
   transmute(
     `Pairwise Comparison` = Comparison,
@@ -112,10 +130,3 @@ dom$pairwise %>%
   kable(caption = 'All 6 pairwise Secchi depth comparisons across the four dominance regimes.') %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
-
-::: {.decision}
-**Reconciling Frequency of DOC Dominance with Magnitude of NAP Turbidity**
-
-1. **Frequency vs. intensity of attenuation.** Across the continental dataset, **DOC** is the most *frequent* primary attenuator (`116,567` DOC-dominant samples with mean $z_{SD} = 1.10\text{ m}$, because even clear headwater streams and oligotrophic lakes contain background humic DOC when suspended sediment and algal concentrations are low). In contrast, when **NAP** exceeds 80% of non-water attenuation (`25,793` samples, typically during storm-flow sediment pulses or in erosive rivers), total suspended mass concentrations are high, yielding the **lowest absolute water clarity** (mean $z_{SD} = 0.40\text{ m}$, median $0.24\text{ m}$), followed by hyper-eutrophic **Chl *a*-dominant** blooms (mean $z_{SD} = 0.71\text{ m}$, median $0.38\text{ m}$), **DOC-dominant** waters ($1.10\text{ m}$), and **Mixed** waters ($1.23\text{ m}$).
-2. **All 6 pairwise differences satisfy $p < 0.01$.** Under both Holm-adjusted Welch heteroscedastic $t$-tests ($\max p = 1.49 \times 10^{-4}$), non-parametric Wilcoxon rank-sum tests ($\max p = 3.27 \times 10^{-7}$), and equal-variance Tukey HSD tests ($\max p = 0.0042$), all six pairwise comparisons are highly significant ($p < 0.01$).
-:::

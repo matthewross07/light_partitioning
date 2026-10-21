@@ -9,29 +9,64 @@ dir.create(file.path(PATH$figs, 'tables'), showWarnings = FALSE)
 
 ## Additive Beer–Lambert Model Formulation
 
-All ten candidate models estimate specific light-attenuation coefficients ($\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}$) via ordinary least squares (OLS) with a fixed pure-water attenuation offset $k_w = `r round(get_k_w(), 5)`\text{ m}^{-1}$ and **no intercept**:
+We test ten candidate linear models that estimate specific light-attenuation coefficients ($\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}$) via ordinary least squares (OLS) with a fixed pure-water attenuation offset $k_w = `r round(get_k_w(), 5)`\text{ m}^{-1}$ and **no intercept**:
 
 $$k_d - k_w = \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a, \qquad z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a}$$
 
-where $g$ indexes the stratification group: continental USA (Model 1), water-body type alone (Model 2), EPA Ecoregion Levels I–IV without water-type separation (Models 3, 5, 7, 9), or EPA Ecoregion Levels I–IV crossed with water-body type (Models 4, 6, 8, 10). Because interaction-only terms with no shared main effects form a strictly block-diagonal design matrix, per-group QR decomposition (`lm.fit()`) is mathematically identical to a joint `glm()` fit (to machine precision $\sim 10^{-15}$) while executing orders of magnitude faster. Every modeled group requires $> `r P$zone_min`$ training observations.
+Here $g$ indexes the stratification group: continental USA (Model 1), water-body type alone (Model 2), EPA Ecoregion Levels I–IV without water-type separation (Models 3, 5, 7, 9), or EPA Ecoregion Levels I–IV crossed with water-body type (Models 4, 6, 8, 10). Every modeled group requires $> `r P$zone_min`$ training matchups.
 
-```{r model-key}
-MODEL_KEY %>% mutate(by_type = ifelse(by_type, 'Yes', 'No')) %>%
-  kable(col.names = c('Model', 'Ecoregion Level', 'Stratified by Water Type?', 'Dataset Key', 'Spatial / Typological Scope')) %>%
-  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
-```
-
-```{r fit}
+```{r fit, include = FALSE}
 models <- get_models()
 perf   <- model_performance(models, get_training())
 write_csv(perf, file.path(PATH$figs, 'tables/table1_aquamatch.csv'))
+s1     <- table_s1(models)
+write_csv(s1, file.path(PATH$figs, 'tables/tableS1_coefficients_aquamatch.csv'))
+```
+
+```{r models-fig, echo = FALSE, fig.width = 10, fig.height = 4.3, fig.cap = '(a) Explained variance (R²) across Models 1–10, comparing ecoregion-only models (circles) against ecoregion × water-type models (triangles). (b) Distribution of fitted specific attenuation coefficients across the 37 strictly positive Level III ecoregions in Model 7 compared with the continental global fit (Model 1, vertical dashed lines).'}
+p_r2 <- perf %>%
+  mutate(
+    level_f = factor(level, c('USA', 'Level 1', 'Level 2', 'Level 3', 'Level 4')),
+    type_lbl = ifelse(by_type, 'By Water Type (M2, M4, M6, M8, M10)', 'All Water Types Pooled (M1, M3, M5, M7, M9)')
+  ) %>%
+  ggplot(aes(level_f, r2, group = type_lbl, colour = type_lbl, shape = type_lbl)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 3.2) +
+  geom_text(aes(label = paste0('M', model)), vjust = -0.9, size = 3.2, fontface = 'bold', show.legend = FALSE) +
+  scale_colour_manual(values = c('#1d6996', '#d95f0e'), name = NULL) +
+  scale_shape_manual(values = c(16, 17), name = NULL) +
+  scale_y_continuous(limits = c(0.38, 0.56), breaks = seq(0.40, 0.55, by = 0.05)) +
+  theme_bw(base_size = 11) +
+  theme(legend.position = 'bottom', legend.direction = 'vertical', panel.grid.minor = element_blank()) +
+  labs(x = 'Spatial Ecoregion Hierarchy', y = expression(Explained~Variance~(R^2)),
+       title = '(a) Model Predictive Skill Across Spatial Scales')
+
+m1_coefs <- s1 %>% filter(model == 1) %>%
+  transmute(`DOC (m²/g)` = DOC, `NAP (m²/g)` = NAP, `10 × Chl a (m²/mg)` = 10 * Chl_a) %>%
+  pivot_longer(everything(), names_to = 'term', values_to = 'm1_val')
+
+p_slopes <- s1 %>%
+  filter(model == 7, NAP > 0, DOC > 0, Chl_a > 0) %>%
+  transmute(`DOC (m²/g)` = DOC, `NAP (m²/g)` = NAP, `10 × Chl a (m²/mg)` = 10 * Chl_a) %>%
+  pivot_longer(everything(), names_to = 'term', values_to = 'val') %>%
+  ggplot(aes(val, fill = term)) +
+  geom_histogram(bins = 18, colour = 'white', alpha = 0.85, show.legend = FALSE) +
+  geom_vline(data = m1_coefs, aes(xintercept = m1_val), linetype = 'dashed', linewidth = 0.8, colour = 'black') +
+  facet_wrap(~term, scales = 'free', ncol = 1) +
+  scale_fill_manual(values = c('#22c55e', '#d97706', '#38bdf8')) +
+  theme_bw(base_size = 10) +
+  theme(panel.grid.minor = element_blank()) +
+  labs(x = 'Specific Attenuation Coefficient (dashed = Global Model 1)', y = 'Ecoregions',
+       title = '(b) Model 7 Regional Coefficients (37 Positive Level III Ecoregions)')
+
+p_r2 + p_slopes + patchwork::plot_layout(widths = c(1.25, 1))
 ```
 
 ## Table 1: Performance of Candidate Bio-Optical Models (Models 1–10) {#table1}
 
-Every model's explained variance ($R^2$), root-mean-square error ($\text{RMSE}_{k_d}$), and common-sample Bayesian Information Criterion ($\text{BIC}$) are evaluated across **all `r fmt_n(nrow(get_training()))` training observations** (observations in groups with $\le 100$ rows fall back to Model 1 for type-agnostic models or Model 2 for type-stratified models):
+Every model's explained variance ($R^2$), root-mean-square error ($\text{RMSE}_{k_d}$), and common-sample Bayesian Information Criterion ($\text{BIC}$) are evaluated across all **`r fmt_n(nrow(get_training()))`** training matchups:
 
-```{r table1-aquamatch}
+```{r table1-aquamatch, echo = FALSE}
 perf %>%
   transmute(
     Level = level,
@@ -52,30 +87,28 @@ perf %>%
 ```
 
 ::: {.decision}
-**Model Selection Rationale: Why Model 7 (`Level III Ecoregions`) Is Selected for Continental & Longitudinal Applications**
+**Why We Select Model 7 (`Level III Ecoregions`) for Continental Ternary Analysis**
 
-1. **Substantial gain in regional predictive skill and parsimony.** Moving from the continental global model (Model 1, $R^2 = 0.41$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.50$) improves $R^2$ by $+0.09$ and reduces common-sample BIC by **$\Delta\text{BIC} = -53{,}682$**, while maintaining a robust median group size of $n = 687$ (`109–121,842`).
-2. **Physical positivity and statistical significance across modeled ecoregions.** In Model 7, **37 of the 47 Level III ecoregions** yield strictly positive, highly significant ($p < 0.001$) specific attenuation slopes for all three constituents ($\alpha_{\text{NAP}} > 0, \alpha_{\text{DOC}} > 0, \alpha_{\text{Chl }a} > 0$), and none of the non-positive slope estimates in the remaining groups is statistically significant at $p < 0.01$ (all $p \ge 0.10$). In contrast, subdividing to Level IV ecoregions (Model 9, `123` groups, median $n = 343$) or Level IV $\times$ water type (Model 10, `163` groups, median $n = 349$) pushes median sample sizes well below the $n \approx 1{,}000$ stability threshold (`Figure S1`) and substantially increases the number of small groups with unconstrained negative slope estimates caused by narrow local predictor ranges.
-3. **Seamless application across river–lake–estuary continuums.** Differentiating by discrete water-body type at the ecoregion level (Model 8 vs. Model 7) increases $R^2$ by only $+0.02$ (`0.50` $\rightarrow$ `0.52`), and within Model 7 each individual water-body type is well predicted (`R² = 0.46–0.54`). Because Model 7 does not impose artificial parameter discontinuities at water-body type boundaries, it can be applied continuously across linked river-to-estuary networks (`Figure 3`).
+1. **Strong regional skill and parsimony:** Moving from the global model (Model 1, $R^2 = 0.41$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.50$) increases $R^2$ by $+0.09$ and improves BIC by **$\Delta\text{BIC} = -53{,}653$**, while preserving a median group size of $n = 687$ (`109–121,842`).
+2. **Physical positivity:** In Model 7, **37 of 47 Level III ecoregions** (representing **98.04%** of modeled training matchups) have strictly positive, highly significant ($p < 0.001$) slopes for all three constituents. Subdividing further to Level IV (Models 9–10) pushes median group size down to $n = 343\text{–}349$—well below the $n \approx 1{,}000$ convergence threshold (`Figure S1`)—for only $+0.02\text{ to }+0.03$ gain in $R^2$.
+3. **Seamless river–estuary continuity:** Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only $+0.02$ in $R^2$ (`0.50` $\rightarrow$ `0.52`). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (`Figure 3`).
 :::
 
-## Comparison with Theoretical & Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)
+## Comparison with Published Bio-Optical Benchmarks
 
-Across models and water types, fitted specific attenuation coefficients demonstrate strongest per-mass attenuation by **DOC**, followed by **NAP** and **Chl *a***. In global Model 1 ($n = 277{,}382$), $\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}$ across all regional groups in Table S1). These empirically derived continental coefficients agree closely with first-principles biophysical derivations and local optical studies:
+In global Model 1 ($n = 277{,}382$), $\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2.4\,\alpha_{\text{NAP}} \approx 12\,\alpha_{\text{Chl }a}$ across all regional groups in Table S1). These empirically fitted values align closely with first-principles biophysical derivations and field optics studies:
 
-```{r bannister-table}
+```{r bannister-table, echo = FALSE}
 compare_bannister_literature(models) %>%
   kable(caption = 'Comparison of empirically fitted specific attenuation coefficients (Models 1 & 2) against theoretical and field bio-optical benchmarks.') %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 
-## Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance {#tableS1}
+## Table S1: Fitted Coefficients, Standard Errors, and Significance {#tableS1}
 
 All ten models' group sample sizes ($n$), specific attenuation coefficients, standard errors, and two-sided $t$-test $p$-values are exported to `figs/tables/tableS1_coefficients_aquamatch.csv`. Below are Models 1, 2, and the 37 strictly positive Level III ecoregion groups of Model 7:
 
-```{r tableS1}
-s1 <- table_s1(models)
-write_csv(s1, file.path(PATH$figs, 'tables/tableS1_coefficients_aquamatch.csv'))
+```{r tableS1, echo = FALSE}
 s1 %>%
   filter(model %in% c(1, 2) | (model == 7 & NAP > 0 & DOC > 0 & Chl_a > 0)) %>%
   select(model, code, type, n_group, NAP, DOC, Chl_a, p_NAP, p_DOC, p_Chl_a) %>%
@@ -85,9 +118,9 @@ s1 %>%
   kable_styling(full_width = FALSE, bootstrap_options = c('condensed', 'striped'), font_size = 11)
 ```
 
-In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative ($p \ge 0.10$) due to narrow local concentration ranges; during continental ternary projection (`Section 8`), these groups automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:
+In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative ($p \ge 0.10$) due to narrow local concentration ranges; during continental ternary projection (`Section 8`), those ecoregions automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:
 
-```{r m7-neg}
+```{r m7-neg, echo = FALSE}
 s1 %>%
   filter(model == 7, !(NAP > 0 & DOC > 0 & Chl_a > 0)) %>%
   select(code, n_group, NAP, p_NAP, DOC, p_DOC, Chl_a, p_Chl_a) %>%

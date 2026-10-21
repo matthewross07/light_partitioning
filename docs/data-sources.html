@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 1 Harmonized Continental Data Sources (00_download.R) | Ternary Partitioning of Continental-Scale Water Clarity</title>
-  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 1 Harmonized Continental Data Sources (00_download.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta property="og:description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Section 1 Harmonized Continental Data Sources (00_download.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
   
-  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="twitter:description" content="Open-source data pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ built on the harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
   
 
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
@@ -143,80 +143,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
-<ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation"><i class="fa fa-check"></i>Why Optical Partitioning &amp; Total Visibility Both Matter (<code>{sonicray}</code> 3D Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#continental-ternary-partitioning-at-a-glance"><i class="fa fa-check"></i>Continental Ternary Partitioning at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#pipeline-funnel-dataset-summary"><i class="fa fa-check"></i>Pipeline Funnel &amp; Dataset Summary</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-workflow-code-architecture"><i class="fa fa-check"></i>Reproducing the Workflow &amp; Code Architecture</a></li>
 </ul></li>
 <li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
 <li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#temporal-water-body-coverage-across-the-conterminous-u.s."><i class="fa fa-check"></i><b>1.1</b> Temporal &amp; Water-Body Coverage Across the Conterminous U.S.</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Matchups &amp; Initial Hygiene (<code>prep.R</code>)</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
-<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
-<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#four-initial-hygiene-filters"><i class="fa fa-check"></i><b>2.1</b> Four Initial Hygiene Filters</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#spatial-seasonal-footprint-of-matchups"><i class="fa fa-check"></i><b>2.2</b> Spatial &amp; Seasonal Footprint of Matchups</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-covariance-structure"><i class="fa fa-check"></i><b>2.3</b> Log-Log Covariance Structure</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Separating Non-Algal Particles (NAP) from Bulk TSS</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
-<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-biomass-formulation-method-tiers"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to Biomass Formulation &amp; Method Tiers</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
-<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Plausibility Screen (<code>clean_wqp_discordance()</code>)</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-sample-size-rule-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Sample-Size Rule (<code>zone_min = 100</code>)</a></li>
 </ul></li>
 <li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
 <li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
 <li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
-<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
-<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-published-bio-optical-benchmarks"><i class="fa fa-check"></i><b>6.3</b> Comparison with Published Bio-Optical Benchmarks</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Coefficients, Standard Errors, and Significance</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
-</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a></li>
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
-<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
-<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
-<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
 <li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
 <li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
-<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
-<ul>
-<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
-</ul></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
 <ul>
@@ -243,17 +223,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="data-sources" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Section 1</span> Harmonized Continental Data Sources (<code>00_download.R</code>)<a href="data-sources.html#data-sources" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>All <em>in situ</em> water quality and spatial datasets are retrieved programmatically from public repositories in <code>R/00_download.R</code> at the start of the pipeline:</p>
+<p>Public water quality databases like the Water Quality Portal (WQP) aggregate millions of field measurements collected by hundreds of federal, state, tribal, and local agencies, but raw WQP downloads require extensive harmonization of parameter names, reporting units, analytical methods, and detection limits before they can be used for continental synthesis (Ross et al. 2019).</p>
+<p>To make our workflow fully reproducible from harmonized public sources, <code>R/00_download.R</code> retrieves three sets of open data at the start of the pipeline:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Harmonized In-Situ Water Quality (<code>{AquaMatchr}</code>)</strong>: Four harmonized Water Quality Portal (WQP) parameter products published in the Environmental Data Initiative (EDI) repository, retrieved via <code>AquaMatchr::download_parameters()</code>:
+<li><strong>Harmonized In-Situ Water Quality (<code>{AquaMatchr}</code>)</strong>: Four harmonized WQP parameter datasets published in the Environmental Data Initiative (EDI) repository:
 <ul>
-<li><strong>Secchi disk depth (<code>sdd</code>)</strong>: <code>edi.1856.1</code> (De La Torre et al. 2025; 2.74M harmonized records, 1970–2024)</li>
-<li><strong>Chlorophyll <em>a</em> (<code>chla</code>)</strong>: <code>edi.1756.2</code> (Brousil et al. 2024a; 3.39M harmonized records, 1970–2024)</li>
-<li><strong>Dissolved organic carbon (<code>doc</code>)</strong>: <code>edi.1809.1</code> (Brousil et al. 2024b; 1.84M harmonized records, 1970–2024)</li>
-<li><strong>Total suspended solids &amp; suspended sediment concentration (<code>tss</code>)</strong>: <code>edi.2048.2</code> (Brousil et al. 2025; 4.61M harmonized records, 1970–2025)</li>
+<li><strong>Secchi disk depth (<code>sdd</code>)</strong>: <code>edi.1856.1</code> (De La Torre et al. 2025; 2.74M records, 1970–2024)</li>
+<li><strong>Chlorophyll <em>a</em> (<code>chla</code>)</strong>: <code>edi.1756.2</code> (Brousil et al. 2024a; 3.39M records, 1970–2024)</li>
+<li><strong>Dissolved organic carbon (<code>doc</code>)</strong>: <code>edi.1809.1</code> (Brousil et al. 2024b; 1.84M records, 1970–2024)</li>
+<li><strong>Total suspended solids &amp; suspended sediment concentration (<code>tss</code>)</strong>: <code>edi.2048.2</code> (Brousil et al. 2025; 4.61M records, 1970–2025)</li>
 </ul></li>
-<li><strong>Hierarchical Ecoregion Boundaries</strong>: U.S. EPA / Commission for Environmental Cooperation (CEC) North American Ecoregion shapefiles for Levels I–IV (Omernik &amp; Griffith 2014).</li>
-<li><strong>River Network Flowlines</strong>: RiverSR modified NHDPlusV2 flowlines (Gardner et al. 2021; Zenodo record <code>4304567</code>) used to compute longitudinal river distances along the Delaware River mainstem (<code>Figure 3</code>).</li>
+<li><strong>Hierarchical Ecoregion Boundaries</strong>: U.S. EPA / CEC North American Ecoregion shapefiles for Levels I–IV (Omernik &amp; Griffith 2014).</li>
+<li><strong>River Network Flowlines</strong>: RiverSR modified NHDPlusV2 flowlines (Gardner et al. 2021; Zenodo record <code>4304567</code>) used to compute longitudinal river distances along the Delaware River (<code>Figure 3</code>).</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-sources.html#cb2-1" tabindex="-1"></a><span class="fu">raw_status</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="data-sources.html#cb2-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">size =</span> scales<span class="sc">::</span><span class="fu">label_bytes</span>()(bytes)) <span class="sc">%&gt;%</span></span>
@@ -503,73 +484,25 @@ TRUE
 </tr>
 </tbody>
 </table>
-<p>Calling <code>fetch_all()</code> (or <code>download_aquamatch_data()</code>) downloads any missing files and verifies their byte sizes:</p>
+<p>Calling <code>fetch_all()</code> downloads any missing files and verifies their byte sizes:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-sources.html#cb3-1" tabindex="-1"></a><span class="fu">download_aquamatch_data</span>(<span class="at">parameters =</span> <span class="fu">c</span>(<span class="st">&#39;sdd&#39;</span>, <span class="st">&#39;chla&#39;</span>, <span class="st">&#39;doc&#39;</span>, <span class="st">&#39;tss&#39;</span>))</span>
 <span id="cb3-2"><a href="data-sources.html#cb3-2" tabindex="-1"></a><span class="fu">fetch_all</span>()</span></code></pre></div>
 <div class="decision">
-<p><strong>Methodological Decisions: Harmonized Input Integration (<code>R/00_download.R</code>, <code>R/prep.R</code>)</strong></p>
+<p><strong>Key Harmonization Rules (<code>R/00_download.R</code>, <code>R/prep.R</code>)</strong></p>
 <ul>
-<li><strong>Programmatic retrieval via <code>{AquaMatchr}</code>.</strong> <code>download_aquamatch_data()</code> queries <code>AquaMatchr::download_parameters(parameters = p, version = "newest")</code> for each parameter (<code>sdd</code>, <code>chla</code>, <code>doc</code>, <code>tss</code>) and caches the harmonized CSVs in <code>data/raw/aquamatch/</code>.</li>
-<li><strong>Joint harmonization of TSS and SSC (<code>edi.2048.2</code>).</strong> Major federal river-monitoring networks—including USGS NASQAN and NAWQA stations (e.g., Mississippi River near St. Francisville, <code>USGS-07373420</code>) and western U.S. river basins—report <strong>Suspended Sediment Concentration (<code>ssc</code>)</strong> (total dry sediment mass divided by total sample mass, ASTM D3977) rather than sub-sampled <strong>Total Suspended Solids (<code>tss</code>)</strong>. The AquaMatch suspended sediment product (<code>edi.2048.2</code>; Brousil et al. 2025) harmonizes both parameters in identical <span class="math inline">\(\text{mg L}^{-1}\)</span> units. When both <code>tss</code> and <code>ssc</code> are reported for the same site and date, <code>build_aquamatch_joined()</code> prioritizes <code>tss</code> and supplements missing <code>tss</code> records with harmonized <code>ssc</code>, providing comprehensive coverage across both eastern and western U.S. river networks.</li>
-<li><strong>Secchi minimum detection limit (<code>sdd_mdl &lt;= 1</code>) and non-Secchi approximation (<code>sdd_approx == 0</code>) flags.</strong> In the AquaMatch Secchi workflow (De La Torre et al. 2025), raw WQP entries <span class="math inline">\(\le 0.01\text{ m}\)</span> (including <code>0.0 m</code> missing-value placeholders) were floored at <code>0.01 m</code> and flagged with <code>mdl_flag &gt;= 2</code>, while turbidity-tube or visual non-Secchi depth estimates were flagged with <code>approx_flag &gt; 0</code>. In our pipeline, records with <code>sdd_mdl &gt;= 2</code> or <code>sdd_approx &gt; 0</code> have their Secchi depth set to <code>NA</code>, preventing artificial <code>0.01 m</code> floor placeholders or turbidity-tube approximations from entering Secchi model training while retaining their valid co-located chemistry (<code>Chl a</code>, <code>DOC</code>, <code>TSS</code>) for ternary application.</li>
-<li><strong>Ecoregion attributes.</strong> Levels I and II are extracted from the CEC North America Level II layer (<code>NA_L1CODE</code>, <code>NA_L2CODE</code>), Level III from the U.S. Level III layer (<code>NA_L3CODE</code>), and Level IV from the U.S. Level IV layer (<code>US_L4CODE</code>; Omernik &amp; Griffith 2014).</li>
+<li><strong>Combining TSS and SSC (<code>edi.2048.2</code>).</strong> Major USGS river networks (NASQAN, NAWQA) and western U.S. basins report <strong>Suspended Sediment Concentration (<code>ssc</code>)</strong> rather than sub-sampled <strong>Total Suspended Solids (<code>tss</code>)</strong>. Because <code>edi.2048.2</code> harmonizes both in <span class="math inline">\(\text{mg L}^{-1}\)</span>, <code>build_aquamatch_joined()</code> uses <code>tss</code> when present and supplements missing <code>tss</code> with harmonized <code>ssc</code> so both eastern and western river networks are represented.</li>
+<li><strong>Secchi method &amp; MDL flags.</strong> In <code>edi.1856.1</code>, raw entries <span class="math inline">\(\le 0.01\text{ m}\)</span> (including <code>0.0 m</code> missing placeholders) carry <code>mdl_flag &gt;= 2</code>, and non-Secchi turbidity-tube estimates carry <code>approx_flag &gt; 0</code>. We set Secchi depth to <code>NA</code> whenever <code>sdd_mdl &gt;= 2</code> or <code>sdd_approx &gt; 0</code>, keeping those artificial values out of Secchi calibration while retaining their paired chemistry (<code>Chl a</code>, <code>DOC</code>, <code>TSS</code>) for ternary projection.</li>
 </ul>
 </div>
-<div id="continental-monitoring-site-inventory" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Continental Monitoring Site Inventory<a href="data-sources.html#continental-monitoring-site-inventory" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-sources.html#cb4-1" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="fu">get_sites</span>()</span>
-<span id="cb4-2"><a href="data-sources.html#cb4-2" tabindex="-1"></a><span class="fu">count</span>(sites, type) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="data-sources.html#cb4-3" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">type =</span> <span class="st">&#39;Total unique monitoring stations&#39;</span>, <span class="at">n =</span> <span class="fu">nrow</span>(sites))) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="data-sources.html#cb4-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">fmt_n</span>(n)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="data-sources.html#cb4-5" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Resolved WQP Water-Body Type&#39;</span>, <span class="st">&#39;Unique Monitoring Stations&#39;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-6"><a href="data-sources.html#cb4-6" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-Resolved WQP Water-Body Type
-</th>
-<th style="text-align:left;">
-Unique Monitoring Stations
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Estuary
-</td>
-<td style="text-align:left;">
-8,981
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Lake
-</td>
-<td style="text-align:left;">
-9,041
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Stream
-</td>
-<td style="text-align:left;">
-22,229
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Total unique monitoring stations
-</td>
-<td style="text-align:left;">
-40,251
-</td>
-</tr>
-</tbody>
-</table>
-<p>Every <code>ResolvedMonitoringLocationTypeName</code> containing <code>"Lake"</code> (e.g., <em>Lake, Reservoir, Impoundment</em>) is consolidated into <code>Lake</code>, alongside <code>Stream</code> and <code>Estuary</code> (<code>Facility</code> sites are excluded).</p>
+<div id="temporal-water-body-coverage-across-the-conterminous-u.s." class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Temporal &amp; Water-Body Coverage Across the Conterminous U.S.<a href="data-sources.html#temporal-water-body-coverage-across-the-conterminous-u.s." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consolidating all <code>ResolvedMonitoringLocationTypeName</code> entries containing <code>"Lake"</code> (lakes, reservoirs, impoundments) into <code>Lake</code> alongside <code>Stream</code> and <code>Estuary</code> yields <strong>40,251 unique ambient monitoring stations</strong>:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ch1-coverage-fig"></span>
+<img src="ternary_clarity_pipeline_files/figure-html/ch1-coverage-fig-1.png" alt="Left: Annual count of co-located 3-constituent matchups (1970–2024) by water-body type. Right: Unique monitoring stations by water-body type across the conterminous United States." width="100%" />
+<p class="caption">
+Figure 1.1: Left: Annual count of co-located 3-constituent matchups (1970–2024) by water-body type. Right: Unique monitoring stations by water-body type across the conterminous United States.
+</p>
+</div>
 
 </div>
 </div>

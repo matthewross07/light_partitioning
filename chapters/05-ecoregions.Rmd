@@ -4,46 +4,49 @@
 source('R/00_setup.R')
 ```
 
-Specific optical properties of dissolved organic matter (e.g., aromaticity and specific UV absorbance; Spencer et al. 2012; Griffin et al. 2018) and suspended particles (e.g., mineral grain size, refractive index, and organic coatings; Dodds & Whiles 2004; Bowers et al. 2020) vary systematically with regional geology, soils, vegetation, and climate. To capture this regional biogeochemical coherence across streams, lakes, and estuaries within a unified continental classification, each monitoring station is assigned to its nested U.S. EPA / CEC North American Ecoregion across **Levels I–IV** (Omernik & Griffith 2014).
+A gram of dissolved organic carbon or suspended sediment does not attenuate the exact same amount of light everywhere. Humic DOC drained from northern peatlands is darker and more aromatic than autochthonous DOC in arid reservoirs (Spencer et al. 2012; Griffin et al. 2018), and fine clay suspensions scatter light much more efficiently per unit mass than coarse glacial silt (Bowers et al. 2020).
 
-The spatial assignment function (`eco_join()` in `R/ecoregions.R`) places each unique `SiteID` into the projected ecoregion polygon containing its geographic coordinates; estuarine and nearshore stations located slightly offshore of the vector coastline are matched to the nearest terrestrial ecoregion polygon via `sf::st_nearest_feature()`, and polygon-boundary ties are deduplicated (`distinct(SiteID, .keep_all = TRUE)`) so the mapping from `SiteID` to ecoregion is strictly **1-to-1**.
+To capture this regional biogeochemical coherence across streams, lakes, and estuaries within a single continental framework, `eco_join()` in `R/ecoregions.R` assigns each monitoring station (`SiteID`) to its nested U.S. EPA / CEC North American Ecoregion across **Levels I–IV** (Omernik & Griffith 2014). Nearshore estuarine stations located slightly seaward of coastline polygons are matched to the nearest coastal ecoregion via `sf::st_nearest_feature()`, guaranteeing a strict **1-to-1** mapping from `SiteID` to ecoregion.
 
-```{r eco-map, fig.height = 4.4}
+```{r eco-map, echo = FALSE, fig.width = 10, fig.height = 4.6, fig.cap = 'Left: U.S. EPA Level III Ecoregions (NA_L3CODE). Right: Top 18 Level III ecoregions ranked by number of simultaneous training matchups, colored by water-body type.'}
 eco <- get_eco()
-eco$eco3 %>% group_by(l3code) %>% summarize() %>% st_simplify(dTolerance = 5000) %>%
+tr <- get_training()
+
+p_map <- eco$eco3 %>% group_by(l3code) %>% summarize() %>% st_simplify(dTolerance = 5000) %>%
   ggplot() + geom_sf(aes(fill = l3code), colour = 'white', linewidth = 0.1, show.legend = FALSE) +
-  scale_fill_viridis_d(option = 'turbo') + theme_void() + ggtitle('U.S. EPA Level III Ecoregions (NA_L3CODE)')
+  scale_fill_viridis_d(option = 'turbo') + theme_void(base_size = 11) +
+  ggtitle('(a) EPA Level III Ecoregions')
+
+top_l3 <- get_zone_sets()$L3 %>%
+  count(l3code = code, type) %>%
+  group_by(l3code) %>%
+  mutate(tot = sum(n)) %>%
+  ungroup() %>%
+  filter(dense_rank(desc(tot)) <= 18) %>%
+  mutate(l3code = fct_reorder(l3code, tot))
+
+p_bar <- ggplot(top_l3, aes(n, l3code, fill = type)) +
+  geom_col(width = 0.75) +
+  scale_fill_manual(values = TYPE_COLS, name = 'Water-body type') +
+  scale_x_log10(labels = scales::comma) +
+  theme_bw(base_size = 10) +
+  theme(legend.position = 'bottom', panel.grid.minor = element_blank()) +
+  labs(x = 'Training Matchups (log scale)', y = 'Level III Code', title = '(b) Top 18 Level III Ecoregions by Sample Size')
+
+p_map + p_bar + patchwork::plot_layout(widths = c(1.35, 1))
 ```
 
-## Minimum Group Sample-Size Criterion (`zone_min = 100`)
+## Minimum Sample-Size Rule (`zone_min = 100`)
 
-Across all regional models, an ecoregion (or ecoregion $\times$ water-body type combination) is estimated as an independent parameter group if and only if it contains more than **`r P$zone_min` training observations** (`P$zone_min = 100`). Observations located in sparsely sampled ecoregions ($\le 100$ training records) fall back to the corresponding continental model (Model 1 for type-agnostic models; Model 2 for type-stratified models) during model evaluation and ternary projection.
+Every regional model requires at least **`r P$zone_min` training matchups** (`P$zone_min = 100`) to estimate an ecoregion's parameters independently. At Level III (Model 7), **47 ecoregions** exceed 100 matchups, covering **99.69%** of all continental training data; the remaining 0.31% of observations in sparsely sampled ecoregions fall back to the continental model:
 
-```{r zone-counts}
+```{r zone-counts, echo = FALSE}
 zc <- cache_rds('zone_counts', zone_counts(get_training(), eco))
 zc %>% group_by(level) %>%
-  summarize(`Ecoregions with Training Data` = n(),
+  summarize(`Ecoregions Present` = n(),
             `Modeled Ecoregions (> 100 obs)` = sum(n > P$zone_min),
-            `Training Observations in Modeled Ecoregions` = fmt_n(sum(n[n > P$zone_min])),
-            `Dataset Coverage (%)` = round(100 * sum(n[n > P$zone_min]) / nrow(get_training()), 2)) %>%
-  kable(col.names = c('Ecoregion Hierarchy', 'Total Ecoregions Present', 'Modeled Ecoregions (> 100 obs)', 'Training Rows Covered', 'Coverage (%)')) %>%
+            `Training Matchups Covered` = fmt_n(sum(n[n > P$zone_min])),
+            `Coverage (%)` = round(100 * sum(n[n > P$zone_min]) / nrow(get_training()), 2)) %>%
+  kable(col.names = c('Ecoregion Hierarchy', 'Ecoregions Present', 'Modeled Groups (> 100 obs)', 'Training Rows Covered', 'Coverage (%)')) %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
 ```
-
-```{r zone-sets}
-zs <- get_zone_sets()
-tibble(dataset = c('Continental (USA)', 'EPA Level I', 'EPA Level II', 'EPA Level III', 'EPA Level IV'),
-       key = names(zs),
-       rows = map_int(zs, nrow),
-       groups = map_int(zs, ~ if ('code' %in% names(.x)) n_distinct(.x$code) else 1L)) %>%
-  mutate(rows = fmt_n(rows)) %>%
-  kable(col.names = c('Spatial Hierarchy', 'Dataset Key', 'Training Observations (> 100 per group)', 'Modeled Ecoregions')) %>%
-  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
-```
-
-::: {.decision}
-**Methodological Decisions: Ecoregion Stratification (`R/ecoregions.R`)**
-
-* **Point-level ecoregion assignment unifies streams, lakes, and estuaries.** Because standardized upstream watershed polygons are neither defined nor physically meaningful for the `63,566` estuarine training observations (`77,637` total estuarine records) and because Omernik ecoregions explicitly integrate regional physiography, geology, soils, and land cover (Omernik & Griffith 2014), point-in-polygon assignment evaluates all three water-body types within a single consistent hierarchy.
-* **Comprehensive Level III coverage.** Under the $> 100$ observation threshold, **46 Level III ecoregions** receive dedicated bio-optical parameters in Model 7, encompassing **99.69%** (`r fmt_n(nrow(zs$L3))` of `r fmt_n(nrow(get_training()))`) of all continental training observations.
-:::
