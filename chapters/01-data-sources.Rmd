@@ -1,0 +1,54 @@
+# (PART) Data Harmonization & Quality Control {-}
+
+# Harmonized Continental Data Sources (`00_download.R`) {#data-sources}
+
+```{r ch1-setup, include = FALSE}
+source('R/00_setup.R')
+```
+
+All *in situ* water quality and spatial datasets are retrieved programmatically from public repositories in `R/00_download.R` at the start of the pipeline:
+
+1. **Harmonized In-Situ Water Quality (`{AquaMatchr}`)**: Four harmonized Water Quality Portal (WQP) parameter products published in the Environmental Data Initiative (EDI) repository, retrieved via `AquaMatchr::download_parameters()`:
+   * **Secchi disk depth (`sdd`)**: `edi.1856.1` (De La Torre et al. 2025; 2.74M harmonized records, 1970–2024)
+   * **Chlorophyll *a* (`chla`)**: `edi.1756.2` (Brousil et al. 2024a; 3.39M harmonized records, 1970–2024)
+   * **Dissolved organic carbon (`doc`)**: `edi.1809.1` (Brousil et al. 2024b; 1.84M harmonized records, 1970–2024)
+   * **Total suspended solids & suspended sediment concentration (`tss`)**: `edi.2048.2` (Brousil et al. 2025; 4.61M harmonized records, 1970–2025)
+2. **Hierarchical Ecoregion Boundaries**: U.S. EPA / Commission for Environmental Cooperation (CEC) North American Ecoregion shapefiles for Levels I–IV (Omernik & Griffith 2014).
+3. **River Network Flowlines**: RiverSR modified NHDPlusV2 flowlines (Gardner et al. 2021; Zenodo record `4304567`) used to compute longitudinal river distances along the Delaware River mainstem (`Figure 3`).
+
+```{r sources}
+raw_status() %>%
+  mutate(size = scales::label_bytes()(bytes)) %>%
+  select(id, file = dest, size, present, size_ok, used_for) %>%
+  kable(col.names = c('Dataset ID', 'Local Path', 'File Size', 'Present?', 'Size Verified?', 'Pipeline Role')) %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), font_size = 12)
+```
+
+Calling `fetch_all()` (or `download_aquamatch_data()`) downloads any missing files and verifies their byte sizes:
+
+```{r fetch, eval = FALSE}
+download_aquamatch_data(parameters = c('sdd', 'chla', 'doc', 'tss'))
+fetch_all()
+```
+
+::: {.decision}
+**Methodological Decisions: Harmonized Input Integration (`R/00_download.R`, `R/prep.R`)**
+
+* **Programmatic retrieval via `{AquaMatchr}`.** `download_aquamatch_data()` queries `AquaMatchr::download_parameters(parameters = p, version = "newest")` for each parameter (`sdd`, `chla`, `doc`, `tss`) and caches the harmonized CSVs in `data/raw/aquamatch/`.
+* **Joint harmonization of TSS and SSC (`edi.2048.2`).** Major federal river-monitoring networks—including USGS NASQAN and NAWQA stations (e.g., Mississippi River near St. Francisville, `USGS-07373420`) and western U.S. river basins—report **Suspended Sediment Concentration (`ssc`)** (total dry sediment mass divided by total sample mass, ASTM D3977) rather than sub-sampled **Total Suspended Solids (`tss`)**. The AquaMatch suspended sediment product (`edi.2048.2`; Brousil et al. 2025) harmonizes both parameters in identical $\text{mg L}^{-1}$ units. When both `tss` and `ssc` are reported for the same site and date, `build_aquamatch_joined()` prioritizes `tss` and supplements missing `tss` records with harmonized `ssc`, providing comprehensive coverage across both eastern and western U.S. river networks.
+* **Secchi minimum detection limit (`sdd_mdl <= 1`) and non-Secchi approximation (`sdd_approx == 0`) flags.** In the AquaMatch Secchi workflow (De La Torre et al. 2025), raw WQP entries $\le 0.01\text{ m}$ (including `0.0 m` missing-value placeholders) were floored at `0.01 m` and flagged with `mdl_flag >= 2`, while turbidity-tube or visual non-Secchi depth estimates were flagged with `approx_flag > 0`. In our pipeline, records with `sdd_mdl >= 2` or `sdd_approx > 0` have their Secchi depth set to `NA`, preventing artificial `0.01 m` floor placeholders or turbidity-tube approximations from entering Secchi model training while retaining their valid co-located chemistry (`Chl a`, `DOC`, `TSS`) for ternary application.
+* **Ecoregion attributes.** Levels I and II are extracted from the CEC North America Level II layer (`NA_L1CODE`, `NA_L2CODE`), Level III from the U.S. Level III layer (`NA_L3CODE`), and Level IV from the U.S. Level IV layer (`US_L4CODE`; Omernik & Griffith 2014).
+:::
+
+## Continental Monitoring Site Inventory
+
+```{r aquamatch-peek}
+sites <- get_sites()
+count(sites, type) %>%
+  bind_rows(tibble(type = 'Total unique monitoring stations', n = nrow(sites))) %>%
+  mutate(n = fmt_n(n)) %>%
+  kable(col.names = c('Resolved WQP Water-Body Type', 'Unique Monitoring Stations')) %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
+```
+
+Every `ResolvedMonitoringLocationTypeName` containing `"Lake"` (e.g., *Lake, Reservoir, Impoundment*) is consolidated into `Lake`, alongside `Stream` and `Estuary` (`Facility` sites are excluded).

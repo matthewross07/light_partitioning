@@ -1,0 +1,2701 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 6 Hierarchical Bio-Optical Models (models.R) | Ternary Partitioning of Continental-Scale Water Clarity</title>
+  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 6 Hierarchical Bio-Optical Models (models.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 6 Hierarchical Bio-Optical Models (models.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
+  
+  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+<meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ecoregions.html"/>
+<link rel="next" href="stability.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+</ul></li>
+<li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
+<li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
+<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
+<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+</ul></li>
+<li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
+<li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
+<li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
+</ul></li>
+<li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
+<li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
+<li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="verification.html"><a href="verification.html#automated-pipeline-verification-checklist"><i class="fa fa-check"></i><b>10.1</b> Automated Pipeline Verification Checklist</a></li>
+<li class="chapter" data-level="10.2" data-path="verification.html"><a href="verification.html#literature-provenance-table"><i class="fa fa-check"></i><b>10.2</b> Literature Provenance Table</a></li>
+<li class="chapter" data-level="" data-path="verification.html"><a href="verification.html#r-session-information"><i class="fa fa-check"></i>R Session Information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ternary Partitioning of Continental-Scale Water Clarity</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="models" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Section 6</span> Hierarchical Bio-Optical Models (<code>models.R</code>)<a href="models.html#models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="additive-beerlambert-model-formulation" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Additive Beer–Lambert Model Formulation<a href="models.html#additive-beerlambert-model-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All ten candidate models estimate specific light-attenuation coefficients (<span class="math inline">\(\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}\)</span>) via ordinary least squares (OLS) with a fixed pure-water attenuation offset <span class="math inline">\(k_w = 0.04776\text{ m}^{-1}\)</span> and <strong>no intercept</strong>:</p>
+<p><span class="math display">\[k_d - k_w = \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a, \qquad z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a}\]</span></p>
+<p>where <span class="math inline">\(g\)</span> indexes the stratification group: continental USA (Model 1), water-body type alone (Model 2), EPA Ecoregion Levels I–IV without water-type separation (Models 3, 5, 7, 9), or EPA Ecoregion Levels I–IV crossed with water-body type (Models 4, 6, 8, 10). Because interaction-only terms with no shared main effects form a strictly block-diagonal design matrix, per-group QR decomposition (<code>lm.fit()</code>) is mathematically identical to a joint <code>glm()</code> fit (to machine precision <span class="math inline">\(\sim 10^{-15}\)</span>) while executing orders of magnitude faster. Every modeled group requires <span class="math inline">\(&gt; 100\)</span> training observations.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="models.html#cb19-1" tabindex="-1"></a>MODEL_KEY <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">by_type =</span> <span class="fu">ifelse</span>(by_type, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="models.html#cb19-2" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Model&#39;</span>, <span class="st">&#39;Ecoregion Level&#39;</span>, <span class="st">&#39;Stratified by Water Type?&#39;</span>, <span class="st">&#39;Dataset Key&#39;</span>, <span class="st">&#39;Spatial / Typological Scope&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="models.html#cb19-3" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Model
+</th>
+<th style="text-align:left;">
+Ecoregion Level
+</th>
+<th style="text-align:left;">
+Stratified by Water Type?
+</th>
+<th style="text-align:left;">
+Dataset Key
+</th>
+<th style="text-align:left;">
+Spatial / Typological Scope
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+global
+</td>
+<td style="text-align:left;">
+Continental (all waters)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+global
+</td>
+<td style="text-align:left;">
+Continental × water-body type
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Level 1
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+L1
+</td>
+<td style="text-align:left;">
+EPA Level I ecoregion
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Level 1
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+L1
+</td>
+<td style="text-align:left;">
+EPA Level I × water-body type
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Level 2
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+L2
+</td>
+<td style="text-align:left;">
+EPA Level II ecoregion
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Level 2
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+L2
+</td>
+<td style="text-align:left;">
+EPA Level II × water-body type
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Level 3
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+L3
+</td>
+<td style="text-align:left;">
+EPA Level III ecoregion
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Level 3
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+L3
+</td>
+<td style="text-align:left;">
+EPA Level III × water-body type
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Level 4
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+L4
+</td>
+<td style="text-align:left;">
+EPA Level IV ecoregion
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Level 4
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+L4
+</td>
+<td style="text-align:left;">
+EPA Level IV × water-body type
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="models.html#cb20-1" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">get_models</span>()</span>
+<span id="cb20-2"><a href="models.html#cb20-2" tabindex="-1"></a>perf   <span class="ot">&lt;-</span> <span class="fu">model_performance</span>(models, <span class="fu">get_training</span>())</span>
+<span id="cb20-3"><a href="models.html#cb20-3" tabindex="-1"></a><span class="fu">write_csv</span>(perf, <span class="fu">file.path</span>(PATH<span class="sc">$</span>figs, <span class="st">&#39;tables/table1_aquamatch.csv&#39;</span>))</span></code></pre></div>
+</div>
+<div id="table1" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)<a href="models.html#table1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across <strong>all 277,382 training observations</strong> (observations in groups with <span class="math inline">\(\le 100\)</span> rows fall back to Model 1 for type-agnostic models or Model 2 for type-stratified models):</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="models.html#cb21-1" tabindex="-1"></a>perf <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="models.html#cb21-2" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb21-3"><a href="models.html#cb21-3" tabindex="-1"></a>    <span class="at">Level =</span> level,</span>
+<span id="cb21-4"><a href="models.html#cb21-4" tabindex="-1"></a>    <span class="at">Model =</span> model,</span>
+<span id="cb21-5"><a href="models.html#cb21-5" tabindex="-1"></a>    <span class="st">`</span><span class="at">By Type?</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(by_type, <span class="st">&#39;Yes&#39;</span>, <span class="st">&#39;No&#39;</span>),</span>
+<span id="cb21-6"><a href="models.html#cb21-6" tabindex="-1"></a>    <span class="st">`</span><span class="at">Groups (G)</span><span class="st">`</span> <span class="ot">=</span> n_groups,</span>
+<span id="cb21-7"><a href="models.html#cb21-7" tabindex="-1"></a>    <span class="st">`</span><span class="at">Group Size Median (Min – Max)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(n_groups <span class="sc">==</span> <span class="dv">1</span>, <span class="fu">fmt_n</span>(group_median),</span>
+<span id="cb21-8"><a href="models.html#cb21-8" tabindex="-1"></a>      <span class="fu">sprintf</span>(<span class="st">&#39;%s (%s – %s)&#39;</span>, <span class="fu">fmt_n</span>(group_median), <span class="fu">fmt_n</span>(group_min), <span class="fu">fmt_n</span>(group_max))),</span>
+<span id="cb21-9"><a href="models.html#cb21-9" tabindex="-1"></a>    <span class="st">`</span><span class="at">R²</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(r2, <span class="dv">2</span>),</span>
+<span id="cb21-10"><a href="models.html#cb21-10" tabindex="-1"></a>    <span class="st">`</span><span class="at">R² (exact)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(r2, <span class="dv">3</span>),</span>
+<span id="cb21-11"><a href="models.html#cb21-11" tabindex="-1"></a>    <span class="st">`</span><span class="at">RMSE kd (m⁻¹)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(rmse_kd, <span class="dv">2</span>),</span>
+<span id="cb21-12"><a href="models.html#cb21-12" tabindex="-1"></a>    <span class="st">`</span><span class="at">Fitted Coefs</span><span class="st">`</span> <span class="ot">=</span> n_coef,</span>
+<span id="cb21-13"><a href="models.html#cb21-13" tabindex="-1"></a>    <span class="st">`</span><span class="at">Strictly Positive Groups</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&#39;%d / %d&#39;</span>, n_groups <span class="sc">-</span> n_neg_groups, n_groups),</span>
+<span id="cb21-14"><a href="models.html#cb21-14" tabindex="-1"></a>    <span class="st">`</span><span class="at">ΔBIC vs. Model 1</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">fmt_n</span>(<span class="fu">round</span>(bic_common <span class="sc">-</span> bic_common[<span class="dv">1</span>]))</span>
+<span id="cb21-15"><a href="models.html#cb21-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb21-16"><a href="models.html#cb21-16" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&#39;Table 1: Summary of the 10 hierarchical general linear models evaluated across all 277,382 training observations.&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-17"><a href="models.html#cb21-17" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:table1-aquamatch">Table 6.1: </span><span id="tab:table1-aquamatch">Table 6.2: </span>Table 1: Summary of the 10 hierarchical general linear models evaluated across all 277,382 training observations.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Level
+</th>
+<th style="text-align:right;">
+Model
+</th>
+<th style="text-align:left;">
+By Type?
+</th>
+<th style="text-align:right;">
+Groups (G)
+</th>
+<th style="text-align:left;">
+Group Size Median (Min – Max)
+</th>
+<th style="text-align:right;">
+R²
+</th>
+<th style="text-align:right;">
+R² (exact)
+</th>
+<th style="text-align:right;">
+RMSE kd (m⁻¹)
+</th>
+<th style="text-align:right;">
+Fitted Coefs
+</th>
+<th style="text-align:left;">
+Strictly Positive Groups
+</th>
+<th style="text-align:left;">
+ΔBIC vs. Model 1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:right;">
+0.41
+</td>
+<td style="text-align:right;">
+0.407
+</td>
+<td style="text-align:right;">
+1.32
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+1 / 1
+</td>
+<td style="text-align:left;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+63,892 (61,241 – 152,249)
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:right;">
+0.433
+</td>
+<td style="text-align:right;">
+1.29
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+3 / 3
+</td>
+<td style="text-align:left;">
+-11,213
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+1,399 (268 – 242,096)
+</td>
+<td style="text-align:right;">
+0.44
+</td>
+<td style="text-align:right;">
+0.444
+</td>
+<td style="text-align:right;">
+1.29
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+5 / 7
+</td>
+<td style="text-align:left;">
+-14,916
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+1,351 (107 – 138,651)
+</td>
+<td style="text-align:right;">
+0.48
+</td>
+<td style="text-align:right;">
+0.482
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:left;">
+13 / 16
+</td>
+<td style="text-align:left;">
+-35,089
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+2,012 (119 – 189,292)
+</td>
+<td style="text-align:right;">
+0.47
+</td>
+<td style="text-align:right;">
+0.469
+</td>
+<td style="text-align:right;">
+1.25
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:left;">
+14 / 16
+</td>
+<td style="text-align:left;">
+-31,188
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+1,326 (107 – 107,307)
+</td>
+<td style="text-align:right;">
+0.49
+</td>
+<td style="text-align:right;">
+0.495
+</td>
+<td style="text-align:right;">
+1.22
+</td>
+<td style="text-align:right;">
+93
+</td>
+<td style="text-align:left;">
+27 / 31
+</td>
+<td style="text-align:left;">
+-45,003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:left;">
+687 (109 – 121,842)
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+<td style="text-align:right;">
+0.500
+</td>
+<td style="text-align:right;">
+1.20
+</td>
+<td style="text-align:right;">
+141
+</td>
+<td style="text-align:left;">
+37 / 47
+</td>
+<td style="text-align:left;">
+-53,653
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:left;">
+555 (105 – 59,104)
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+0.524
+</td>
+<td style="text-align:right;">
+1.17
+</td>
+<td style="text-align:right;">
+210
+</td>
+<td style="text-align:left;">
+55 / 70
+</td>
+<td style="text-align:left;">
+-66,382
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 4
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+123
+</td>
+<td style="text-align:left;">
+343 (102 – 52,161)
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+0.515
+</td>
+<td style="text-align:right;">
+1.17
+</td>
+<td style="text-align:right;">
+369
+</td>
+<td style="text-align:left;">
+105 / 123
+</td>
+<td style="text-align:left;">
+-63,470
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Level 4
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+163
+</td>
+<td style="text-align:left;">
+349 (101 – 36,925)
+</td>
+<td style="text-align:right;">
+0.53
+</td>
+<td style="text-align:right;">
+0.534
+</td>
+<td style="text-align:right;">
+1.15
+</td>
+<td style="text-align:right;">
+489
+</td>
+<td style="text-align:left;">
+133 / 163
+</td>
+<td style="text-align:left;">
+-71,423
+</td>
+</tr>
+</tbody>
+</table>
+<div class="decision">
+<p><strong>Model Selection Rationale: Why Model 7 (<code>Level III Ecoregions</code>) Is Selected for Continental &amp; Longitudinal Applications</strong></p>
+<ol style="list-style-type: decimal">
+<li><strong>Substantial gain in regional predictive skill and parsimony.</strong> Moving from the continental global model (Model 1, <span class="math inline">\(R^2 = 0.41\)</span>) to Level III ecoregions (Model 7, <code>47</code> groups, <span class="math inline">\(R^2 = 0.50\)</span>) improves <span class="math inline">\(R^2\)</span> by <span class="math inline">\(+0.09\)</span> and reduces common-sample BIC by <strong><span class="math inline">\(\Delta\text{BIC} = -53{,}682\)</span></strong>, while maintaining a robust median group size of <span class="math inline">\(n = 687\)</span> (<code>109–121,842</code>).</li>
+<li><strong>Physical positivity and statistical significance across modeled ecoregions.</strong> In Model 7, <strong>37 of the 47 Level III ecoregions</strong> yield strictly positive, highly significant (<span class="math inline">\(p &lt; 0.001\)</span>) specific attenuation slopes for all three constituents (<span class="math inline">\(\alpha_{\text{NAP}} &gt; 0, \alpha_{\text{DOC}} &gt; 0, \alpha_{\text{Chl }a} &gt; 0\)</span>), and none of the non-positive slope estimates in the remaining groups is statistically significant at <span class="math inline">\(p &lt; 0.01\)</span> (all <span class="math inline">\(p \ge 0.10\)</span>). In contrast, subdividing to Level IV ecoregions (Model 9, <code>123</code> groups, median <span class="math inline">\(n = 343\)</span>) or Level IV <span class="math inline">\(\times\)</span> water type (Model 10, <code>163</code> groups, median <span class="math inline">\(n = 349\)</span>) pushes median sample sizes well below the <span class="math inline">\(n \approx 1{,}000\)</span> stability threshold (<code>Figure S1</code>) and substantially increases the number of small groups with unconstrained negative slope estimates caused by narrow local predictor ranges.</li>
+<li><strong>Seamless application across river–lake–estuary continuums.</strong> Differentiating by discrete water-body type at the ecoregion level (Model 8 vs. Model 7) increases <span class="math inline">\(R^2\)</span> by only <span class="math inline">\(+0.02\)</span> (<code>0.50</code> <span class="math inline">\(\rightarrow\)</span> <code>0.52</code>), and within Model 7 each individual water-body type is well predicted (<code>R² = 0.46–0.54</code>). Because Model 7 does not impose artificial parameter discontinuities at water-body type boundaries, it can be applied continuously across linked river-to-estuary networks (<code>Figure 3</code>).</li>
+</ol>
+</div>
+</div>
+<div id="comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)<a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Across models and water types, fitted specific attenuation coefficients demonstrate strongest per-mass attenuation by <strong>DOC</strong>, followed by <strong>NAP</strong> and <strong>Chl <em>a</em></strong>. In global Model 1 (<span class="math inline">\(n = 277{,}382\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span> (ratios <span class="math inline">\(\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}\)</span> in Model 1, and <span class="math inline">\(\alpha_{\text{DOC}} \approx 2\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}\)</span> across all regional groups in Table S1). These empirically derived continental coefficients agree closely with first-principles biophysical derivations and local optical studies:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="models.html#cb22-1" tabindex="-1"></a><span class="fu">compare_bannister_literature</span>(models) <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="models.html#cb22-2" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&#39;Comparison of empirically fitted specific attenuation coefficients (Models 1 &amp; 2) against theoretical and field bio-optical benchmarks.&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="models.html#cb22-3" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:bannister-table">Table 6.3: </span><span id="tab:bannister-table">Table 6.4: </span>Comparison of empirically fitted specific attenuation coefficients (Models 1 &amp; 2) against theoretical and field bio-optical benchmarks.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Constituent
+</th>
+<th style="text-align:left;">
+Units
+</th>
+<th style="text-align:left;">
+AquaMatch Global (Model 1)
+</th>
+<th style="text-align:left;">
+AquaMatch by Type (Model 2)
+</th>
+<th style="text-align:left;">
+Literature Range
+</th>
+<th style="text-align:left;">
+Primary References
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Chl a (alpha_Chl)
+</td>
+<td style="text-align:left;">
+m^2 (mg Chl a)^-1
+</td>
+<td style="text-align:left;">
+0.0086
+</td>
+<td style="text-align:left;">
+Estuary: 0.0115; Lake: 0.0079; Stream: 0.0106
+</td>
+<td style="text-align:left;">
+0.008 - 0.020 (canonical k_c = 0.016)
+</td>
+<td style="text-align:left;">
+Bannister (1974) L&amp;O 19:1-12; Morel (1988) JGR 93:10749; Kirk (1994) Light and Photosynthesis in Aquatic Ecosystems
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NAP (alpha_NAP)
+</td>
+<td style="text-align:left;">
+m^2 g^-1 (L mg^-1 m^-1)
+</td>
+<td style="text-align:left;">
+0.0432
+</td>
+<td style="text-align:left;">
+Estuary: 0.0309; Lake: 0.0462; Stream: 0.0482
+</td>
+<td style="text-align:left;">
+0.025 - 0.070
+</td>
+<td style="text-align:left;">
+Gohin et al. (2005) Int. J. Remote Sens. 26:1639; Gallegos et al. (2011) Estuar. Coast. Shelf Sci. 95:218; Kirk (1994)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DOC (alpha_DOC)
+</td>
+<td style="text-align:left;">
+m^2 g^-1 (L mg^-1 m^-1)
+</td>
+<td style="text-align:left;">
+0.0732
+</td>
+<td style="text-align:left;">
+Estuary: 0.0671; Lake: 0.0581; Stream: 0.0778
+</td>
+<td style="text-align:left;">
+0.030 - 0.150
+</td>
+<td style="text-align:left;">
+Morris et al. (1995) L&amp;O 40:1381; Spencer et al. (2012) JGR 117:G03001; Griffin et al. (2018) Water Res. 144:719
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tableS1" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance<a href="models.html#tableS1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All ten models’ group sample sizes (<span class="math inline">\(n\)</span>), specific attenuation coefficients, standard errors, and two-sided <span class="math inline">\(t\)</span>-test <span class="math inline">\(p\)</span>-values are exported to <code>figs/tables/tableS1_coefficients_aquamatch.csv</code>. Below are Models 1, 2, and the 37 strictly positive Level III ecoregion groups of Model 7:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="models.html#cb23-1" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">table_s1</span>(models)</span>
+<span id="cb23-2"><a href="models.html#cb23-2" tabindex="-1"></a><span class="fu">write_csv</span>(s1, <span class="fu">file.path</span>(PATH<span class="sc">$</span>figs, <span class="st">&#39;tables/tableS1_coefficients_aquamatch.csv&#39;</span>))</span>
+<span id="cb23-3"><a href="models.html#cb23-3" tabindex="-1"></a>s1 <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="models.html#cb23-4" tabindex="-1"></a>  <span class="fu">filter</span>(model <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>) <span class="sc">|</span> (model <span class="sc">==</span> <span class="dv">7</span> <span class="sc">&amp;</span> NAP <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> DOC <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> Chl_a <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-5"><a href="models.html#cb23-5" tabindex="-1"></a>  <span class="fu">select</span>(model, code, type, n_group, NAP, DOC, Chl_a, p_NAP, p_DOC, p_Chl_a) <span class="sc">%&gt;%</span></span>
+<span id="cb23-6"><a href="models.html#cb23-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(p_NAP, p_DOC, p_Chl_a), <span class="sc">~</span> <span class="fu">format.pval</span>(.x, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">eps =</span> <span class="fl">1e-16</span>)),</span>
+<span id="cb23-7"><a href="models.html#cb23-7" tabindex="-1"></a>         <span class="at">n_group =</span> <span class="fu">fmt_n</span>(n_group)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-8"><a href="models.html#cb23-8" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Model&#39;</span>, <span class="st">&#39;Ecoregion&#39;</span>, <span class="st">&#39;Water Type&#39;</span>, <span class="st">&#39;n&#39;</span>, <span class="st">&#39;α_NAP (m²/g)&#39;</span>, <span class="st">&#39;α_DOC (m²/g)&#39;</span>, <span class="st">&#39;α_Chl a (m²/mg)&#39;</span>, <span class="st">&#39;p (NAP)&#39;</span>, <span class="st">&#39;p (DOC)&#39;</span>, <span class="st">&#39;p (Chl a)&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-9"><a href="models.html#cb23-9" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">font_size =</span> <span class="dv">11</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Model
+</th>
+<th style="text-align:left;">
+Ecoregion
+</th>
+<th style="text-align:left;">
+Water Type
+</th>
+<th style="text-align:left;">
+n
+</th>
+<th style="text-align:right;">
+α_NAP (m²/g)
+</th>
+<th style="text-align:right;">
+α_DOC (m²/g)
+</th>
+<th style="text-align:right;">
+α_Chl a (m²/mg)
+</th>
+<th style="text-align:left;">
+p (NAP)
+</th>
+<th style="text-align:left;">
+p (DOC)
+</th>
+<th style="text-align:left;">
+p (Chl a)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:right;">
+0.0432
+</td>
+<td style="text-align:right;">
+0.0732
+</td>
+<td style="text-align:right;">
+0.0086
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:left;">
+Estuary
+</td>
+<td style="text-align:left;">
+63,892
+</td>
+<td style="text-align:right;">
+0.0309
+</td>
+<td style="text-align:right;">
+0.0671
+</td>
+<td style="text-align:right;">
+0.0115
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:left;">
+Lake
+</td>
+<td style="text-align:left;">
+61,241
+</td>
+<td style="text-align:right;">
+0.0462
+</td>
+<td style="text-align:right;">
+0.0581
+</td>
+<td style="text-align:right;">
+0.0079
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:left;">
+Stream
+</td>
+<td style="text-align:left;">
+152,249
+</td>
+<td style="text-align:right;">
+0.0482
+</td>
+<td style="text-align:right;">
+0.0778
+</td>
+<td style="text-align:right;">
+0.0106
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+10.1.2
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+109
+</td>
+<td style="text-align:right;">
+0.0041
+</td>
+<td style="text-align:right;">
+0.0595
+</td>
+<td style="text-align:right;">
+0.0067
+</td>
+<td style="text-align:left;">
+7.5e-06
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+5.3e-10
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+10.1.6
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+122
+</td>
+<td style="text-align:right;">
+0.0751
+</td>
+<td style="text-align:right;">
+0.0407
+</td>
+<td style="text-align:right;">
+0.0569
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.0013
+</td>
+<td style="text-align:left;">
+2.5e-07
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+10.1.8
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+208
+</td>
+<td style="text-align:right;">
+0.0053
+</td>
+<td style="text-align:right;">
+0.1068
+</td>
+<td style="text-align:right;">
+0.0116
+</td>
+<td style="text-align:left;">
+2.3e-11
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+1.4e-09
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+10.2.4
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+331
+</td>
+<td style="text-align:right;">
+0.0765
+</td>
+<td style="text-align:right;">
+0.2459
+</td>
+<td style="text-align:right;">
+0.0116
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+7.9e-05
+</td>
+<td style="text-align:left;">
+0.29329
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+15.4.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+9,718
+</td>
+<td style="text-align:right;">
+0.0861
+</td>
+<td style="text-align:right;">
+0.0486
+</td>
+<td style="text-align:right;">
+0.0061
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+4.7e-14
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+5.2.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,362
+</td>
+<td style="text-align:right;">
+0.0174
+</td>
+<td style="text-align:right;">
+0.0293
+</td>
+<td style="text-align:right;">
+0.0178
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+6.2.13
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+801
+</td>
+<td style="text-align:right;">
+0.0452
+</td>
+<td style="text-align:right;">
+0.0617
+</td>
+<td style="text-align:right;">
+0.0079
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.1.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+803
+</td>
+<td style="text-align:right;">
+0.1116
+</td>
+<td style="text-align:right;">
+0.0280
+</td>
+<td style="text-align:right;">
+0.0048
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+2.0e-05
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.1.4
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+411
+</td>
+<td style="text-align:right;">
+0.0319
+</td>
+<td style="text-align:right;">
+0.0423
+</td>
+<td style="text-align:right;">
+0.0102
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.1.7
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,308
+</td>
+<td style="text-align:right;">
+0.0077
+</td>
+<td style="text-align:right;">
+0.0903
+</td>
+<td style="text-align:right;">
+0.0093
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.2.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+687
+</td>
+<td style="text-align:right;">
+0.0259
+</td>
+<td style="text-align:right;">
+0.0820
+</td>
+<td style="text-align:right;">
+0.0100
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.3.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,737
+</td>
+<td style="text-align:right;">
+0.0283
+</td>
+<td style="text-align:right;">
+0.0772
+</td>
+<td style="text-align:right;">
+0.0053
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.00038
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.3.2
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+588
+</td>
+<td style="text-align:right;">
+0.1007
+</td>
+<td style="text-align:right;">
+0.0770
+</td>
+<td style="text-align:right;">
+0.0094
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.3.3
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+2,466
+</td>
+<td style="text-align:right;">
+0.0523
+</td>
+<td style="text-align:right;">
+0.0818
+</td>
+<td style="text-align:right;">
+0.0215
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.3.4
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+3,018
+</td>
+<td style="text-align:right;">
+0.0217
+</td>
+<td style="text-align:right;">
+0.1291
+</td>
+<td style="text-align:right;">
+0.0165
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.3.5
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+34,270
+</td>
+<td style="text-align:right;">
+0.0464
+</td>
+<td style="text-align:right;">
+0.1327
+</td>
+<td style="text-align:right;">
+0.0093
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.3.6
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+508
+</td>
+<td style="text-align:right;">
+0.0533
+</td>
+<td style="text-align:right;">
+0.0947
+</td>
+<td style="text-align:right;">
+0.0188
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+2.6e-13
+</td>
+<td style="text-align:left;">
+2.2e-08
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.4.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+506
+</td>
+<td style="text-align:right;">
+0.0341
+</td>
+<td style="text-align:right;">
+0.0886
+</td>
+<td style="text-align:right;">
+0.0214
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.4.2
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+209
+</td>
+<td style="text-align:right;">
+0.0962
+</td>
+<td style="text-align:right;">
+0.0450
+</td>
+<td style="text-align:right;">
+0.0421
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.0024
+</td>
+<td style="text-align:left;">
+3.6e-08
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.4.4
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+395
+</td>
+<td style="text-align:right;">
+0.0311
+</td>
+<td style="text-align:right;">
+0.1466
+</td>
+<td style="text-align:right;">
+0.0169
+</td>
+<td style="text-align:left;">
+1.0e-12
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+7.6e-15
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.4.5
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,308
+</td>
+<td style="text-align:right;">
+0.0913
+</td>
+<td style="text-align:right;">
+0.0647
+</td>
+<td style="text-align:right;">
+0.0142
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.4.8
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+259
+</td>
+<td style="text-align:right;">
+0.1101
+</td>
+<td style="text-align:right;">
+0.0771
+</td>
+<td style="text-align:right;">
+0.0046
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.00173
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.4.9
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+591
+</td>
+<td style="text-align:right;">
+0.0419
+</td>
+<td style="text-align:right;">
+0.0693
+</td>
+<td style="text-align:right;">
+0.0118
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.5.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+64,060
+</td>
+<td style="text-align:right;">
+0.0346
+</td>
+<td style="text-align:right;">
+0.1921
+</td>
+<td style="text-align:right;">
+0.0059
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.5.2
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,257
+</td>
+<td style="text-align:right;">
+0.0222
+</td>
+<td style="text-align:right;">
+0.1107
+</td>
+<td style="text-align:right;">
+0.0180
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.5.3
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+121,842
+</td>
+<td style="text-align:right;">
+0.0238
+</td>
+<td style="text-align:right;">
+0.0756
+</td>
+<td style="text-align:right;">
+0.0074
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+8.5.4
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+2,157
+</td>
+<td style="text-align:right;">
+0.0204
+</td>
+<td style="text-align:right;">
+0.1342
+</td>
+<td style="text-align:right;">
+0.0066
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+7.4e-09
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.2.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+277
+</td>
+<td style="text-align:right;">
+0.0985
+</td>
+<td style="text-align:right;">
+0.0188
+</td>
+<td style="text-align:right;">
+0.0028
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.0092
+</td>
+<td style="text-align:left;">
+0.02429
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.2.3
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+6,220
+</td>
+<td style="text-align:right;">
+0.0323
+</td>
+<td style="text-align:right;">
+0.0471
+</td>
+<td style="text-align:right;">
+0.0138
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.2.4
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+3,186
+</td>
+<td style="text-align:right;">
+0.0687
+</td>
+<td style="text-align:right;">
+0.0784
+</td>
+<td style="text-align:right;">
+0.0077
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.3.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+213
+</td>
+<td style="text-align:right;">
+0.0647
+</td>
+<td style="text-align:right;">
+0.0581
+</td>
+<td style="text-align:right;">
+0.0067
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+3.9e-09
+</td>
+<td style="text-align:left;">
+0.00010
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.3.3
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,124
+</td>
+<td style="text-align:right;">
+0.0405
+</td>
+<td style="text-align:right;">
+0.0614
+</td>
+<td style="text-align:right;">
+0.0286
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.4.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:right;">
+0.0699
+</td>
+<td style="text-align:right;">
+0.0671
+</td>
+<td style="text-align:right;">
+0.0048
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.0010
+</td>
+<td style="text-align:left;">
+0.00927
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.4.3
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+581
+</td>
+<td style="text-align:right;">
+0.0545
+</td>
+<td style="text-align:right;">
+0.1978
+</td>
+<td style="text-align:right;">
+0.0004
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.91709
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.4.5
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,558
+</td>
+<td style="text-align:right;">
+0.0425
+</td>
+<td style="text-align:right;">
+0.2217
+</td>
+<td style="text-align:right;">
+0.0140
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+3.0e-07
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.4.7
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+1,131
+</td>
+<td style="text-align:right;">
+0.0276
+</td>
+<td style="text-align:right;">
+0.2538
+</td>
+<td style="text-align:right;">
+0.0017
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.42037
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+9.5.1
+</td>
+<td style="text-align:left;">
+All
+</td>
+<td style="text-align:left;">
+5,607
+</td>
+<td style="text-align:right;">
+0.0442
+</td>
+<td style="text-align:right;">
+0.2567
+</td>
+<td style="text-align:right;">
+0.0012
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+&lt; 1e-16
+</td>
+<td style="text-align:left;">
+0.23187
+</td>
+</tr>
+</tbody>
+</table>
+<p>In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative (<span class="math inline">\(p \ge 0.10\)</span>) due to narrow local concentration ranges; during continental ternary projection (<code>Section 8</code>), these groups automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="models.html#cb24-1" tabindex="-1"></a>s1 <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="models.html#cb24-2" tabindex="-1"></a>  <span class="fu">filter</span>(model <span class="sc">==</span> <span class="dv">7</span>, <span class="sc">!</span>(NAP <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> DOC <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> Chl_a <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="models.html#cb24-3" tabindex="-1"></a>  <span class="fu">select</span>(code, n_group, NAP, p_NAP, DOC, p_DOC, Chl_a, p_Chl_a) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="models.html#cb24-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_group =</span> <span class="fu">fmt_n</span>(n_group)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="models.html#cb24-5" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Level III Ecoregion&#39;</span>, <span class="st">&#39;n&#39;</span>, <span class="st">&#39;α_NAP&#39;</span>, <span class="st">&#39;p (NAP)&#39;</span>, <span class="st">&#39;α_DOC&#39;</span>, <span class="st">&#39;p (DOC)&#39;</span>, <span class="st">&#39;α_Chl a&#39;</span>, <span class="st">&#39;p (Chl a)&#39;</span>),</span>
+<span id="cb24-6"><a href="models.html#cb24-6" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">&#39;The 10 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p &gt;= 0.10) and falls back to global Model 1 during ternary application.&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-7"><a href="models.html#cb24-7" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">bootstrap_options =</span> <span class="st">&#39;condensed&#39;</span>, <span class="at">font_size =</span> <span class="dv">11</span>)</span></code></pre></div>
+<table class="table table-condensed" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:m7-neg">Table 6.5: </span><span id="tab:m7-neg">Table 6.6: </span>The 10 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p &gt;= 0.10) and falls back to global Model 1 during ternary application.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Level III Ecoregion
+</th>
+<th style="text-align:left;">
+n
+</th>
+<th style="text-align:right;">
+α_NAP
+</th>
+<th style="text-align:right;">
+p (NAP)
+</th>
+<th style="text-align:right;">
+α_DOC
+</th>
+<th style="text-align:right;">
+p (DOC)
+</th>
+<th style="text-align:right;">
+α_Chl a
+</th>
+<th style="text-align:right;">
+p (Chl a)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+6.2.10
+</td>
+<td style="text-align:left;">
+157
+</td>
+<td style="text-align:right;">
+0.1166
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-0.0040
+</td>
+<td style="text-align:right;">
+0.6773
+</td>
+<td style="text-align:right;">
+0.0029
+</td>
+<td style="text-align:right;">
+0.5147
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6.2.14
+</td>
+<td style="text-align:left;">
+114
+</td>
+<td style="text-align:right;">
+0.0631
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0531
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0029
+</td>
+<td style="text-align:right;">
+0.6344
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7.1.8
+</td>
+<td style="text-align:left;">
+134
+</td>
+<td style="text-align:right;">
+0.0312
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1004
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0051
+</td>
+<td style="text-align:right;">
+0.4522
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7.1.9
+</td>
+<td style="text-align:left;">
+155
+</td>
+<td style="text-align:right;">
+0.0670
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.0883
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0031
+</td>
+<td style="text-align:right;">
+0.1007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8.3.7
+</td>
+<td style="text-align:left;">
+2,501
+</td>
+<td style="text-align:right;">
+0.0270
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2042
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0010
+</td>
+<td style="text-align:right;">
+0.4586
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8.3.8
+</td>
+<td style="text-align:left;">
+919
+</td>
+<td style="text-align:right;">
+0.0349
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1813
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0019
+</td>
+<td style="text-align:right;">
+0.4995
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.4.2
+</td>
+<td style="text-align:left;">
+896
+</td>
+<td style="text-align:right;">
+0.0540
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2102
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0005
+</td>
+<td style="text-align:right;">
+0.8623
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.4.4
+</td>
+<td style="text-align:left;">
+145
+</td>
+<td style="text-align:right;">
+0.0478
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1409
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0048
+</td>
+<td style="text-align:right;">
+0.1049
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.4.6
+</td>
+<td style="text-align:left;">
+279
+</td>
+<td style="text-align:right;">
+0.0703
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1774
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0023
+</td>
+<td style="text-align:right;">
+0.5719
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.6.1
+</td>
+<td style="text-align:left;">
+119
+</td>
+<td style="text-align:right;">
+0.0443
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2444
+</td>
+<td style="text-align:right;">
+0.0000
+</td>
+<td style="text-align:right;">
+-0.0097
+</td>
+<td style="text-align:right;">
+0.1823
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ecoregions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="stability.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": null,
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+bookdown::gitbook:
+  css: style.css
+  split_by: chapter
+  config:
+    toc:
+      collapse: section
+      before: |
+        <li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
+    download: null
+    sharing: null
+    edit: null

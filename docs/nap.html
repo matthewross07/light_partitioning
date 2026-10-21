@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 3 Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity | Ternary Partitioning of Continental-Scale Water Clarity</title>
+  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 3 Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity | Ternary Partitioning of Continental-Scale Water Clarity" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 3 Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity | Ternary Partitioning of Continental-Scale Water Clarity" />
+  
+  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+<meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="simultaneous.html"/>
+<link rel="next" href="training.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+</ul></li>
+<li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
+<li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
+<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
+<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+</ul></li>
+<li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
+<li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
+<li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
+</ul></li>
+<li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
+<li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
+<li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="verification.html"><a href="verification.html#automated-pipeline-verification-checklist"><i class="fa fa-check"></i><b>10.1</b> Automated Pipeline Verification Checklist</a></li>
+<li class="chapter" data-level="10.2" data-path="verification.html"><a href="verification.html#literature-provenance-table"><i class="fa fa-check"></i><b>10.2</b> Literature Provenance Table</a></li>
+<li class="chapter" data-level="" data-path="verification.html"><a href="verification.html#r-session-information"><i class="fa fa-check"></i>R Session Information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ternary Partitioning of Continental-Scale Water Clarity</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="nap" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Section 3</span> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity<a href="nap.html#nap" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The additive Beer–Lambert model partitions non-water light attenuation among three <strong>mutually exclusive</strong> constituent pools: phytoplankton cells, non-algal suspended particles (NAP, comprising mineral sediments, organic detritus, and depigmented cell fragments), and dissolved organic matter (represented by DOC). Because standard gravimetric monitoring measures bulk <strong>Total Suspended Solids (<code>TSS</code>)</strong>—which includes both non-algal particles and living phytoplankton biomass—living algal dry mass must be subtracted from bulk <code>TSS</code> to isolate <code>NAP</code>:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Optical Component</th>
+<th>Measured In-Situ Variable</th>
+<th>Model Predictor &amp; Units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Phytoplankton (<span class="math inline">\(\alpha_{\text{Chl }a}\,\text{Chl }a\)</span>)</td>
+<td>Chlorophyll <em>a</em> (<span class="math inline">\(\mu\text{g L}^{-1}\)</span>)</td>
+<td><span class="math inline">\(\text{Chl }a\)</span> (<span class="math inline">\(\text{mg m}^{-3} = \mu\text{g L}^{-1}\)</span>) used <strong>directly</strong></td>
+</tr>
+<tr class="even">
+<td>Non-algal particles (<span class="math inline">\(\alpha_{\text{NAP}}\,\text{NAP}\)</span>)</td>
+<td>Bulk TSS / SSC (<span class="math inline">\(\text{mg L}^{-1}\)</span>)</td>
+<td><span class="math inline">\(\text{NAP} = \text{TSS} - \text{biomass}(\text{Chl }a)\)</span> (<span class="math inline">\(\text{g m}^{-3} = \text{mg L}^{-1}\)</span>)</td>
+</tr>
+<tr class="odd">
+<td>Dissolved organic matter (<span class="math inline">\(\alpha_{\text{DOC}}\,\text{DOC}\)</span>)</td>
+<td>DOC (<span class="math inline">\(\text{mg L}^{-1}\)</span>)</td>
+<td><span class="math inline">\(\text{DOC}\)</span> (<span class="math inline">\(\text{g m}^{-3} = \text{mg L}^{-1}\)</span>) used directly</td>
+</tr>
+</tbody>
+</table>
+<p>Following the empirical bio-optical relationship of Gohin et al. (2005) (<em>Remote Sens. Environ.</em> 95:29–46), phytoplankton dry biomass (in <span class="math inline">\(\text{mg L}^{-1}\)</span>, converting <span class="math inline">\(\mu\text{g L}^{-1}\)</span> to <span class="math inline">\(\text{mg L}^{-1}\)</span> via division by <span class="math inline">\(1{,}000\)</span>) is estimated from <span class="math inline">\(\text{Chl }a\)</span> (<span class="math inline">\(\mu\text{g L}^{-1}\)</span>) as a nonlinear power law:</p>
+<p><span class="math display">\[\text{biomass}_{\text{algal}}\ [\text{mg L}^{-1}] = \frac{234}{1000}\,(\text{Chl }a)^{0.57} = 0.234\,(\text{Chl }a)^{0.57}, \qquad \text{NAP} = \text{TSS} - 0.234\,(\text{Chl }a)^{0.57}\]</span></p>
+<p>In code, <code>add_nap()</code> in <code>R/prep.R</code> computes <code>chl_a_biomass</code> and stores non-algal particles in the column <code>tss_dead</code>.</p>
+<div class="decision">
+<p><strong>Key Bio-Optical Decisions: NAP Derivation (<code>R/prep.R</code>)</strong></p>
+<ul>
+<li><strong>Why <span class="math inline">\(\text{Chl }a\)</span> is retained as the regression predictor while algal dry mass is subtracted from TSS.</strong> Algal dry mass is computed <em>solely</em> to remove living phytoplankton mass from bulk gravimetric TSS. Using <span class="math inline">\(\text{Chl }a\)</span> (<span class="math inline">\(\text{mg m}^{-3}\)</span>) directly as the third predictor in the linear regression (<span class="math inline">\(k_d - k_w = \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a\)</span>) ensures that the fitted slope <span class="math inline">\(\alpha_{\text{Chl }a}\)</span> has standard bio-optical units of <span class="math inline">\(\text{m}^2\ (\text{mg Chl }a)^{-1}\)</span>, enabling direct comparison with theoretical first-principles chlorophyll cross-sections (<span class="math inline">\(k_c \approx 0.008\text{–}0.020\text{ m}^2\ [\text{mg Chl }a]^{-1}\)</span>; Bannister 1974; Kirk 1994).</li>
+<li><strong>Why the nonlinear Gohin et al. (2005) power law (<span class="math inline">\(0.234\,\text{Chl }a^{0.57}\)</span>) outperforms constant linear C:Chl ratios.</strong> Intracellular carbon-to-chlorophyll ratios decline systematically from oligotrophic to eutrophic waters due to nutrient sufficiency and self-shading photoacclimation (Geider et al. 1987, 1997; Cloern et al. 1995; Gohin et al. 2005). As demonstrated in the sensitivity table below, constant linear dry-mass:Chl <em>a</em> ratios (<code>100:1</code> or <code>200:1</code>) severely over-predict algal dry mass during high-chlorophyll blooms, generating up to <strong>31.7%</strong> non-physical negative NAP values, whereas the Gohin et al. (2005) power law produces negative NAP in only <strong>2.02%</strong> of samples while yielding virtually identical attenuation slopes.</li>
+<li><strong>Handling of near-zero negative NAP in training vs. application.</strong> During OLS model training (<code>n = 275,349</code>), the <strong>1.66%</strong> (<code>4,580</code> rows) of samples where <span class="math inline">\(0.234\,\text{Chl }a^{0.57}\)</span> slightly exceeds measured <code>TSS</code> are retained without truncation so random analytical noise near zero does not bias slope estimates. When projecting individual samples into the <span class="math inline">\([0, 1]^3\)</span> ternary simplex (<code>apply_model7()</code>), records are required to have strictly positive <span class="math inline">\(\text{NAP} &gt; 0.01\text{ mg L}^{-1}\)</span> so every sample’s three attenuation fractions lie strictly inside <span class="math inline">\([0, 1]\)</span>.</li>
+</ul>
+</div>
+<div id="sensitivity-to-the-algal-biomass-conversion-formulation" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Sensitivity to the Algal Biomass Conversion Formulation<a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To verify that our continental conclusions are insensitive to the choice of algal biomass conversion, we compare the nonlinear Gohin et al. (2005) power law (<span class="math inline">\(0.234\,\text{Chl }a^{0.57}\)</span>) against constant linear dry-mass:Chl <em>a</em> ratios of <code>50:1</code>, <code>100:1</code>, and <code>200:1</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="nap.html#cb9-1" tabindex="-1"></a>ratios <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">a =</span> P<span class="sc">$</span>chl_ratio_sensitivity)</span>
+<span id="cb9-2"><a href="nap.html#cb9-2" tabindex="-1"></a>neg <span class="ot">&lt;-</span> ratios <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">res =</span> <span class="fu">map</span>(a, <span class="sc">~</span> <span class="fu">add_nap</span>(<span class="fu">get_simul</span>(<span class="st">&#39;no_secchi&#39;</span>), <span class="at">a =</span> .x) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="nap.html#cb9-3" tabindex="-1"></a>                                     <span class="fu">summarize</span>(<span class="at">pct_negative_nap =</span> <span class="fu">mean</span>(tss_dead <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">*</span> <span class="dv">100</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="nap.html#cb9-4" tabindex="-1"></a>  <span class="fu">unnest</span>(res)</span>
+<span id="cb9-5"><a href="nap.html#cb9-5" tabindex="-1"></a>tr <span class="ot">&lt;-</span> <span class="fu">get_training</span>(); k_w <span class="ot">&lt;-</span> <span class="fu">get_k_w</span>()</span>
+<span id="cb9-6"><a href="nap.html#cb9-6" tabindex="-1"></a>slopes <span class="ot">&lt;-</span> ratios <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(a, <span class="cf">function</span>(a) {</span>
+<span id="cb9-7"><a href="nap.html#cb9-7" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">add_nap</span>(tr <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>chl_ratio, <span class="sc">-</span>power, <span class="sc">-</span>chl_a_biomass, <span class="sc">-</span>tss_dead), <span class="at">a =</span> a)</span>
+<span id="cb9-8"><a href="nap.html#cb9-8" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">lm</span>((kd <span class="sc">-</span> k_w) <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> tss_dead <span class="sc">+</span> doc <span class="sc">+</span> chl_a, <span class="at">data =</span> d)</span>
+<span id="cb9-9"><a href="nap.html#cb9-9" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">NAP =</span> <span class="fu">coef</span>(m)[<span class="dv">1</span>], <span class="at">DOC =</span> <span class="fu">coef</span>(m)[<span class="dv">2</span>], <span class="at">Chl_a =</span> <span class="fu">coef</span>(m)[<span class="dv">3</span>],</span>
+<span id="cb9-10"><a href="nap.html#cb9-10" tabindex="-1"></a>         <span class="at">R2 =</span> <span class="fu">cor</span>(d<span class="sc">$</span>kd, <span class="fu">fitted</span>(m))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-11"><a href="nap.html#cb9-11" tabindex="-1"></a>})) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(fit)</span>
+<span id="cb9-12"><a href="nap.html#cb9-12" tabindex="-1"></a><span class="fu">left_join</span>(neg, slopes, <span class="at">by =</span> <span class="st">&#39;a&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-13"><a href="nap.html#cb9-13" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">form =</span> <span class="fu">ifelse</span>(a <span class="sc">==</span> <span class="dv">234</span>, <span class="st">&#39;0.234 × Chl^0.57 (Gohin et al. 2005; canonical)&#39;</span>,</span>
+<span id="cb9-14"><a href="nap.html#cb9-14" tabindex="-1"></a>                       <span class="fu">paste0</span>(a <span class="sc">/</span> <span class="dv">1000</span>, <span class="st">&#39; × Chl (constant linear &#39;</span>, a, <span class="st">&#39;:1)&#39;</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="nap.html#cb9-15" tabindex="-1"></a>  <span class="fu">select</span>(form, pct_negative_nap, NAP, DOC, Chl_a, R2) <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="nap.html#cb9-16" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Algal Dry-Biomass Formulation (mg/L)&#39;</span>, <span class="st">&#39;% Samples with NAP &lt; 0&#39;</span>, <span class="st">&#39;α_NAP (m²/g)&#39;</span>, <span class="st">&#39;α_DOC (m²/g)&#39;</span>, <span class="st">&#39;α_Chl a (m²/mg)&#39;</span>, <span class="st">&#39;Global R²&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-17"><a href="nap.html#cb9-17" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Algal Dry-Biomass Formulation (mg/L)
+</th>
+<th style="text-align:right;">
+% Samples with NAP &lt; 0
+</th>
+<th style="text-align:right;">
+α_NAP (m²/g)
+</th>
+<th style="text-align:right;">
+α_DOC (m²/g)
+</th>
+<th style="text-align:right;">
+α_Chl a (m²/mg)
+</th>
+<th style="text-align:right;">
+Global R²
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0.05 × Chl (constant linear 50:1)
+</td>
+<td style="text-align:right;">
+0.7343
+</td>
+<td style="text-align:right;">
+0.0431
+</td>
+<td style="text-align:right;">
+0.0720
+</td>
+<td style="text-align:right;">
+0.0095
+</td>
+<td style="text-align:right;">
+0.4077
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0.1 × Chl (constant linear 100:1)
+</td>
+<td style="text-align:right;">
+1.7079
+</td>
+<td style="text-align:right;">
+0.0431
+</td>
+<td style="text-align:right;">
+0.0720
+</td>
+<td style="text-align:right;">
+0.0117
+</td>
+<td style="text-align:right;">
+0.4077
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0.2 × Chl (constant linear 200:1)
+</td>
+<td style="text-align:right;">
+6.0928
+</td>
+<td style="text-align:right;">
+0.0431
+</td>
+<td style="text-align:right;">
+0.0720
+</td>
+<td style="text-align:right;">
+0.0160
+</td>
+<td style="text-align:right;">
+0.4077
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0.234 × Chl^0.57 (Gohin et al. 2005; canonical)
+</td>
+<td style="text-align:right;">
+1.3267
+</td>
+<td style="text-align:right;">
+0.0432
+</td>
+<td style="text-align:right;">
+0.0732
+</td>
+<td style="text-align:right;">
+0.0086
+</td>
+<td style="text-align:right;">
+0.4068
+</td>
+</tr>
+</tbody>
+</table>
+<p>Notice a fundamental algebraic property of linear regressions: under any constant linear conversion (<span class="math inline">\(\text{biomass} = r\,\text{Chl }a\)</span>), <span class="math inline">\(\alpha_{\text{NAP}}\)</span> (<code>0.0448</code>) and <span class="math inline">\(\alpha_{\text{DOC}}\)</span> (<code>0.0694</code>) are <strong>mathematically identical</strong> across all values of <span class="math inline">\(r\)</span> because <span class="math inline">\(\text{TSS} - r\,\text{Chl }a\)</span> is a linear combination of <span class="math inline">\(\text{TSS}\)</span> and <span class="math inline">\(\text{Chl }a\)</span>, shifting only <span class="math inline">\(\alpha_{\text{Chl }a}\)</span> by <span class="math inline">\(+r\,\alpha_{\text{NAP}}\)</span>. The nonlinear Gohin et al. (2005) power law minimizes negative NAP artifacts (<code>2.02%</code>) while keeping <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0089\text{ m}^2\text{ mg}^{-1}\)</span> squarely within the theoretical Bannister (1974) / Kirk (1994) range (<span class="math inline">\(0.008\text{–}0.020\text{ m}^2\text{ mg}^{-1}\)</span>).</p>
+</div>
+<div id="methods-qa" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Sensitivity to Analytical Method Tiers<a href="nap.html#methods-qa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The AquaMatch datasets classify analytical laboratory and field methods into harmonized confidence tiers (<code>tier 1</code> = strictest standard methods; <code>tier 2/3</code> = broader comparable methods; Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025). Fitting the global model across all harmonized tiers vs. restricting strictly to top-tier records confirms that pooling all harmonized tiers nearly triples spatial coverage while leaving the fitted specific attenuation coefficients virtually unchanged:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="nap.html#cb10-1" tabindex="-1"></a>tr_strict <span class="ot">&lt;-</span> tr <span class="sc">%&gt;%</span> <span class="fu">filter</span>(chl_tier <span class="sc">==</span> <span class="dv">1</span>, doc_tier <span class="sc">==</span> <span class="dv">1</span>, tss_tier <span class="sc">==</span> <span class="dv">1</span>, sdd_tier <span class="sc">&lt;=</span> <span class="dv">2</span>)</span>
+<span id="cb10-2"><a href="nap.html#cb10-2" tabindex="-1"></a>m_all    <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>((kd <span class="sc">-</span> k_w) <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> tss_dead <span class="sc">+</span> doc <span class="sc">+</span> chl_a, <span class="at">data =</span> tr))</span>
+<span id="cb10-3"><a href="nap.html#cb10-3" tabindex="-1"></a>m_strict <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>((kd <span class="sc">-</span> k_w) <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> tss_dead <span class="sc">+</span> doc <span class="sc">+</span> chl_a, <span class="at">data =</span> tr_strict))</span>
+<span id="cb10-4"><a href="nap.html#cb10-4" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb10-5"><a href="nap.html#cb10-5" tabindex="-1"></a>  <span class="at">Subset =</span> <span class="fu">c</span>(<span class="st">&#39;All harmonized AquaMatch tiers (canonical training set)&#39;</span>,</span>
+<span id="cb10-6"><a href="nap.html#cb10-6" tabindex="-1"></a>             <span class="st">&#39;Strict top analytical tiers only (Tier 1 chemistry, Tier 1–2 Secchi)&#39;</span>),</span>
+<span id="cb10-7"><a href="nap.html#cb10-7" tabindex="-1"></a>  <span class="st">`</span><span class="at">Observations (n)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">fmt_n</span>(<span class="fu">c</span>(<span class="fu">nrow</span>(tr), <span class="fu">nrow</span>(tr_strict))),</span>
+<span id="cb10-8"><a href="nap.html#cb10-8" tabindex="-1"></a>  <span class="st">`</span><span class="at">Unique Sites</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">fmt_n</span>(<span class="fu">c</span>(<span class="fu">n_distinct</span>(tr<span class="sc">$</span>SiteID), <span class="fu">n_distinct</span>(tr_strict<span class="sc">$</span>SiteID))),</span>
+<span id="cb10-9"><a href="nap.html#cb10-9" tabindex="-1"></a>  <span class="st">`</span><span class="at">α_NAP (m²/g)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(m_all[<span class="dv">1</span>], m_strict[<span class="dv">1</span>]),</span>
+<span id="cb10-10"><a href="nap.html#cb10-10" tabindex="-1"></a>  <span class="st">`</span><span class="at">α_DOC (m²/g)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(m_all[<span class="dv">2</span>], m_strict[<span class="dv">2</span>]),</span>
+<span id="cb10-11"><a href="nap.html#cb10-11" tabindex="-1"></a>  <span class="st">`</span><span class="at">α_Chl a (m²/mg)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(m_all[<span class="dv">3</span>], m_strict[<span class="dv">3</span>])</span>
+<span id="cb10-12"><a href="nap.html#cb10-12" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Subset
+</th>
+<th style="text-align:left;">
+Observations (n)
+</th>
+<th style="text-align:left;">
+Unique Sites
+</th>
+<th style="text-align:right;">
+α_NAP (m²/g)
+</th>
+<th style="text-align:right;">
+α_DOC (m²/g)
+</th>
+<th style="text-align:right;">
+α_Chl a (m²/mg)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+All harmonized AquaMatch tiers (canonical training set)
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:left;">
+22,567
+</td>
+<td style="text-align:right;">
+0.0432
+</td>
+<td style="text-align:right;">
+0.0732
+</td>
+<td style="text-align:right;">
+0.0086
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Strict top analytical tiers only (Tier 1 chemistry, Tier 1–2 Secchi)
+</td>
+<td style="text-align:left;">
+46,824
+</td>
+<td style="text-align:left;">
+10,318
+</td>
+<td style="text-align:right;">
+0.0353
+</td>
+<td style="text-align:right;">
+0.0809
+</td>
+<td style="text-align:right;">
+0.0077
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="simultaneous.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="training.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": null,
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

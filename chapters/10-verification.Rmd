@@ -1,0 +1,43 @@
+# Automated Pipeline Verification & Literature Provenance {#verification}
+
+```{r ch10-setup, include = FALSE}
+source('R/00_setup.R')
+```
+
+This section presents the automated verification audit (`R/verify.R` and `R/claims.R`) confirming:
+
+1. **Mathematical & Implementation Integrity**: Automated assertions verifying input completeness, strict 1-to-1 spatial ecoregion joins, unified group sample-size thresholds ($> 100$ observations), consistent pure-water attenuation offset ($k_w = 0.08749\text{ m}^{-1}$) across model fitting and Secchi prediction, strict simplex positivity ($f_i \in [0, 1]$), and exact Sutherland–Hodgman polygon area normalization ($\sqrt{3}/4$).
+2. **Statistical & Literature Provenance**: Peer-reviewed citations and DOIs supporting every dataset, bio-optical constant, and methodological decision across the workflow.
+
+---
+
+## Automated Pipeline Verification Checklist
+
+```{r verify-summary}
+v <- run_verification()
+saveRDS(v, file.path(PATH$derived, 'verification_summary.rds'))
+v %>%
+  mutate(pass = ifelse(pass, '<span class="pass">✔ PASS</span>', '<span class="fail">✘ FAIL</span>'),
+         across(c(expected, actual), as.character)) %>%
+  kable(escape = FALSE, col.names = c('Pipeline Stage', 'Verification Check', 'Expected Criterion', 'Observed Value', 'Status')) %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
+```
+
+---
+
+## Literature Provenance Table
+
+```{r lit-provenance}
+verified_literature_table() %>%
+  kable(col.names = c('Pipeline Stage / Decision', 'Equation / Parameter', 'Primary Citation', 'DOI / Package ID', 'Implementation Notes'),
+        caption = 'Peer-reviewed literature and data provenance supporting every step of the continental water-clarity partitioning pipeline.') %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), font_size = 11, full_width = TRUE)
+```
+
+---
+
+## R Session Information {-}
+
+```{r session}
+sessionInfo()
+```

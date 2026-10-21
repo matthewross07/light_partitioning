@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Ternary Partitioning of Continental-Scale Water Clarity</title>
+  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Ternary Partitioning of Continental-Scale Water Clarity" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Ternary Partitioning of Continental-Scale Water Clarity" />
+  
+  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+<meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="data-sources.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+</ul></li>
+<li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
+<li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
+<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
+<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+</ul></li>
+<li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
+<li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
+<li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
+</ul></li>
+<li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
+<li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
+<li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="verification.html"><a href="verification.html#automated-pipeline-verification-checklist"><i class="fa fa-check"></i><b>10.1</b> Automated Pipeline Verification Checklist</a></li>
+<li class="chapter" data-level="10.2" data-path="verification.html"><a href="verification.html#literature-provenance-table"><i class="fa fa-check"></i><b>10.2</b> Literature Provenance Table</a></li>
+<li class="chapter" data-level="" data-path="verification.html"><a href="verification.html#r-session-information"><i class="fa fa-check"></i>R Session Information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ternary Partitioning of Continental-Scale Water Clarity</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Ternary Partitioning of Continental-Scale Water Clarity</h1>
+<h2 class="subtitle"><em>End-to-End Bio-Optical Modeling, Quality Control, and Ternary Diagnostics Across U.S. Streams, Lakes, and Estuaries (1970–2025)</em></h2>
+<p class="author"><em>James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross</em></p>
+<p class="date"><em>October 21, 2026</em></p>
+</div>
+<div id="overview-executive-summary" class="section level1 unnumbered hasAnchor">
+<h1>Overview &amp; Executive Summary<a href="index.html#overview-executive-summary" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This technical report documents the end-to-end data harmonization, multi-stage quality control, hierarchical bio-optical modeling, and ternary partitioning workflow for <strong>“Ternary partitioning of continental scale water clarity”</strong> (Jawitz, Cohen, &amp; Ross).</p>
+<p>Water clarity—most widely measured <em>in situ</em> as Secchi disk depth (<span class="math inline">\(z_{SD}\)</span>, in meters)—is governed by pure water itself (<span class="math inline">\(k_w\)</span>) and three primary light-attenuating constituents (LACs): <strong>non-algal particles (NAP)</strong>, <strong>dissolved organic carbon (DOC)</strong>, and <strong>phytoplankton chlorophyll <em>a</em> (<span class="math inline">\(\text{Chl }a\)</span>)</strong>. By combining contrast-transmittance theory (<span class="math inline">\(k_d = 1 / z_{SD}\)</span>; Lee et al. 2015, 2018) with the additive Beer–Lambert law, Secchi depth can be expressed directly in terms of constituent concentrations:</p>
+<p><span class="math display">\[z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a}\]</span></p>
+<p>Using harmonized <em>in situ</em> records spanning <strong>1970–2025</strong> across the conterminous United States from the <strong>AquaMatch</strong> Environmental Data Initiative (EDI) data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025), this pipeline:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Harmonizes and screens multi-agency Water Quality Portal (WQP) measurements</strong> (<code>Section 1</code>–<code>Section 4</code>), assembling <strong><code>277,382</code> simultaneous four-variable training observations</strong> (<code>Secchi + Chl a + DOC + TSS/SSC</code>) and <strong><code>478,929</code> simultaneous three-constituent application observations</strong> across <strong><code>39,396</code> unique monitoring stations</strong> in U.S. streams, lakes, and estuaries.</li>
+<li><strong>Applies a physically grounded, non-circular quality-control protocol</strong> (<code>Section 4</code>) that pairs standard EPA/USGS analytical reporting floors (<code>ifelse(x &lt; floor, floor, x)</code> rather than marginal quantile truncation) with an <strong><em>a priori</em> Beer–Lambert physical plausibility screen</strong> derived strictly from published optical cross-sections (Bannister 1974; Kirk 1994; Morris et al. 1995; Gohin et al. 2005). This screen removes the <strong>1.44%</strong> of WQP records exhibiting severe (<span class="math inline">\(&gt;6.3\times\)</span>) physical discordance—such as unflagged streambed bottom hits in shallow, clear streams—while <strong>preserving 100% of true environmental extremes</strong> (<code>Secchi</code> up to <span class="math inline">\(13.96\text{ m}\)</span>, <code>TSS</code> up to <span class="math inline">\(978\text{ mg L}^{-1}\)</span>, <code>Chl a</code> up to <span class="math inline">\(990\ \mu\text{g L}^{-1}\)</span>).</li>
+<li><strong>Evaluates 10 hierarchical general linear models</strong> (<code>Section 5</code>–<code>Section 7</code>) stratified across U.S. EPA Omernik Ecoregions (Levels I–IV; Omernik &amp; Griffith 2014) and water-body types (<code>Estuary</code>, <code>Lake</code>, <code>Stream</code>), achieving <span class="math inline">\(R^2 = 0.41\text{ to }0.53\)</span> (<strong>Model 7 <span class="math inline">\(R^2 = 0.50\)</span></strong> across <code>47</code> Level III ecoregions) without local site-by-site calibration and demonstrating sample-size convergence for groups with <span class="math inline">\(n &gt; 1{,}000\)</span> (<code>Figure S1</code>).</li>
+<li><strong>Partitions continental water clarity in ternary space</strong> (<code>Section 8</code>–<code>Section 9</code>), revealing distinct optical signatures across streams, lakes, and estuaries (<code>Figure 2</code>), river-to-estuary continuum transitions along 231 km of the Delaware River and Bay (<code>Figure 3</code>), and site-level temporal stability (<em>lucistatic</em> vs. <em>lucidynamic</em> regimes across <code>9,128</code> long-term stations; <code>Figure 4</code>).</li>
+</ol>
+<hr />
+<div id="visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation" class="section level2 unnumbered hasAnchor">
+<h2>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)<a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Why does partitioning diffuse light attenuation (<span class="math inline">\(k_d\)</span>) across <strong>Chl <em>a</em></strong>, <strong>DOC</strong>, and <strong>NAP</strong> matter physically and ecologically—and why must <strong>ternary proportions</strong> <span class="math inline">\((f_{\text{NAP}}, f_{\text{DOC}}, f_{\text{Chl }a})\)</span> be interpreted alongside <strong>total visibility</strong> (<span class="math inline">\(z_{SD} = 1 / k_d\)</span>)?</p>
+<ol style="list-style-type: decimal">
+<li><strong>Each constituent transforms the underwater light field and water color in a fundamentally different way:</strong>
+<ul>
+<li><strong>Chlorophyll <em>a</em> (Phytoplankton Blooms):</strong> Absorbs strongly in blue (<span class="math inline">\(440\text{ nm}\)</span>) and red (<span class="math inline">\(675\text{ nm}\)</span>) bands while phytoplankton cells backscatter green light (<span class="math inline">\(550\text{ nm}\)</span>), shifting water color from deep oligotrophic blue to <strong>luminous emerald green</strong> as Secchi depth shoals.</li>
+<li><strong>Dissolved Organic Carbon (CDOM / Brownification):</strong> Absorbs exponentially across short wavelengths with virtually zero particulate backscattering, turning lakes and rivers into <strong>dark tea-stained / mahogany blackwater</strong> where light is extinguished rapidly without mineral turbidity.</li>
+<li><strong>Non-Algal Particles (TSS / Sediment Plumes):</strong> Strongly backscatter broadband red, yellow, and green wavelengths, turning water <strong>chalky tan / turbid ochre</strong> and driving the steepest collapse in Secchi visibility (<span class="math inline">\(z_{SD} &lt; 0.4\text{ m}\)</span>).</li>
+</ul></li>
+<li><strong>Ternary proportions alone do not encode total visibility (<span class="math inline">\(z_{SD}\)</span>):</strong>
+<ul>
+<li>Because ternary coordinates sum to <span class="math inline">\(100\%\)</span> (<span class="math inline">\(f_{\text{NAP}} + f_{\text{DOC}} + f_{\text{Chl }a} = 1\)</span>), two waterbodies sitting at the <strong>exact same point in ternary space</strong> (e.g., a balanced <span class="math inline">\(33\%\text{ NAP}, 33\%\text{ DOC}, 33\%\text{ Chl }a\)</span> mixture) can represent either an ultra-clear alpine lake (<span class="math inline">\(z_{SD} = 5.3\text{ m}\)</span>, where submerged littoral boulders are visible) or a murky eutrophic-sediment waterbody (<span class="math inline">\(z_{SD} = 0.38\text{ m}\)</span>) when total constituent concentrations scale up.</li>
+<li>Pairing the ternary diagram with our calibrated Beer–Lambert Secchi depth model (<span class="math inline">\(z_{SD} = 1 / [k_w + \sum \alpha_i C_i]\)</span>) resolves both <strong>who</strong> controls light attenuation (ternary composition) and <strong>how much</strong> total light is attenuated (Secchi visibility across <strong>Clear</strong> vs. <strong>Dark/Turbid</strong> states).</li>
+</ul></li>
+</ol>
+<p>The simulation below—path-traced on an Apple Silicon Metal GPU using the <a href="https://github.com/matthewross07/sonic_ray"><code>{sonicray}</code></a> package—titrates <strong>Chl <em>a</em></strong>, then <strong>DOC</strong>, then <strong>TSS/NAP</strong> into a naturalistic 3D mountain lake basin while tracking the submerged Secchi disk profile and dynamically filling out side-by-side <strong>Clear Water State</strong> vs. <strong>Dark/Turbid Water State</strong> ternary diagrams:</p>
+<div style="margin: 1.2em 0; text-align: center;">
+<video width="100%" style="max-width: 980px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.22);" controls autoplay loop muted playsinline poster="figs/sonicray_optical_titration_sheet.png">
+<source src="figs/sonicray_optical_titration.mp4" type="video/mp4">
+Your browser does not support HTML5 video.
+</video>
+<p style="font-size: 0.9em; color: #475569; margin-top: 0.5em;">
+<b>Interactive 3D Bio-Optical Titration Film (rendered via <code>{sonicray}</code> on Apple Silicon Metal GPU).</b> Left: Path-traced 3D lake basin with continuous littoral bathymetry and live Secchi disk depth gauge (<span class="math inline">\(z_{SD} = 1/k_d\)</span>). Right: Live constituent concentrations, attenuation partitioning, and dual dynamic ternary diagrams comparing the <b>Clear Water State</b> (<span class="math inline">\(z_{SD} \approx 5.3\text{ m}\)</span>) against the <b>Dark/Turbid Water State</b> (<span class="math inline">\(z_{SD} \approx 0.4\text{ m}\)</span>) across identical ternary coordinates.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sonicray-sheet"></span>
+<img src="figs/sonicray_optical_titration_sheet.png" alt="Six keyframe stages from the {sonicray} 3D lake optical titration: (1) Clear oligotrophic baseline, (2) Chlorophyll a algal bloom titration, (3) DOC humic brownification titration, (4) TSS/NAP sediment plume titration, (5) Balanced mixed composition in a Clear Water State (z_SD = 5.8 m), and (6) the exact same ternary composition at 18x concentration in a Dark/Turbid Water State (z_SD = 0.38 m)." width="100%" />
+<p class="caption">
+Figure 0.1: Six keyframe stages from the {sonicray} 3D lake optical titration: (1) Clear oligotrophic baseline, (2) Chlorophyll a algal bloom titration, (3) DOC humic brownification titration, (4) TSS/NAP sediment plume titration, (5) Balanced mixed composition in a Clear Water State (z_SD = 5.8 m), and (6) the exact same ternary composition at 18x concentration in a Dark/Turbid Water State (z_SD = 0.38 m).
+</p>
+</div>
+<hr />
+</div>
+<div id="data-attrition-pipeline-funnel-at-a-glance" class="section level2 unnumbered hasAnchor">
+<h2>Data Attrition &amp; Pipeline Funnel at a Glance<a href="index.html#data-attrition-pipeline-funnel-at-a-glance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-condensed table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Pipeline Stage
+</th>
+<th style="text-align:left;">
+Description
+</th>
+<th style="text-align:left;">
+Observations (n)
+</th>
+<th style="text-align:left;">
+Unique Sites
+</th>
+<th style="text-align:left;">
+Key Quality-Control Rule
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<ol style="list-style-type: decimal">
+<li>Raw Harmonized EDI Inputs
+</td>
+<td style="text-align:left;">
+AquaMatch WQP harmonized parameter records (sdd, chla, doc, tss; 1970–2025)
+</td>
+<td style="text-align:left;">
+12,580,000+
+</td>
+<td style="text-align:left;">
+150,000+
+</td>
+<td style="text-align:left;">
+Retrieved via AquaMatchr::download_parameters()
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="2" style="list-style-type: decimal">
+<li>Simultaneous 3-LAC Matchups
+</td>
+<td style="text-align:left;">
+Same-site, same-day Chl a + DOC + TSS/SSC (non-facility, gross caps, deduplicated)
+</td>
+<td style="text-align:left;">
+486,689
+</td>
+<td style="text-align:left;">
+40,021
+</td>
+<td style="text-align:left;">
+Candidate pool for ternary partitioning (Secchi optional)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="3" style="list-style-type: decimal">
+<li>Simultaneous 4-Variable Matchups
+</td>
+<td style="text-align:left;">
+Same-site, same-day Secchi + Chl a + DOC + TSS/SSC (sdd_mdl &lt;= 1, sdd_approx == 0)
+</td>
+<td style="text-align:left;">
+281,439
+</td>
+<td style="text-align:left;">
+22,888
+</td>
+<td style="text-align:left;">
+Excludes non-Secchi turbidity tubes &amp; &lt;=0.01 m floor flags
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="4" style="list-style-type: decimal">
+<li>Stage 1 Analytical Floor Substitution
+</td>
+<td style="text-align:left;">
+Sub-detection/zero entries floored via ifelse(x &lt; floor, floor, x) at EPA/USGS MDLs
+</td>
+<td style="text-align:left;">
+281,439
+</td>
+<td style="text-align:left;">
+22,888
+</td>
+<td style="text-align:left;">
+Zero rows dropped; floors: Chl a 0.10 µg/L, DOC 0.25 mg/L, TSS 0.50 mg/L, Secchi 0.01 m
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="5" style="list-style-type: decimal">
+<li>Stage 2 Physical Plausibility Screen
+</td>
+<td style="text-align:left;">
+A priori Beer-Lambert consistency &amp;#124;log10(kd / kd,lit)&amp;#124; &lt;= 0.80 (~6.3x)
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:left;">
+22,567
+</td>
+<td style="text-align:left;">
+Final Training Set: removes 4,057 discordant records (1.44%); preserves 100% of upper extremes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="6" style="list-style-type: decimal">
+<li>Continental Ternary Application Set
+</td>
+<td style="text-align:left;">
+All 3-LAC records within training bounds &amp; NAP &gt; 0.01 mg/L (Model 7 applied)
+</td>
+<td style="text-align:left;">
+478,929
+</td>
+<td style="text-align:left;">
+39,396
+</td>
+<td style="text-align:left;">
+275,287 with measured Secchi + 203,642 with modeled Secchi only
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="7" style="list-style-type: decimal">
+<li>Long-Term Temporal Regimes (Fig. 4)
+</td>
+<td style="text-align:left;">
+Monitoring stations with &gt; 7 simultaneous observations
+</td>
+<td style="text-align:left;">
+419,690
+</td>
+<td style="text-align:left;">
+9,128
+</td>
+<td style="text-align:left;">
+5,303 streams, 2,362 lakes, and 1,463 estuaries
+</td>
+</tr>
+</tbody>
+</table></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol>
+<hr />
+</div>
+<div id="automated-verification-status" class="section level2 unnumbered hasAnchor">
+<h2>Automated Verification Status<a href="index.html#automated-verification-status" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Every intermediate dataset, spatial join, regression model, simplex constraint, and statistical claim is continuously verified against 13 automated mathematical and bio-optical checks (<code>R/verify.R</code>):</p>
+<table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Pipeline Stage
+</th>
+<th style="text-align:left;">
+Verification Check
+</th>
+<th style="text-align:left;">
+Target / Criterion
+</th>
+<th style="text-align:left;">
+Observed Value
+</th>
+<th style="text-align:left;">
+Status
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<ol style="list-style-type: decimal">
+<li>AquaMatch download
+</td>
+<td style="text-align:left;">
+All 4 EDI packages + spatial layers present
+</td>
+<td style="text-align:left;">
+11 / 11 files
+</td>
+<td style="text-align:left;">
+11 / 11 files
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="2" style="list-style-type: decimal">
+<li>Simultaneous obs.
+</td>
+<td style="text-align:left;">
+Training matchups (Secchi + Chl a + DOC + TSS)
+</td>
+<td style="text-align:left;">
+&gt; 250,000
+</td>
+<td style="text-align:left;">
+281,439
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="2" style="list-style-type: decimal">
+<li>Simultaneous obs.
+</td>
+<td style="text-align:left;">
+Application matchups (Chl a + DOC + TSS, Secchi optional)
+</td>
+<td style="text-align:left;">
+&gt; 450,000
+</td>
+<td style="text-align:left;">
+486,689
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="3" style="list-style-type: decimal">
+<li>Training set
+</td>
+<td style="text-align:left;">
+Analytical-floor &amp; Beer-Lambert screened training obs.
+</td>
+<td style="text-align:left;">
+&gt; 250,000
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="3" style="list-style-type: decimal">
+<li>Training set
+</td>
+<td style="text-align:left;">
+A priori Beer-Lambert physical plausibility (&amp;#124;log10(kd/kd_lit)&amp;#124; &lt;= 0.80)
+</td>
+<td style="text-align:left;">
+&lt;= 0.80 (max 6.3x)
+</td>
+<td style="text-align:left;">
+max = 0.800
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="3" style="list-style-type: decimal">
+<li>Training set
+</td>
+<td style="text-align:left;">
+Pure-water offset k_w = 1 / (1.5 * max Secchi) [m^-1]
+</td>
+<td style="text-align:left;">
+0.04776
+</td>
+<td style="text-align:left;">
+0.04776
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="4" style="list-style-type: decimal">
+<li>Ecoregion joins
+</td>
+<td style="text-align:left;">
+1-to-1 site assignment (no boundary row duplication)
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="5" style="list-style-type: decimal">
+<li>Models 1-10
+</td>
+<td style="text-align:left;">
+Unified minimum group size (&gt; 100 obs) across all models
+</td>
+<td style="text-align:left;">
+&gt; 100
+</td>
+<td style="text-align:left;">
+min group = 101
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="6" style="list-style-type: decimal">
+<li>Model 7 application
+</td>
+<td style="text-align:left;">
+All ternary fractions strictly inside [0, 1] simplex
+</td>
+<td style="text-align:left;">
+0 outside [0, 1]
+</td>
+<td style="text-align:left;">
+0 outside [0, 1]
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="6" style="list-style-type: decimal">
+<li>Model 7 application
+</td>
+<td style="text-align:left;">
+Consistent k_w used in both model fit and Secchi prediction
+</td>
+<td style="text-align:left;">
+0.04776 m^-1
+</td>
+<td style="text-align:left;">
+0.04776 m^-1
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="7" style="list-style-type: decimal">
+<li>Dominance classes
+</td>
+<td style="text-align:left;">
+Secchi ordering: NAP &lt; Chl a &lt; DOC &lt; Mixed
+</td>
+<td style="text-align:left;">
+Monotonic increase
+</td>
+<td style="text-align:left;">
+NAP dominant: 0.40 m &lt; Chl a dominant: 0.71 m &lt; DOC dominant: 1.10 m &lt; Mixed: 1.23 m
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="7" style="list-style-type: decimal">
+<li>Dominance classes
+</td>
+<td style="text-align:left;">
+All 6 pairwise class differences significant at p &lt; 0.01 (Welch &amp; Wilcoxon)
+</td>
+<td style="text-align:left;">
+6 / 6 pairs p &lt; 0.01
+</td>
+<td style="text-align:left;">
+Welch max p = 0.0001; Wilcoxon max p = 3.27e-07
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="8" style="list-style-type: decimal">
+<li>Figure 4 metric
+</td>
+<td style="text-align:left;">
+Exact ternary area fraction (normalized by sqrt(3)/4): Streams &amp; Estuaries &lt; Lakes
+</td>
+<td style="text-align:left;">
+Stream, Estuary (~10%) &lt; Lake (~15%)
+</td>
+<td style="text-align:left;">
+Stream 10.2%, Estuary 10.9% &lt; Lake 15.7%
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+</tbody>
+</table></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol>
+<hr />
+</div>
+<div id="reproducing-the-pipeline" class="section level2 unnumbered hasAnchor">
+<h2>Reproducing the Pipeline<a href="index.html#reproducing-the-pipeline" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="co"># From the project root:</span></span>
+<span id="cb1-2"><a href="index.html#cb1-2" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&#39;R/00_setup.R&#39;</span>)</span>
+<span id="cb1-3"><a href="index.html#cb1-3" tabindex="-1"></a><span class="fu">fetch_all</span>()                  <span class="co"># Step 0: downloads harmonized AquaMatch EDI products + spatial layers</span></span>
+<span id="cb1-4"><a href="index.html#cb1-4" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">render_book</span>()      <span class="co"># Runs pipeline, generates figs/*.png &amp; *.pdf, and builds docs/index.html</span></span></code></pre></div>
+<div id="repository-architecture" class="section level3 unnumbered hasAnchor">
+<h3>Repository Architecture<a href="index.html#repository-architecture" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Path</th>
+<th>Role in Pipeline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>index.Rmd</code>, <code>chapters/01–10</code></td>
+<td>Narrative technical documentation (renders to <code>docs/index.html</code>)</td>
+</tr>
+<tr class="even">
+<td><code>R/00_setup.R</code></td>
+<td>Package imports, directory paths, and the master parameter registry (<code>P</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>R/00_download.R</code></td>
+<td>Programmatic downloader for AquaMatch EDI datasets (<code>{AquaMatchr}</code>), EPA ecoregions, and RiverSR</td>
+</tr>
+<tr class="even">
+<td><code>R/prep.R</code></td>
+<td>Simultaneous record matching, WQP flag hygiene, Gohin et al. (2005) NAP derivation, quantile trimming, and <em>a priori</em> Beer–Lambert plausibility screening</td>
+</tr>
+<tr class="odd">
+<td><code>R/ecoregions.R</code></td>
+<td>Strict 1-to-1 spatial point-in-polygon and coastal nearest-feature ecoregion joins (Levels I–IV)</td>
+</tr>
+<tr class="even">
+<td><code>R/models.R</code></td>
+<td>Block-diagonal OLS fitting for Models 1–10, Table 1 / Table S1 generation, Monte Carlo stability cones, and Model 7 ternary projection</td>
+</tr>
+<tr class="odd">
+<td><code>R/ternary.R</code></td>
+<td>Barycentric-to-Cartesian ternary geometry and exact Sutherland–Hodgman <span class="math inline">\(\pm k\text{ SD}\)</span> simplex polygon clipping</td>
+</tr>
+<tr class="even">
+<td><code>R/figures.R</code></td>
+<td>Complete programmatic assembly of Figures 1–4, Figure S1, and QC diagnostic figures</td>
+</tr>
+<tr class="odd">
+<td><code>R/claims.R</code></td>
+<td>Parametric (Welch heteroscedastic <span class="math inline">\(t\)</span>-test) and non-parametric (Wilcoxon) dominance-class hypothesis tests and literature benchmarks</td>
+</tr>
+<tr class="even">
+<td><code>R/verify.R</code></td>
+<td>Automated 13-point mathematical and data-integrity verification suite</td>
+</tr>
+<tr class="odd">
+<td><code>figs/</code></td>
+<td>Rendered 300 dpi PNG and vector PDF manuscript figures and CSV summary tables</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="summary-of-methodological-decisions-literature-provenance" class="section level2 unnumbered hasAnchor">
+<h2>Summary of Methodological Decisions &amp; Literature Provenance<a href="index.html#summary-of-methodological-decisions-literature-provenance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Decision
+</th>
+<th style="text-align:left;">
+Specification
+</th>
+<th style="text-align:left;">
+Literature_Support
+</th>
+<th style="text-align:left;">
+Section
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Harmonized WQP inputs
+</td>
+<td style="text-align:left;">
+AquaMatch EDI datasets via AquaMatchr (sdd edi.1856.1, chla edi.1756.2, doc edi.1809.1, tss edi.2048.2; 1970–2025)
+</td>
+<td style="text-align:left;">
+Brousil et al. (2024a, 2024b, 2025); De La Torre et al. (2025)
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Simultaneous matchups &amp; WQP hygiene
+</td>
+<td style="text-align:left;">
+Same MonitoringLocationIdentifier &amp; date; Facility sites and non-Secchi turbidity tubes (sdd_approx &gt; 0) excluded; sdd_mdl &lt;= 1; same-day duplicates removed
+</td>
+<td style="text-align:left;">
+Ross et al. (2019); De La Torre et al. (2025)
+</td>
+<td style="text-align:left;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Broad unit-error caps
+</td>
+<td style="text-align:left;">
+Secchi &lt; 15 m; Chl a &lt; 1000 ug/L; TSS &lt; 1000 mg/L; DOC &lt; 50 mg/L
+</td>
+<td style="text-align:left;">
+Brousil et al. (2024a, 2024b, 2025)
+</td>
+<td style="text-align:left;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Algal dry biomass &amp; NAP
+</td>
+<td style="text-align:left;">
+biomass [mg/L] = 0.234 * (Chl a)^0.57; NAP = TSS - biomass
+</td>
+<td style="text-align:left;">
+Gohin et al. (2005)
+</td>
+<td style="text-align:left;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stage 1: Analytical reporting floors
+</td>
+<td style="text-align:left;">
+Sub-detection/zero values replaced via ifelse(x &lt; floor, floor, x) at EPA/USGS MDLs (Chl a 0.10 ug/L, DOC 0.25 mg/L, TSS 0.50 mg/L, Secchi 0.01 m; n = 281,439)
+</td>
+<td style="text-align:left;">
+EPA Method 415.1; USGS NWQL; Brousil et al. (2024a, 2024b, 2025)
+</td>
+<td style="text-align:left;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stage 2: Physical plausibility screen
+</td>
+<td style="text-align:left;">
+A priori Beer-Lambert consistency &amp;#124;log10(kd / kd,lit)&amp;#124; &lt;= 0.80 (~6.3x) using published constants, removing 1.44% discordant WQP outliers while preserving all upper extremes (n = 277,382)
+</td>
+<td style="text-align:left;">
+Bannister (1974); Kirk (1994); Morris et al. (1995); Gohin et al. (2005)
+</td>
+<td style="text-align:left;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diffuse attenuation from Secchi
+</td>
+<td style="text-align:left;">
+kd = 1 / z_SD (Secchi rounded to 0.01 m; Eq. 1 with a = 1)
+</td>
+<td style="text-align:left;">
+Lee et al. (2015, 2018)
+</td>
+<td style="text-align:left;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pure-water offset k_w
+</td>
+<td style="text-align:left;">
+k_w = 1 / (1.5 * max z_SD) = 0.0478 m^-1 (max z_SD = 13.96 m), applied consistently in fit &amp; prediction
+</td>
+<td style="text-align:left;">
+Kirk (1994); Lee et al. (2015)
+</td>
+<td style="text-align:left;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Additive bio-optical model
+</td>
+<td style="text-align:left;">
+kd - k_w = alpha_NAP * NAP + alpha_DOC * DOC + alpha_Chl * Chl a (no intercept)
+</td>
+<td style="text-align:left;">
+Bannister (1974); Kirk (1994)
+</td>
+<td style="text-align:left;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hierarchical ecoregions
+</td>
+<td style="text-align:left;">
+U.S. EPA / CEC North American Ecoregions Levels I–IV (1-to-1 site assignment; &gt; 100 obs per modeled group)
+</td>
+<td style="text-align:left;">
+Omernik &amp; Griffith (2014)
+</td>
+<td style="text-align:left;">
+5–6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Primary regional model (Model 7)
+</td>
+<td style="text-align:left;">
+Level III ecoregions without water-type split (47 groups, R² = 0.50; 37 strictly positive groups; fallback to Model 1)
+</td>
+<td style="text-align:left;">
+Spencer et al. (2012); Griffin et al. (2018)
+</td>
+<td style="text-align:left;">
+6, 8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Continental application set
+</td>
+<td style="text-align:left;">
+All 3-LAC records inside training bounds with NAP &gt; 0.01 mg/L (n = 478,929 across 39,396 sites)
+</td>
+<td style="text-align:left;">
+Section 8
+</td>
+<td style="text-align:left;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Site-level ternary area fraction
+</td>
+<td style="text-align:left;">
+Exact Sutherland–Hodgman simplex clipping of mean ± 2 SD region normalized by sqrt(3)/4
+</td>
+<td style="text-align:left;">
+Section 9
+</td>
+<td style="text-align:left;">
+9
+</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="data-sources.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": null,
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 2 Simultaneous Observations &amp; Initial WQP Hygiene (prep.R) | Ternary Partitioning of Continental-Scale Water Clarity</title>
+  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 2 Simultaneous Observations &amp; Initial WQP Hygiene (prep.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 2 Simultaneous Observations &amp; Initial WQP Hygiene (prep.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
+  
+  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+<meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-sources.html"/>
+<link rel="next" href="nap.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+</ul></li>
+<li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
+<li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
+<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
+<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+</ul></li>
+<li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
+<li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
+<li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
+</ul></li>
+<li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
+<li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
+<li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="verification.html"><a href="verification.html#automated-pipeline-verification-checklist"><i class="fa fa-check"></i><b>10.1</b> Automated Pipeline Verification Checklist</a></li>
+<li class="chapter" data-level="10.2" data-path="verification.html"><a href="verification.html#literature-provenance-table"><i class="fa fa-check"></i><b>10.2</b> Literature Provenance Table</a></li>
+<li class="chapter" data-level="" data-path="verification.html"><a href="verification.html#r-session-information"><i class="fa fa-check"></i>R Session Information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ternary Partitioning of Continental-Scale Water Clarity</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="simultaneous" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Section 2</span> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)<a href="simultaneous.html#simultaneous" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Partitioning light attenuation among the three optically active constituents requires water quality samples in which <strong>Chlorophyll <em>a</em> (<code>chl_a</code>)</strong>, <strong>dissolved organic carbon (<code>doc</code>)</strong>, and <strong>total suspended solids (<code>tss</code>)</strong> were measured on the <strong>same day at the same monitoring station</strong> (<code>MonitoringLocationIdentifier</code> and <code>date</code>). Estimating the specific attenuation coefficients (<span class="math inline">\(\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}\)</span>) additionally requires a synchronous <em>in situ</em> <strong>Secchi disk depth (<code>secchi</code>)</strong> measurement.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="simultaneous.html#cb5-1" tabindex="-1"></a>am        <span class="ot">&lt;-</span> <span class="fu">get_aquamatch</span>()                              <span class="co"># 490,209 joined 3-LAC records (1970–2025)</span></span>
+<span id="cb5-2"><a href="simultaneous.html#cb5-2" tabindex="-1"></a>simul     <span class="ot">&lt;-</span> <span class="fu">build_simultaneous</span>(am, <span class="at">require_secchi =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-3"><a href="simultaneous.html#cb5-3" tabindex="-1"></a>no_secchi <span class="ot">&lt;-</span> <span class="fu">build_simultaneous</span>(am, <span class="at">require_secchi =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="step-by-step-initial-hygiene-attrition" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Step-by-Step Initial Hygiene &amp; Attrition<a href="simultaneous.html#step-by-step-initial-hygiene-attrition" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before statistical quantile trimming or bio-optical plausibility screening, <code>build_simultaneous()</code> in <code>R/prep.R</code> applies four deterministic hygiene filters to the joined AquaMatch records:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Water-body type filtering</strong>: Excludes industrial/municipal <code>Facility</code> outflows, retaining only natural/ambient <code>Estuary</code>, <code>Lake</code> (including reservoirs and impoundments), and <code>Stream</code> stations.</li>
+<li><strong>Secchi method &amp; MDL hygiene</strong> (for training candidates): Excludes non-Secchi turbidity-tube approximations (<code>sdd_approx == 0</code>) and artificial <span class="math inline">\(\le 0.01\text{ m}\)</span> minimum-detection-limit floor placeholders (<code>sdd_mdl &lt;= 1</code>).</li>
+<li><strong>Broad gross-unit-error caps</strong>: Enforces conservative upper bounds prior to percentile trimming to eliminate obvious <span class="math inline">\(1{,}000\times\)</span> reporting-unit confusion (e.g., <span class="math inline">\(\mu\text{g L}^{-1}\)</span> reported as <span class="math inline">\(\text{mg L}^{-1}\)</span>):
+<ul>
+<li><span class="math inline">\(0 &lt; z_{SD} &lt; 15\text{ m}\)</span></li>
+<li><span class="math inline">\(0 \le \text{Chl }a &lt; 1000\ \mu\text{g L}^{-1}\)</span></li>
+<li><span class="math inline">\(0 \le \text{TSS} &lt; 1000\text{ mg L}^{-1}\)</span></li>
+<li><span class="math inline">\(0 \le \text{DOC} &lt; 50\text{ mg L}^{-1}\)</span></li>
+</ul></li>
+<li><strong>Same-day, same-station deduplication</strong>: Collapses exact duplicate WQP uploads (<code>distinct(SiteID, date, secchi, chl_a, doc, tss)</code>) arising when state and federal agencies dual-report the same physical bottle sample under multiple project identifiers.</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="simultaneous.html#cb6-1" tabindex="-1"></a>simul <span class="ot">&lt;-</span> <span class="fu">get_simul</span>(<span class="st">&#39;simul&#39;</span>); no_secchi <span class="ot">&lt;-</span> <span class="fu">get_simul</span>(<span class="st">&#39;no_secchi&#39;</span>)</span>
+<span id="cb6-2"><a href="simultaneous.html#cb6-2" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb6-3"><a href="simultaneous.html#cb6-3" tabindex="-1"></a>  <span class="fu">count</span>(simul, type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">set =</span> <span class="st">&#39;4-Variable Training Candidates (Secchi + Chl a + DOC + TSS)&#39;</span>),</span>
+<span id="cb6-4"><a href="simultaneous.html#cb6-4" tabindex="-1"></a>  <span class="fu">count</span>(no_secchi, type) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">set =</span> <span class="st">&#39;3-LAC Application Candidates (Chl a + DOC + TSS; Secchi optional)&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="simultaneous.html#cb6-5" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="simultaneous.html#cb6-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Total =</span> Estuary <span class="sc">+</span> Lake <span class="sc">+</span> Stream) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="simultaneous.html#cb6-7" tabindex="-1"></a>  <span class="fu">select</span>(set, Stream, Lake, Estuary, Total) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="simultaneous.html#cb6-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), fmt_n)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="simultaneous.html#cb6-9" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Candidate Dataset&#39;</span>, <span class="st">&#39;Streams&#39;</span>, <span class="st">&#39;Lakes&#39;</span>, <span class="st">&#39;Estuaries&#39;</span>, <span class="st">&#39;Total Observations&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="simultaneous.html#cb6-10" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Candidate Dataset
+</th>
+<th style="text-align:left;">
+Streams
+</th>
+<th style="text-align:left;">
+Lakes
+</th>
+<th style="text-align:left;">
+Estuaries
+</th>
+<th style="text-align:left;">
+Total Observations
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+4-Variable Training Candidates (Secchi + Chl a + DOC + TSS)
+</td>
+<td style="text-align:left;">
+155,471
+</td>
+<td style="text-align:left;">
+61,593
+</td>
+<td style="text-align:left;">
+64,375
+</td>
+<td style="text-align:left;">
+281,439
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3-LAC Application Candidates (Chl a + DOC + TSS; Secchi optional)
+</td>
+<td style="text-align:left;">
+322,623
+</td>
+<td style="text-align:left;">
+84,954
+</td>
+<td style="text-align:left;">
+79,112
+</td>
+<td style="text-align:left;">
+486,689
+</td>
+</tr>
+</tbody>
+</table>
+<div class="decision">
+<p><strong>Why 3-LAC Records Exceed 4-Variable Records in Streams</strong></p>
+<p>While lakes (<code>60,658</code> training vs. <code>80,857</code> application) and estuaries (<code>63,566</code> training vs. <code>77,637</code> application) routinely pair Secchi disk depth with water chemistry, lotic monitoring programs measure water chemistry (<code>Chl a + DOC + TSS/SSC</code>) far more frequently than Secchi depth (<code>151,125</code> training vs. <code>311,057</code> application records in streams). Section <a href="figures.html#figures">9</a> (<code>Figure 1a</code>) verifies that constituent concentration distributions are nearly identical between samples with and without paired Secchi measurements, allowing the calibrated regional bio-optical model to partition light attenuation across all <strong>478,929</strong> application records without extrapolating beyond the chemical domain of the training set.</p>
+</div>
+</div>
+<div id="continental-spatial-distribution-of-simultaneous-stations" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Continental Spatial Distribution of Simultaneous Stations<a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Across the conterminous United States, <strong>88.1%</strong> of training observations lie east of <span class="math inline">\(-90^\circ\)</span> longitude and <strong>11.9%</strong> (33,009 observations across 2,927 stations) lie in the western United States:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="simultaneous.html#cb7-1" tabindex="-1"></a>usa <span class="ot">&lt;-</span> rnaturalearth<span class="sc">::</span><span class="fu">ne_states</span>(<span class="at">country =</span> <span class="st">&#39;United States of America&#39;</span>, <span class="at">returnclass =</span> <span class="st">&#39;sf&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="simultaneous.html#cb7-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;Alaska&#39;</span>, <span class="st">&#39;Hawaii&#39;</span>))</span>
+<span id="cb7-3"><a href="simultaneous.html#cb7-3" tabindex="-1"></a>simul <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(SiteID, lat, long, type) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="simultaneous.html#cb7-4" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&#39;long&#39;</span>, <span class="st">&#39;lat&#39;</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="simultaneous.html#cb7-5" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> usa, <span class="at">fill =</span> <span class="st">&#39;grey96&#39;</span>, <span class="at">colour =</span> <span class="st">&#39;grey70&#39;</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="simultaneous.html#cb7-6" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">colour =</span> type), <span class="at">size =</span> <span class="fl">0.55</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span> <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> TYPE_COLS, <span class="at">name =</span> <span class="st">&#39;Water-body type&#39;</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="simultaneous.html#cb7-7" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">125</span>, <span class="sc">-</span><span class="dv">66</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">24</span>, <span class="dv">50</span>)) <span class="sc">+</span> <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="simultaneous.html#cb7-8" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&#39;bottom&#39;</span>)</span></code></pre></div>
+<p><img src="ternary_clarity_pipeline_files/figure-html/simul-map-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="log-log-bivariate-structure-across-water-body-types" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Log-Log Bivariate Structure Across Water-Body Types<a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Bivariate log-log distributions across a random 10% sample of simultaneous 4-variable observations illustrate the negative covariance between Secchi depth (<code>secchi</code>) and each light-attenuating constituent (<code>chl_a</code>, <code>tss</code>, <code>doc</code>), as well as the positive covariance between <code>chl_a</code> and bulk <code>tss</code> (motivating the subtraction of algal biomass from bulk TSS in Section <a href="nap.html#nap">3</a>):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="simultaneous.html#cb8-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="simultaneous.html#cb8-2" tabindex="-1"></a>simul <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="simultaneous.html#cb8-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(secchi, chl_a, tss, doc), log10)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="simultaneous.html#cb8-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_all</span>(<span class="fu">c</span>(secchi, chl_a, tss, doc), is.finite)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="simultaneous.html#cb8-5" tabindex="-1"></a>  GGally<span class="sc">::</span><span class="fu">ggpairs</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="st">&#39;secchi&#39;</span>, <span class="st">&#39;chl_a&#39;</span>, <span class="st">&#39;tss&#39;</span>, <span class="st">&#39;doc&#39;</span>), <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">colour =</span> type),</span>
+<span id="cb8-6"><a href="simultaneous.html#cb8-6" tabindex="-1"></a>                  <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> GGally<span class="sc">::</span><span class="fu">wrap</span>(<span class="st">&#39;points&#39;</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="fl">0.35</span>)),</span>
+<span id="cb8-7"><a href="simultaneous.html#cb8-7" tabindex="-1"></a>                  <span class="at">diag =</span> <span class="fu">list</span>(<span class="at">continuous =</span> GGally<span class="sc">::</span><span class="fu">wrap</span>(<span class="st">&#39;densityDiag&#39;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>))) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="simultaneous.html#cb8-8" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> TYPE_COLS) <span class="sc">+</span> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> TYPE_COLS) <span class="sc">+</span> <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">9</span>)</span></code></pre></div>
+<p><img src="ternary_clarity_pipeline_files/figure-html/pairs-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-sources.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nap.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": null,
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

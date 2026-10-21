@@ -1,0 +1,75 @@
+# Simultaneous Observations & Initial WQP Hygiene (`prep.R`) {#simultaneous}
+
+```{r ch2-setup, include = FALSE}
+source('R/00_setup.R')
+```
+
+Partitioning light attenuation among the three optically active constituents requires water quality samples in which **Chlorophyll *a* (`chl_a`)**, **dissolved organic carbon (`doc`)**, and **total suspended solids (`tss`)** were measured on the **same day at the same monitoring station** (`MonitoringLocationIdentifier` and `date`). Estimating the specific attenuation coefficients ($\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}$) additionally requires a synchronous *in situ* **Secchi disk depth (`secchi`)** measurement.
+
+```{r build-simul, eval = FALSE}
+am        <- get_aquamatch()                              # 490,209 joined 3-LAC records (1970–2025)
+simul     <- build_simultaneous(am, require_secchi = TRUE)
+no_secchi <- build_simultaneous(am, require_secchi = FALSE)
+```
+
+## Step-by-Step Initial Hygiene & Attrition
+
+Before statistical quantile trimming or bio-optical plausibility screening, `build_simultaneous()` in `R/prep.R` applies four deterministic hygiene filters to the joined AquaMatch records:
+
+1. **Water-body type filtering**: Excludes industrial/municipal `Facility` outflows, retaining only natural/ambient `Estuary`, `Lake` (including reservoirs and impoundments), and `Stream` stations.
+2. **Secchi method & MDL hygiene** (for training candidates): Excludes non-Secchi turbidity-tube approximations (`sdd_approx == 0`) and artificial $\le 0.01\text{ m}$ minimum-detection-limit floor placeholders (`sdd_mdl <= 1`).
+3. **Broad gross-unit-error caps**: Enforces conservative upper bounds prior to percentile trimming to eliminate obvious $1{,}000\times$ reporting-unit confusion (e.g., $\mu\text{g L}^{-1}$ reported as $\text{mg L}^{-1}$):
+   * $0 < z_{SD} < `r P$max_secchi_m`\text{ m}$
+   * $0 \le \text{Chl }a < `r P$max_chl_ugL`\ \mu\text{g L}^{-1}$
+   * $0 \le \text{TSS} < `r P$max_tss_mgL`\text{ mg L}^{-1}$
+   * $0 \le \text{DOC} < `r P$max_doc_mgL`\text{ mg L}^{-1}$
+4. **Same-day, same-station deduplication**: Collapses exact duplicate WQP uploads (`distinct(SiteID, date, secchi, chl_a, doc, tss)`) arising when state and federal agencies dual-report the same physical bottle sample under multiple project identifiers.
+
+```{r simul-counts}
+simul <- get_simul('simul'); no_secchi <- get_simul('no_secchi')
+bind_rows(
+  count(simul, type) %>% mutate(set = '4-Variable Training Candidates (Secchi + Chl a + DOC + TSS)'),
+  count(no_secchi, type) %>% mutate(set = '3-LAC Application Candidates (Chl a + DOC + TSS; Secchi optional)')) %>%
+  pivot_wider(names_from = type, values_from = n) %>%
+  mutate(Total = Estuary + Lake + Stream) %>%
+  select(set, Stream, Lake, Estuary, Total) %>%
+  mutate(across(where(is.numeric), fmt_n)) %>%
+  kable(col.names = c('Candidate Dataset', 'Streams', 'Lakes', 'Estuaries', 'Total Observations')) %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
+```
+
+::: {.decision}
+**Why 3-LAC Records Exceed 4-Variable Records in Streams**
+
+While lakes (`60,658` training vs. `80,857` application) and estuaries (`63,566` training vs. `77,637` application) routinely pair Secchi disk depth with water chemistry, lotic monitoring programs measure water chemistry (`Chl a + DOC + TSS/SSC`) far more frequently than Secchi depth (`151,125` training vs. `311,057` application records in streams). Section \@ref(figures) (`Figure 1a`) verifies that constituent concentration distributions are nearly identical between samples with and without paired Secchi measurements, allowing the calibrated regional bio-optical model to partition light attenuation across all **`r fmt_n(nrow(get_final_data()))`** application records without extrapolating beyond the chemical domain of the training set.
+:::
+
+## Continental Spatial Distribution of Simultaneous Stations
+
+Across the conterminous United States, **`r round(100 * mean(get_training()$long >= -90), 1)`%** of training observations lie east of $-90^\circ$ longitude and **`r round(100 * mean(get_training()$long < -90), 1)`%** (`r fmt_n(sum(get_training()$long < -90))` observations across `r fmt_n(n_distinct(get_training()$SiteID[get_training()$long < -90]))` stations) lie in the western United States:
+
+```{r simul-map, fig.height = 4.6}
+usa <- rnaturalearth::ne_states(country = 'United States of America', returnclass = 'sf') %>%
+  filter(!name %in% c('Alaska', 'Hawaii'))
+simul %>% distinct(SiteID, lat, long, type) %>%
+  st_as_sf(coords = c('long', 'lat'), crs = 4326) %>%
+  ggplot() + geom_sf(data = usa, fill = 'grey96', colour = 'grey70', linewidth = 0.2) +
+  geom_sf(aes(colour = type), size = 0.55, alpha = 0.7) + scale_colour_manual(values = TYPE_COLS, name = 'Water-body type') +
+  coord_sf(xlim = c(-125, -66), ylim = c(24, 50)) + theme_void() +
+  theme(legend.position = 'bottom')
+```
+
+## Log-Log Bivariate Structure Across Water-Body Types
+
+Bivariate log-log distributions across a random 10% sample of simultaneous 4-variable observations illustrate the negative covariance between Secchi depth (`secchi`) and each light-attenuating constituent (`chl_a`, `tss`, `doc`), as well as the positive covariance between `chl_a` and bulk `tss` (motivating the subtraction of algal biomass from bulk TSS in Section \@ref(nap)):
+
+```{r pairs, fig.height = 6.5, cache = TRUE}
+set.seed(1)
+simul %>% slice_sample(prop = 0.1) %>%
+  mutate(across(c(secchi, chl_a, tss, doc), log10)) %>%
+  filter(if_all(c(secchi, chl_a, tss, doc), is.finite)) %>%
+  GGally::ggpairs(columns = c('secchi', 'chl_a', 'tss', 'doc'), mapping = aes(colour = type),
+                  lower = list(continuous = GGally::wrap('points', shape = 1, alpha = 0.25, size = 0.35)),
+                  diag = list(continuous = GGally::wrap('densityDiag', alpha = 0.5))) +
+  scale_colour_manual(values = TYPE_COLS) + scale_fill_manual(values = TYPE_COLS) + theme_bw(base_size = 9)
+```

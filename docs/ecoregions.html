@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 5 Hierarchical Ecoregion Stratification (ecoregions.R) | Ternary Partitioning of Continental-Scale Water Clarity</title>
+  <meta name="description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 5 Hierarchical Ecoregion Stratification (ecoregions.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 5 Hierarchical Ecoregion Stratification (ecoregions.R) | Ternary Partitioning of Continental-Scale Water Clarity" />
+  
+  <meta name="twitter:description" content="Reproducible bio-optical pipeline and interactive technical documentation for ‘Ternary partitioning of continental scale water clarity’ using harmonized AquaMatch Water Quality Portal datasets (1970–2025)." />
+  
+
+<meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
+
+
+<meta name="date" content="2026-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="training.html"/>
+<link rel="next" href="models.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"><strong>Continental Water Clarity Partitioning</strong></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview &amp; Executive Summary</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#visualizing-why-optical-partitioning-total-visibility-matter-sonicray-3d-gpu-simulation"><i class="fa fa-check"></i>Visualizing Why Optical Partitioning &amp; Total Visibility Matter (<code>{sonicray}</code> 3D GPU Simulation)</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#data-attrition-pipeline-funnel-at-a-glance"><i class="fa fa-check"></i>Data Attrition &amp; Pipeline Funnel at a Glance</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#automated-verification-status"><i class="fa fa-check"></i>Automated Verification Status</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#reproducing-the-pipeline"><i class="fa fa-check"></i>Reproducing the Pipeline</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#repository-architecture"><i class="fa fa-check"></i>Repository Architecture</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#summary-of-methodological-decisions-literature-provenance"><i class="fa fa-check"></i>Summary of Methodological Decisions &amp; Literature Provenance</a></li>
+</ul></li>
+<li class="part"><span><b>I Data Harmonization &amp; Quality Control</b></span></li>
+<li class="chapter" data-level="1" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>1</b> Harmonized Continental Data Sources (<code>00_download.R</code>)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="data-sources.html"><a href="data-sources.html#continental-monitoring-site-inventory"><i class="fa fa-check"></i><b>1.1</b> Continental Monitoring Site Inventory</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="simultaneous.html"><a href="simultaneous.html"><i class="fa fa-check"></i><b>2</b> Simultaneous Observations &amp; Initial WQP Hygiene (<code>prep.R</code>)</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="simultaneous.html"><a href="simultaneous.html#step-by-step-initial-hygiene-attrition"><i class="fa fa-check"></i><b>2.1</b> Step-by-Step Initial Hygiene &amp; Attrition</a></li>
+<li class="chapter" data-level="2.2" data-path="simultaneous.html"><a href="simultaneous.html#continental-spatial-distribution-of-simultaneous-stations"><i class="fa fa-check"></i><b>2.2</b> Continental Spatial Distribution of Simultaneous Stations</a></li>
+<li class="chapter" data-level="2.3" data-path="simultaneous.html"><a href="simultaneous.html#log-log-bivariate-structure-across-water-body-types"><i class="fa fa-check"></i><b>2.3</b> Log-Log Bivariate Structure Across Water-Body Types</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Partitioning Non-Algal Particles (NAP) &amp; Method Sensitivity</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-the-algal-biomass-conversion-formulation"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to the Algal Biomass Conversion Formulation</a></li>
+<li class="chapter" data-level="3.2" data-path="nap.html"><a href="nap.html#methods-qa"><i class="fa fa-check"></i><b>3.2</b> Sensitivity to Analytical Method Tiers</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Reporting Floors &amp; WQP Physical Plausibility Diagnostics</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floor-substitution-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floor Substitution (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-a-priori-beerlambert-physical-plausibility-screen-clean_wqp_discordance"><i class="fa fa-check"></i><b>4.2</b> Stage 2: <em>A Priori</em> Beer–Lambert Physical Plausibility Screen (<code>clean_wqp_discordance()</code>)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="training.html"><a href="training.html#why-joint-optical-chemical-screening-outperforms-marginal-quantile-trimming"><i class="fa fa-check"></i><b>4.2.1</b> Why Joint Optical-Chemical Screening Outperforms Marginal Quantile Trimming</a></li>
+<li class="chapter" data-level="4.2.2" data-path="training.html"><a href="training.html#non-circular-screening-using-published-optical-constants"><i class="fa fa-check"></i><b>4.2.2</b> Non-Circular Screening Using Published Optical Constants</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#proof-that-100-of-true-environmental-extremes-are-preserved"><i class="fa fa-check"></i><b>4.3</b> Proof That 100% of True Environmental Extremes Are Preserved</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#breakdown-of-the-1.33-removed-discordant-records-by-water-body-type"><i class="fa fa-check"></i><b>4.3.1</b> Breakdown of the 1.33% Removed Discordant Records by Water-Body Type</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#diffuse-attenuation-k_d-and-pure-water-offset-k_w"><i class="fa fa-check"></i><b>4.4</b> Diffuse Attenuation (<span class="math inline">\(k_d\)</span>) and Pure-Water Offset (<span class="math inline">\(k_w\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ecoregions.html"><a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100"><i class="fa fa-check"></i><b>5.1</b> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)</a></li>
+</ul></li>
+<li class="part"><span><b>II Bio-Optical Modeling &amp; Stability</b></span></li>
+<li class="chapter" data-level="6" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>6</b> Hierarchical Bio-Optical Models (<code>models.R</code>)</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="models.html"><a href="models.html#additive-beerlambert-model-formulation"><i class="fa fa-check"></i><b>6.1</b> Additive Beer–Lambert Model Formulation</a></li>
+<li class="chapter" data-level="6.2" data-path="models.html"><a href="models.html#table1"><i class="fa fa-check"></i><b>6.2</b> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)</a></li>
+<li class="chapter" data-level="6.3" data-path="models.html"><a href="models.html#comparison-with-theoretical-field-bio-optical-benchmarks-bannister-1974-kirk-1994"><i class="fa fa-check"></i><b>6.3</b> Comparison with Theoretical &amp; Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)</a></li>
+<li class="chapter" data-level="6.4" data-path="models.html"><a href="models.html#tableS1"><i class="fa fa-check"></i><b>6.4</b> Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="stability.html"><a href="stability.html"><i class="fa fa-check"></i><b>7</b> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="stability.html"><a href="stability.html#figS1"><i class="fa fa-check"></i><b>7.1</b> Figure S1: Coefficient Coherence Cones Across Sample Sizes</a></li>
+</ul></li>
+<li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
+<li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-lac-application-dataset-n-478929"><i class="fa fa-check"></i><b>8.1</b> Continental 3-LAC Application Dataset (<code>n = 478,929</code>)</a></li>
+<li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#ternary-attenuation-fractions-secchi-prediction"><i class="fa fa-check"></i><b>8.2</b> Ternary Attenuation Fractions &amp; Secchi Prediction</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.3</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Hypothesis Tests of Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Classes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="figures.html"><a href="figures.html#fig1"><i class="fa fa-check"></i><b>9.1</b> Figure 1: Continental Data Distributions and Ecoregion Coverage</a></li>
+<li class="chapter" data-level="9.2" data-path="figures.html"><a href="figures.html#fig2"><i class="fa fa-check"></i><b>9.2</b> Figure 2: Continental Ternary Partitioning by Water-Body Type</a></li>
+<li class="chapter" data-level="9.3" data-path="figures.html"><a href="figures.html#fig3"><i class="fa fa-check"></i><b>9.3</b> Figure 3: Longitudinal River–Estuary Continuum Along the Delaware River and Bay</a></li>
+<li class="chapter" data-level="9.4" data-path="figures.html"><a href="figures.html#fig4"><i class="fa fa-check"></i><b>9.4</b> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="figures.html"><a href="figures.html#fig4-sites"><i class="fa fa-check"></i><b>9.4.1</b> Summary of Figure 4 CDFs and Exemplar Stations</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="verification.html"><a href="verification.html"><i class="fa fa-check"></i><b>10</b> Automated Pipeline Verification &amp; Literature Provenance</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="verification.html"><a href="verification.html#automated-pipeline-verification-checklist"><i class="fa fa-check"></i><b>10.1</b> Automated Pipeline Verification Checklist</a></li>
+<li class="chapter" data-level="10.2" data-path="verification.html"><a href="verification.html#literature-provenance-table"><i class="fa fa-check"></i><b>10.2</b> Literature Provenance Table</a></li>
+<li class="chapter" data-level="" data-path="verification.html"><a href="verification.html#r-session-information"><i class="fa fa-check"></i>R Session Information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ternary Partitioning of Continental-Scale Water Clarity</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ecoregions" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Section 5</span> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)<a href="ecoregions.html#ecoregions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Specific optical properties of dissolved organic matter (e.g., aromaticity and specific UV absorbance; Spencer et al. 2012; Griffin et al. 2018) and suspended particles (e.g., mineral grain size, refractive index, and organic coatings; Dodds &amp; Whiles 2004; Bowers et al. 2020) vary systematically with regional geology, soils, vegetation, and climate. To capture this regional biogeochemical coherence across streams, lakes, and estuaries within a unified continental classification, each monitoring station is assigned to its nested U.S. EPA / CEC North American Ecoregion across <strong>Levels I–IV</strong> (Omernik &amp; Griffith 2014).</p>
+<p>The spatial assignment function (<code>eco_join()</code> in <code>R/ecoregions.R</code>) places each unique <code>SiteID</code> into the projected ecoregion polygon containing its geographic coordinates; estuarine and nearshore stations located slightly offshore of the vector coastline are matched to the nearest terrestrial ecoregion polygon via <code>sf::st_nearest_feature()</code>, and polygon-boundary ties are deduplicated (<code>distinct(SiteID, .keep_all = TRUE)</code>) so the mapping from <code>SiteID</code> to ecoregion is strictly <strong>1-to-1</strong>.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="ecoregions.html#cb16-1" tabindex="-1"></a>eco <span class="ot">&lt;-</span> <span class="fu">get_eco</span>()</span>
+<span id="cb16-2"><a href="ecoregions.html#cb16-2" tabindex="-1"></a>eco<span class="sc">$</span>eco3 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(l3code) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>() <span class="sc">%&gt;%</span> <span class="fu">st_simplify</span>(<span class="at">dTolerance =</span> <span class="dv">5000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="ecoregions.html#cb16-3" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> l3code), <span class="at">colour =</span> <span class="st">&#39;white&#39;</span>, <span class="at">linewidth =</span> <span class="fl">0.1</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="ecoregions.html#cb16-4" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">&#39;turbo&#39;</span>) <span class="sc">+</span> <span class="fu">theme_void</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&#39;U.S. EPA Level III Ecoregions (NA_L3CODE)&#39;</span>)</span></code></pre></div>
+<p><img src="ternary_clarity_pipeline_files/figure-html/eco-map-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
+<div id="minimum-group-sample-size-criterion-zone_min-100" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Minimum Group Sample-Size Criterion (<code>zone_min = 100</code>)<a href="ecoregions.html#minimum-group-sample-size-criterion-zone_min-100" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Across all regional models, an ecoregion (or ecoregion <span class="math inline">\(\times\)</span> water-body type combination) is estimated as an independent parameter group if and only if it contains more than <strong>100 training observations</strong> (<code>P$zone_min = 100</code>). Observations located in sparsely sampled ecoregions (<span class="math inline">\(\le 100\)</span> training records) fall back to the corresponding continental model (Model 1 for type-agnostic models; Model 2 for type-stratified models) during model evaluation and ternary projection.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="ecoregions.html#cb17-1" tabindex="-1"></a>zc <span class="ot">&lt;-</span> <span class="fu">cache_rds</span>(<span class="st">&#39;zone_counts&#39;</span>, <span class="fu">zone_counts</span>(<span class="fu">get_training</span>(), eco))</span>
+<span id="cb17-2"><a href="ecoregions.html#cb17-2" tabindex="-1"></a>zc <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(level) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="ecoregions.html#cb17-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="st">`</span><span class="at">Ecoregions with Training Data</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">n</span>(),</span>
+<span id="cb17-4"><a href="ecoregions.html#cb17-4" tabindex="-1"></a>            <span class="st">`</span><span class="at">Modeled Ecoregions (&gt; 100 obs)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(n <span class="sc">&gt;</span> P<span class="sc">$</span>zone_min),</span>
+<span id="cb17-5"><a href="ecoregions.html#cb17-5" tabindex="-1"></a>            <span class="st">`</span><span class="at">Training Observations in Modeled Ecoregions</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">fmt_n</span>(<span class="fu">sum</span>(n[n <span class="sc">&gt;</span> P<span class="sc">$</span>zone_min])),</span>
+<span id="cb17-6"><a href="ecoregions.html#cb17-6" tabindex="-1"></a>            <span class="st">`</span><span class="at">Dataset Coverage (%)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">sum</span>(n[n <span class="sc">&gt;</span> P<span class="sc">$</span>zone_min]) <span class="sc">/</span> <span class="fu">nrow</span>(<span class="fu">get_training</span>()), <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-7"><a href="ecoregions.html#cb17-7" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Ecoregion Hierarchy&#39;</span>, <span class="st">&#39;Total Ecoregions Present&#39;</span>, <span class="st">&#39;Modeled Ecoregions (&gt; 100 obs)&#39;</span>, <span class="st">&#39;Training Rows Covered&#39;</span>, <span class="st">&#39;Coverage (%)&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-8"><a href="ecoregions.html#cb17-8" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Ecoregion Hierarchy
+</th>
+<th style="text-align:right;">
+Total Ecoregions Present
+</th>
+<th style="text-align:right;">
+Modeled Ecoregions (&gt; 100 obs)
+</th>
+<th style="text-align:left;">
+Training Rows Covered
+</th>
+<th style="text-align:right;">
+Coverage (%)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+275,235
+</td>
+<td style="text-align:right;">
+99.23
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+275,203
+</td>
+<td style="text-align:right;">
+99.21
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+78
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:left;">
+274,495
+</td>
+<td style="text-align:right;">
+98.96
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+352
+</td>
+<td style="text-align:right;">
+121
+</td>
+<td style="text-align:left;">
+269,990
+</td>
+<td style="text-align:right;">
+97.34
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="ecoregions.html#cb18-1" tabindex="-1"></a>zs <span class="ot">&lt;-</span> <span class="fu">get_zone_sets</span>()</span>
+<span id="cb18-2"><a href="ecoregions.html#cb18-2" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">dataset =</span> <span class="fu">c</span>(<span class="st">&#39;Continental (USA)&#39;</span>, <span class="st">&#39;EPA Level I&#39;</span>, <span class="st">&#39;EPA Level II&#39;</span>, <span class="st">&#39;EPA Level III&#39;</span>, <span class="st">&#39;EPA Level IV&#39;</span>),</span>
+<span id="cb18-3"><a href="ecoregions.html#cb18-3" tabindex="-1"></a>       <span class="at">key =</span> <span class="fu">names</span>(zs),</span>
+<span id="cb18-4"><a href="ecoregions.html#cb18-4" tabindex="-1"></a>       <span class="at">rows =</span> <span class="fu">map_int</span>(zs, nrow),</span>
+<span id="cb18-5"><a href="ecoregions.html#cb18-5" tabindex="-1"></a>       <span class="at">groups =</span> <span class="fu">map_int</span>(zs, <span class="sc">~</span> <span class="cf">if</span> (<span class="st">&#39;code&#39;</span> <span class="sc">%in%</span> <span class="fu">names</span>(.x)) <span class="fu">n_distinct</span>(.x<span class="sc">$</span>code) <span class="cf">else</span> <span class="dv">1</span><span class="dt">L</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-6"><a href="ecoregions.html#cb18-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rows =</span> <span class="fu">fmt_n</span>(rows)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-7"><a href="ecoregions.html#cb18-7" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;Spatial Hierarchy&#39;</span>, <span class="st">&#39;Dataset Key&#39;</span>, <span class="st">&#39;Training Observations (&gt; 100 per group)&#39;</span>, <span class="st">&#39;Modeled Ecoregions&#39;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="ecoregions.html#cb18-8" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&#39;condensed&#39;</span>, <span class="st">&#39;striped&#39;</span>), <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Spatial Hierarchy
+</th>
+<th style="text-align:left;">
+Dataset Key
+</th>
+<th style="text-align:left;">
+Training Observations (&gt; 100 per group)
+</th>
+<th style="text-align:right;">
+Modeled Ecoregions
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Continental (USA)
+</td>
+<td style="text-align:left;">
+global
+</td>
+<td style="text-align:left;">
+277,382
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPA Level I
+</td>
+<td style="text-align:left;">
+L1
+</td>
+<td style="text-align:left;">
+277,265
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPA Level II
+</td>
+<td style="text-align:left;">
+L2
+</td>
+<td style="text-align:left;">
+277,229
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPA Level III
+</td>
+<td style="text-align:left;">
+L3
+</td>
+<td style="text-align:left;">
+276,547
+</td>
+<td style="text-align:right;">
+47
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+EPA Level IV
+</td>
+<td style="text-align:left;">
+L4
+</td>
+<td style="text-align:left;">
+271,984
+</td>
+<td style="text-align:right;">
+123
+</td>
+</tr>
+</tbody>
+</table>
+<div class="decision">
+<p><strong>Methodological Decisions: Ecoregion Stratification (<code>R/ecoregions.R</code>)</strong></p>
+<ul>
+<li><strong>Point-level ecoregion assignment unifies streams, lakes, and estuaries.</strong> Because standardized upstream watershed polygons are neither defined nor physically meaningful for the <code>63,566</code> estuarine training observations (<code>77,637</code> total estuarine records) and because Omernik ecoregions explicitly integrate regional physiography, geology, soils, and land cover (Omernik &amp; Griffith 2014), point-in-polygon assignment evaluates all three water-body types within a single consistent hierarchy.</li>
+<li><strong>Comprehensive Level III coverage.</strong> Under the <span class="math inline">\(&gt; 100\)</span> observation threshold, <strong>46 Level III ecoregions</strong> receive dedicated bio-optical parameters in Model 7, encompassing <strong>99.69%</strong> (276,547 of 277,382) of all continental training observations.</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="training.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": null,
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": null,
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+# (PART) Bio-Optical Modeling & Stability {-}
+
+# Hierarchical Bio-Optical Models (`models.R`) {#models}
+
+```{r ch6-setup, include = FALSE}
+source('R/00_setup.R')
+dir.create(file.path(PATH$figs, 'tables'), showWarnings = FALSE)
+```
+
+## Additive Beer–Lambert Model Formulation
+
+All ten candidate models estimate specific light-attenuation coefficients ($\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}$) via ordinary least squares (OLS) with a fixed pure-water attenuation offset $k_w = `r round(get_k_w(), 5)`\text{ m}^{-1}$ and **no intercept**:
+
+$$k_d - k_w = \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a, \qquad z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP},g}\,\text{NAP} + \alpha_{\text{DOC},g}\,\text{DOC} + \alpha_{\text{Chl }a,g}\,\text{Chl }a}$$
+
+where $g$ indexes the stratification group: continental USA (Model 1), water-body type alone (Model 2), EPA Ecoregion Levels I–IV without water-type separation (Models 3, 5, 7, 9), or EPA Ecoregion Levels I–IV crossed with water-body type (Models 4, 6, 8, 10). Because interaction-only terms with no shared main effects form a strictly block-diagonal design matrix, per-group QR decomposition (`lm.fit()`) is mathematically identical to a joint `glm()` fit (to machine precision $\sim 10^{-15}$) while executing orders of magnitude faster. Every modeled group requires $> `r P$zone_min`$ training observations.
+
+```{r model-key}
+MODEL_KEY %>% mutate(by_type = ifelse(by_type, 'Yes', 'No')) %>%
+  kable(col.names = c('Model', 'Ecoregion Level', 'Stratified by Water Type?', 'Dataset Key', 'Spatial / Typological Scope')) %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
+```
+
+```{r fit}
+models <- get_models()
+perf   <- model_performance(models, get_training())
+write_csv(perf, file.path(PATH$figs, 'tables/table1_aquamatch.csv'))
+```
+
+## Table 1: Performance of Candidate Bio-Optical Models (Models 1–10) {#table1}
+
+Every model's explained variance ($R^2$), root-mean-square error ($\text{RMSE}_{k_d}$), and common-sample Bayesian Information Criterion ($\text{BIC}$) are evaluated across **all `r fmt_n(nrow(get_training()))` training observations** (observations in groups with $\le 100$ rows fall back to Model 1 for type-agnostic models or Model 2 for type-stratified models):
+
+```{r table1-aquamatch}
+perf %>%
+  transmute(
+    Level = level,
+    Model = model,
+    `By Type?` = ifelse(by_type, 'Yes', 'No'),
+    `Groups (G)` = n_groups,
+    `Group Size Median (Min – Max)` = ifelse(n_groups == 1, fmt_n(group_median),
+      sprintf('%s (%s – %s)', fmt_n(group_median), fmt_n(group_min), fmt_n(group_max))),
+    `R²` = round(r2, 2),
+    `R² (exact)` = round(r2, 3),
+    `RMSE kd (m⁻¹)` = round(rmse_kd, 2),
+    `Fitted Coefs` = n_coef,
+    `Strictly Positive Groups` = sprintf('%d / %d', n_groups - n_neg_groups, n_groups),
+    `ΔBIC vs. Model 1` = fmt_n(round(bic_common - bic_common[1]))
+  ) %>%
+  kable(caption = 'Table 1: Summary of the 10 hierarchical general linear models evaluated across all 277,382 training observations.') %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
+```
+
+::: {.decision}
+**Model Selection Rationale: Why Model 7 (`Level III Ecoregions`) Is Selected for Continental & Longitudinal Applications**
+
+1. **Substantial gain in regional predictive skill and parsimony.** Moving from the continental global model (Model 1, $R^2 = 0.41$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.50$) improves $R^2$ by $+0.09$ and reduces common-sample BIC by **$\Delta\text{BIC} = -53{,}682$**, while maintaining a robust median group size of $n = 687$ (`109–121,842`).
+2. **Physical positivity and statistical significance across modeled ecoregions.** In Model 7, **37 of the 47 Level III ecoregions** yield strictly positive, highly significant ($p < 0.001$) specific attenuation slopes for all three constituents ($\alpha_{\text{NAP}} > 0, \alpha_{\text{DOC}} > 0, \alpha_{\text{Chl }a} > 0$), and none of the non-positive slope estimates in the remaining groups is statistically significant at $p < 0.01$ (all $p \ge 0.10$). In contrast, subdividing to Level IV ecoregions (Model 9, `123` groups, median $n = 343$) or Level IV $\times$ water type (Model 10, `163` groups, median $n = 349$) pushes median sample sizes well below the $n \approx 1{,}000$ stability threshold (`Figure S1`) and substantially increases the number of small groups with unconstrained negative slope estimates caused by narrow local predictor ranges.
+3. **Seamless application across river–lake–estuary continuums.** Differentiating by discrete water-body type at the ecoregion level (Model 8 vs. Model 7) increases $R^2$ by only $+0.02$ (`0.50` $\rightarrow$ `0.52`), and within Model 7 each individual water-body type is well predicted (`R² = 0.46–0.54`). Because Model 7 does not impose artificial parameter discontinuities at water-body type boundaries, it can be applied continuously across linked river-to-estuary networks (`Figure 3`).
+:::
+
+## Comparison with Theoretical & Field Bio-Optical Benchmarks (Bannister 1974; Kirk 1994)
+
+Across models and water types, fitted specific attenuation coefficients demonstrate strongest per-mass attenuation by **DOC**, followed by **NAP** and **Chl *a***. In global Model 1 ($n = 277{,}382$), $\alpha_{\text{DOC}} = 0.0732\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0432\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0086\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.7\,\alpha_{\text{NAP}} \approx 8.5\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}$ across all regional groups in Table S1). These empirically derived continental coefficients agree closely with first-principles biophysical derivations and local optical studies:
+
+```{r bannister-table}
+compare_bannister_literature(models) %>%
+  kable(caption = 'Comparison of empirically fitted specific attenuation coefficients (Models 1 & 2) against theoretical and field bio-optical benchmarks.') %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
+```
+
+## Table S1: Fitted Specific Attenuation Coefficients, Standard Errors, and Significance {#tableS1}
+
+All ten models' group sample sizes ($n$), specific attenuation coefficients, standard errors, and two-sided $t$-test $p$-values are exported to `figs/tables/tableS1_coefficients_aquamatch.csv`. Below are Models 1, 2, and the 37 strictly positive Level III ecoregion groups of Model 7:
+
+```{r tableS1}
+s1 <- table_s1(models)
+write_csv(s1, file.path(PATH$figs, 'tables/tableS1_coefficients_aquamatch.csv'))
+s1 %>%
+  filter(model %in% c(1, 2) | (model == 7 & NAP > 0 & DOC > 0 & Chl_a > 0)) %>%
+  select(model, code, type, n_group, NAP, DOC, Chl_a, p_NAP, p_DOC, p_Chl_a) %>%
+  mutate(across(c(p_NAP, p_DOC, p_Chl_a), ~ format.pval(.x, digits = 2, eps = 1e-16)),
+         n_group = fmt_n(n_group)) %>%
+  kable(digits = 4, col.names = c('Model', 'Ecoregion', 'Water Type', 'n', 'α_NAP (m²/g)', 'α_DOC (m²/g)', 'α_Chl a (m²/mg)', 'p (NAP)', 'p (DOC)', 'p (Chl a)')) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c('condensed', 'striped'), font_size = 11)
+```
+
+In the remaining 10 Level III ecoregions of Model 7, one unconstrained OLS slope estimate is slightly negative ($p \ge 0.10$) due to narrow local concentration ranges; during continental ternary projection (`Section 8`), these groups automatically fall back to global Model 1 coefficients so all attenuation fractions remain strictly positive:
+
+```{r m7-neg}
+s1 %>%
+  filter(model == 7, !(NAP > 0 & DOC > 0 & Chl_a > 0)) %>%
+  select(code, n_group, NAP, p_NAP, DOC, p_DOC, Chl_a, p_Chl_a) %>%
+  mutate(n_group = fmt_n(n_group)) %>%
+  kable(digits = 4, col.names = c('Level III Ecoregion', 'n', 'α_NAP', 'p (NAP)', 'α_DOC', 'p (DOC)', 'α_Chl a', 'p (Chl a)'),
+        caption = 'The 10 Level III ecoregions in Model 7 where an unconstrained slope estimate is non-positive (all p >= 0.10) and falls back to global Model 1 during ternary application.') %>%
+  kable_styling(full_width = FALSE, bootstrap_options = 'condensed', font_size = 11)
+```

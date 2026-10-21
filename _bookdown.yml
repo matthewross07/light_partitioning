@@ -1,0 +1,19 @@
+book_filename: "ternary_clarity_pipeline"
+delete_merged_file: true
+new_session: false
+output_dir: "docs"
+rmd_files:
+  - "index.Rmd"
+  - "chapters/01-data-sources.Rmd"
+  - "chapters/02-simultaneous.Rmd"
+  - "chapters/03-nap.Rmd"
+  - "chapters/04-training.Rmd"
+  - "chapters/05-ecoregions.Rmd"
+  - "chapters/06-models.Rmd"
+  - "chapters/07-stability.Rmd"
+  - "chapters/08-application.Rmd"
+  - "chapters/09-figures.Rmd"
+  - "chapters/10-verification.Rmd"
+language:
+  ui:
+    chapter_name: "Section "
