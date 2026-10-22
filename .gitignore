@@ -11,7 +11,8 @@ data/derived/
 data/reference/
 _book/
 _bookdown_files/
-*_cache/
-*_files/
+/*_cache/
+/*_files/
+!docs/ternary_clarity_pipeline_files/
 _main.*
 figs/test/
