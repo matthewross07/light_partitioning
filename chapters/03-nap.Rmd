@@ -59,7 +59,7 @@ p_a + p_b
 
 ## Sensitivity to Biomass Formulation & Method Tiers
 
-Comparing the Gohin et al. (2005) power law against constant linear dry-mass:Chl *a* ratios (`50:1`, `100:1`, `200:1`) shows that constant high ratios over-predict algal mass in blooms (generating up to **31.7%** negative NAP), whereas the power law produces negative NAP in only **2.02%** of samples while yielding virtually identical attenuation slopes:
+Comparing the Gohin et al. (2005) power law against constant linear dry-mass:Chl *a* ratios (`50:1`, `100:1`, `200:1`) shows that higher constant ratios push more samples to negative NAP (second column of the table), while $\alpha_{\text{NAP}}$ and $\alpha_{\text{DOC}}$ are essentially unchanged and only $\alpha_{\text{Chl }a}$ moves:
 
 ```{r ratio-sens, echo = FALSE}
 ratios <- tibble(a = P$chl_ratio_sensitivity)
@@ -80,6 +80,57 @@ left_join(neg, slopes, by = 'a') %>%
   kable(digits = 4, col.names = c('Algal Dry-Biomass Formulation (mg/L)', '% Samples with NAP < 0', 'α_NAP (m²/g)', 'α_DOC (m²/g)', 'α_Chl a (m²/mg)', 'Global R²')) %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
 ```
+
+### Does the algal-mass assumption change the partition? {#algal-mass-sensitivity}
+
+We will never know the true dry-mass-to-chlorophyll ratio of the phytoplankton in each of these samples, so the useful question is how much the answer depends on it. Three things can be said.
+
+**The ratio cannot be estimated from these data, and it does not affect the fit.** For any constant ratio $r$, $\text{NAP} = \text{TSS} - r\,\text{Chl }a$, so
+
+$$k_d - k_w = \alpha_{\text{NAP}}\,\text{TSS} + \alpha_{\text{DOC}}\,\text{DOC} + (\alpha_{\text{Chl }a} - r\,\alpha_{\text{NAP}})\,\text{Chl }a .$$
+
+That is the same regression on TSS, DOC and Chl *a* whatever $r$ is. The fitted $\alpha_{\text{NAP}}$, $\alpha_{\text{DOC}}$, $R^2$ and every predicted Secchi depth are identical; only $\alpha_{\text{Chl }a}$ shifts, by $r\,\alpha_{\text{NAP}}$. The ratio decides how much of the particle attenuation is labelled algal, and nothing else.
+
+**The data bound the ratio from above.** Algal mass cannot exceed the suspended solids in the sample, so the low end of TSS : Chl *a* is an upper limit on the ratio. In lakes it falls as chlorophyll rises, which is the shape of the Gohin et al. (2005) relation; the Gohin curve sits at or below the 1st percentile, so it behaves as a lower bound on algal mass. A constant `100:1` is more than the total suspended solids present in roughly one in ten lake samples above $100\ \mu\text{g L}^{-1}$.
+
+```{r algal-envelope, echo = FALSE}
+get_application() %>% filter(type == 'Lake') %>%
+  mutate(ratio = tss / chl_a * 1000,
+         cls = cut(chl_a, c(0, 3, 10, 30, 100, Inf), labels = c('< 3', '3–10', '10–30', '30–100', '> 100'))) %>%
+  group_by(cls) %>%
+  summarize(n = fmt_n(n()), p01 = quantile(ratio, .01), p05 = quantile(ratio, .05), p10 = quantile(ratio, .10),
+            med = median(ratio), gohin = median(P$chl_biomass_a * chl_a^(P$chl_biomass_b - 1)), .groups = 'drop') %>%
+  kable(digits = 0, format.args = list(big.mark = ','),
+        col.names = c('Chl a (µg/L)', 'Lake samples (n)', '1st percentile', '5th percentile', '10th percentile', 'Median', 'Gohin et al. (2005)'),
+        caption = 'TSS : Chl a in lake samples (mg dry mass per mg Chl a). Algal dry mass per unit Chl a cannot exceed these values.') %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = FALSE)
+```
+
+**The partition moves by a few points.** Refitting Models 1 and 7 (Section \@ref(models)) and re-running the continental application (Section \@ref(application)) under five rules gives the table below (`algal_mass_sensitivity()` in `R/models.R`; the Gohin row is the canonical pipeline). From no subtraction at all to a constant `100:1`, the mean Chl *a* share goes from about 7% to 10% nationally and from 14% to 19% in lakes, while the DOC share stays between 56% and 58%.
+
+```{r algal-sensitivity, echo = FALSE}
+sens <- get_algal_sensitivity()
+write_csv(sens, file.path(PATH$figs, 'tables/tableS2_algal_mass_sensitivity.csv'))
+trio <- function(a, b, c) sprintf('%.1f / %.1f / %.1f', a, b, c)
+sens %>%
+  transmute(rule, a_NAP = sprintf('%.4f', a_NAP), a_DOC = sprintf('%.4f', a_DOC), a_Chl_a = sprintf('%.4f', a_Chl_a),
+            r2_model1 = sprintf('%.2f', r2_model1), r2_model7 = sprintf('%.2f', r2_model7),
+            us = trio(us_chl, us_doc, us_nap), lake = trio(lake_chl, lake_doc, lake_nap),
+            green = trio(green_chl, green_doc, green_nap), over80 = fmt_n(n_obs_chl_over_80),
+            excl = sprintf('%.2f%%', pct_excluded_nap)) %>%
+  kable(col.names = c('Algal dry mass rule', 'α_NAP (m²/g)', 'α_DOC (m²/g)', 'α_Chl a (m²/mg)', 'R² Model 1', 'R² Model 7',
+                      'All waters: Chl a / DOC / NAP (%)', 'Lakes (%)', 'Lakes > 100 µg/L Chl a (%)',
+                      'Samples > 80% Chl a', 'Samples dropped (NAP ≤ 0.01 mg/L)'),
+        caption = 'Sensitivity of model fit and mean non-water attenuation shares to the assumed algal dry mass : Chl a relation (Supplemental Table S2 of the manuscript).') %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
+```
+
+Two consequences for how the results should be read:
+
+* The Chl *a* term is a conservative estimate of the algal contribution. In the greenest lakes ($> 100\ \mu\text{g L}^{-1}$) it is the largest single term under every rule (35–46%), but it never reaches the 80% we use to call a sample dominated by one constituent.
+* That is not mainly a matter of the ratio. In those lakes DOC carries about 35% and particles 19–30% whichever rule is used, because dissolved organic matter and detritus rise together with algae in eutrophic water and a statistical partition cannot separate algal-derived material from other sources.
+
+We keep the Gohin et al. (2005) relation as the canonical choice: it never assigns more mass to algae than the samples contain, and the conclusions above hold under any of the alternatives.
 
 Similarly, restricting calibration strictly to top-tier analytical methods (`Tier 1` chemistry and `Tier 1–2` Secchi) yields nearly identical attenuation slopes while pooling all harmonized AquaMatch tiers nearly triples spatial coverage:
 

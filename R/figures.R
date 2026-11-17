@@ -18,12 +18,12 @@ fig1a <- function(fd) {
     ggplot(aes(value, colour = type, linetype = Secchi)) +
     geom_density(linewidth = 0.8) +
     facet_wrap(~parameter, scales = 'free', ncol = 4) +
-    scale_x_log10(labels = label_number(drop0trailing = TRUE)) +
+    scale_x_log10(labels = label_number(drop0trailing = TRUE, big.mark = ''), guide = guide_axis(check.overlap = TRUE)) +
     scale_colour_manual(values = TYPE_COLS) +
     labs(x = NULL, y = 'density', colour = 'type') +
-    theme_bw(base_size = 10) +
+    theme_bw(base_size = 17) +
     theme(panel.grid = element_blank(), strip.background = element_blank(),
-          legend.key.width = unit(1.2, 'lines'))
+          strip.text = element_text(size = 15), legend.key.width = unit(1.4, 'lines'))
 }
 
 #' Fig 1b: map of observation density (0.1 degree bins) over Level III ecoregions.
@@ -47,12 +47,13 @@ fig1b <- function(fd, eco, seed = 1) {
                           labels = c('10^1', '10^2', '10^3')) +
     coord_sf(datum = NA, xlim = st_bbox(eco3)[c(1, 3)], ylim = st_bbox(eco3)[c(2, 4)]) +
     guides(size = guide_legend(override.aes = list(shape = 0))) +
-    theme_void(base_size = 10) + theme(legend.position = 'right')
+    theme_void(base_size = 17) + theme(legend.position = 'right')
 }
 
 fig1 <- function(fd, eco) {
   (fig1a(fd) + theme(legend.position = 'right')) / fig1b(fd, eco) +
-    plot_layout(heights = c(1, 3.4)) + plot_annotation(tag_levels = 'a', tag_suffix = ')')
+    plot_layout(heights = c(1, 3)) + plot_annotation(tag_levels = 'a', tag_suffix = ')') &
+    theme(plot.tag = element_text(size = 18))
 }
 
 # ---- Figure 2 ---------------------------------------------------------------
@@ -60,12 +61,12 @@ fig1 <- function(fd, eco) {
 tern_summary_panel <- function(df, label, pt_alpha = 0.20, pt_size = 0.04) {
   r1 <- tern_sd_region(df, 1); r2 <- tern_sd_region(df, 2)
   mu <- df %>% summarize(across(c(chl_kd, doc_kd, tss_kd), mean)) %>% tern_xy()
-  tern_frame(base_size = 10) +
+  tern_frame(base_size = 15, pad = 0.05) +
     geom_point(data = tern_xy(df), aes(.x, .y), colour = 'grey55', size = pt_size, alpha = pt_alpha, shape = 16) +
     geom_polygon(data = r2, aes(.x, .y), fill = NA, colour = 'black', linewidth = 0.7) +
     geom_polygon(data = r1, aes(.x, .y), fill = NA, colour = 'red', linewidth = 0.7) +
     geom_point(data = mu, aes(.x, .y), colour = 'blue', size = 2.2) +
-    annotate('text', x = -0.18, y = 0.9, hjust = 0, vjust = 1, size = 3.6,
+    annotate('text', x = -0.24, y = 0.94, hjust = 0, vjust = 1, size = 5.4, lineheight = 0.95,
              label = sprintf('%s\nn = %sK', label, floor(nrow(df) / 1000)))
 }
 
@@ -144,7 +145,7 @@ basemap_tiles <- function(bbox_sf, zoom = 9, provider = 'Esri.WorldGrayCanvas') 
 
 fig3 <- function(f3) {
   lims <- c(0, max(f3$sites$dist_trenton))
-  vir <- scale_colour_viridis_c(limits = lims, name = 'Distance from\nTrenton (km)')
+  vir <- scale_colour_viridis_c(limits = lims, name = 'km from\nTrenton')
   sites3857 <- st_transform(f3$sites, 3857)
   river3857 <- st_transform(f3$river, 3857)
   bb <- st_as_sfc(st_bbox(st_buffer(sites3857, 13000)))
@@ -157,21 +158,21 @@ fig3 <- function(f3) {
     geom_sf(data = sites3857, aes(fill = NULL, colour = dist_trenton), size = 4.2, alpha = 0.75) +
     geom_sf(data = sites3857, shape = 1, size = 4.2, colour = 'grey20') +
     vir +
-    annotate('point', x = exy[, 1] + 9000, y = exy[, 2], shape = 21, size = 5.5, fill = 'white', colour = 'black') +
-    annotate('text', x = exy[, 1] + 9000, y = exy[, 2], label = ex$num, size = 3.2) +
-    coord_sf(crs = 3857, datum = NA, expand = FALSE) + theme_void(base_size = 9) +
-    theme(legend.position = 'inside', legend.position.inside = c(0.14, 0.17),
-          legend.key.height = unit(0.5, 'cm'), legend.key.width = unit(0.3, 'cm'),
-          legend.title = element_text(size = 7), legend.text = element_text(size = 6))
-  inset <- tern_frame(base_size = 6) +
+    annotate('point', x = exy[, 1] + 10500, y = exy[, 2], shape = 21, size = 8.5, fill = 'white', colour = 'black') +
+    annotate('text', x = exy[, 1] + 10500, y = exy[, 2], label = ex$num, size = 5.3) +
+    coord_sf(crs = 3857, datum = NA, expand = FALSE) + theme_void(base_size = 15) +
+    theme(legend.position = 'inside', legend.position.inside = c(0.03, 0.02), legend.justification.inside = c(0, 0),
+          legend.key.height = unit(0.62, 'cm'), legend.key.width = unit(0.4, 'cm'),
+          legend.title = element_text(size = 12.5), legend.text = element_text(size = 11.5))
+  inset <- tern_frame(base_size = 10.5, pad = 0.08) +
     geom_point(data = tern_xy(f3$site_avg), aes(.x, .y, colour = dist_trenton), size = 1.3) +
     vir + theme(panel.background = element_rect(fill = alpha('white', 0.9), colour = NA))
-  map_panel <- map + inset_element(inset, left = 0.36, bottom = 0.26, right = 1.04, top = 0.66)
-  facets <- tern_frame(base_size = 9) +
+  map_panel <- map + inset_element(inset, left = 0.34, bottom = 0.19, right = 1.10, top = 0.67)
+  facets <- tern_frame(base_size = 15.5, pad = 0.09) +
     geom_point(data = tern_xy(f3$year_avg), aes(.x, .y, colour = dist_trenton), size = 2.6) +
     vir + facet_wrap(~site_label, ncol = 3) +
     theme(strip.background = element_rect(fill = 'grey88', colour = 'grey40'),
-          strip.text = element_text(size = 9, margin = margin(3, 3, 3, 3)))
+          strip.text = element_text(size = 15.5, margin = margin(4, 3, 4, 3)))
   (map_panel | facets) + plot_layout(widths = c(1, 2.6))
 }
 
@@ -204,7 +205,7 @@ season_of <- function(m) factor(case_when(m %in% c(12, 1, 2) ~ 'winter', m %in% 
                                           m %in% 6:8 ~ 'summer', TRUE ~ 'fall'),
                                 c('winter', 'spring', 'summer', 'fall'))
 
-circ_num <- function(p, n, size = 3.5) {
+circ_num <- function(p, n, size = 4.6) {
   p + annotate('point', x = 0.22, y = 0.83, shape = 21, size = size * 2.1, fill = 'white', stroke = 0.7) +
     annotate('text', x = 0.22, y = 0.83, label = n, size = size)
 }
@@ -217,35 +218,35 @@ fig4 <- function(fd, areas) {
            label = paste0(inset, substr(type, 1, 1)))
   cdf <- ggplot(areas, aes(area, colour = type)) +
     stat_ecdf(linewidth = 0.95) +
-    geom_point(data = labs_df, aes(area, cdf), shape = 21, size = 8.2, fill = 'white', stroke = 0.95, show.legend = FALSE) +
-    geom_text(data = labs_df, aes(area, cdf, label = label), colour = 'black', size = 3.4, show.legend = FALSE) +
+    geom_point(data = labs_df, aes(area, cdf), shape = 21, size = 10.5, fill = 'white', stroke = 0.95, show.legend = FALSE) +
+    geom_text(data = labs_df, aes(area, cdf, label = label), colour = 'black', size = 4.4, show.legend = FALSE) +
     scale_colour_manual(values = TYPE_COLS, name = NULL) +
     coord_cartesian(xlim = c(0, 0.78)) +
-    labs(x = 'Ternary area fraction', y = 'CDF') + theme_bw(base_size = 12) +
+    labs(x = 'Ternary area fraction', y = 'CDF') + theme_bw(base_size = 16) +
     theme(panel.grid = element_blank(), legend.position = 'inside',
-          legend.position.inside = c(0.10, 0.86),
-          legend.key.height = unit(0.42, 'cm'), legend.key.width = unit(0.65, 'cm'),
+          legend.position.inside = c(0.11, 0.85),
+          legend.key.height = unit(0.62, 'cm'), legend.key.width = unit(0.8, 'cm'),
           legend.background = element_blank())
   s7 <- fd %>% group_by(lat, long, SiteID, type) %>% mutate(n = n()) %>%
     filter(n > P$fig4_s7_min_obs) %>% ungroup() %>%
     mutate(year = year(date_unity), month = month(date_unity), season = season_of(month))
-  i1 <- tern_frame(base_size = 8.2, compact = TRUE) +
+  i1 <- tern_frame(base_size = 11.5, compact = TRUE, pad = 0.04) +
     geom_point(data = tern_xy(filter(fd, SiteID %in% FIG4_SITES$SiteID[1:3])), aes(.x, .y, colour = type), size = 1.35) +
     scale_colour_manual(values = TYPE_COLS)
   trend <- s7 %>% filter(SiteID == FIG4_SITES$SiteID[4]) %>% group_by(year) %>%
     summarize(across(c(chl_kd, doc_kd, tss_kd), mean))
-  i2 <- tern_frame(base_size = 8.0, compact = TRUE) +
+  i2 <- tern_frame(base_size = 11.5, compact = TRUE, pad = 0.04) +
     geom_point(data = tern_xy(trend), aes(.x, .y, colour = year), size = 1.55) +
     scale_colour_viridis_c(name = NULL, breaks = function(l) unique(round(pretty(l, 4)))) +
-    theme(legend.position = 'inside', legend.position.inside = c(0.92, 0.55),
-          legend.key.height = unit(0.42, 'cm'), legend.key.width = unit(0.22, 'cm'),
-          legend.text = element_text(size = 7.0), legend.background = element_blank())
-  i3 <- tern_frame(base_size = 8.0, compact = TRUE) +
+    theme(legend.position = 'inside', legend.position.inside = c(1.03, 1.0), legend.justification.inside = c(1, 1),
+          legend.key.height = unit(0.40, 'cm'), legend.key.width = unit(0.26, 'cm'),
+          legend.text = element_text(size = 10.5), legend.background = element_blank())
+  i3 <- tern_frame(base_size = 11.5, compact = TRUE, pad = 0.04) +
     geom_point(data = tern_xy(filter(s7, SiteID == FIG4_SITES$SiteID[5])), aes(.x, .y, colour = season), size = 1.35) +
     scale_colour_manual(values = c(winter = 'black', spring = 'lightgreen', summer = 'lightblue', fall = 'brown3'), name = NULL) +
-    theme(legend.position = 'inside', legend.position.inside = c(0.91, 0.68),
-          legend.key.height = unit(0.34, 'cm'), legend.key.width = unit(0.26, 'cm'),
-          legend.text = element_text(size = 7.2), legend.background = element_blank())
+    theme(legend.position = 'inside', legend.position.inside = c(1.06, 1.02), legend.justification.inside = c(1, 1),
+          legend.key.height = unit(0.42, 'cm'), legend.key.width = unit(0.3, 'cm'),
+          legend.text = element_text(size = 10.5), legend.background = element_blank())
   cdf +
     inset_element(circ_num(i1, 1), left = 0.25, bottom = 0.01, right = 0.61, top = 0.45) +
     inset_element(circ_num(i2, 2), left = 0.60, bottom = 0.01, right = 0.98, top = 0.45) +
@@ -263,7 +264,7 @@ figS1 <- function(cones, coefs7, coefs8) {
     facet_grid(term ~ type, scales = 'free_y') +
     scale_x_log10(labels = label_log(digits = 1)) +
     scale_colour_viridis_d(name = 'ecoregion', guide = 'none') +
-    labs(x = 'n', y = 'coefficient') + theme_bw(base_size = 11) +
+    labs(x = 'n', y = 'coefficient') + theme_bw(base_size = 15) +
     theme(panel.grid = element_blank(), strip.background = element_blank())
 }
 

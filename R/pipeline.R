@@ -45,6 +45,8 @@ get_final_data <- function() {
 get_random_subsets <- function() memo('random', cache_rds('random_subsets', random_subset_coefs(get_training(), get_k_w())))
 get_fig4_areas     <- function() memo('areas', cache_rds('fig4_areas', fig4_areas(get_final_data())))
 get_fig3_data      <- function() memo('fig3', cache_rds('fig3_data', fig3_data(get_final_data())))
+get_algal_sensitivity <- function() memo('algal_sens', cache_rds('algal_mass_sensitivity',
+       algal_mass_sensitivity(get_training(), get_application(), get_eco(), get_k_w())))
 
 #' Save a figure as PNG (300 dpi) and PDF into figs/.
 save_fig <- function(p, name, width, height) {

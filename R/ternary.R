@@ -20,7 +20,9 @@ bary_to_xy <- function(chl, doc, nap) cbind(x = nap + doc / 2, y = doc * S3)
 #' Empty ternary frame: triangle, dashed 20% grid, tick labels, axis titles.
 tern_frame <- function(base_size = 9, grid = TRUE, labels = TRUE, titles = TRUE,
                        lab_chl = 'Chl a', lab_doc = 'DOC', lab_nap = 'NAP',
-                       grid_col = 'grey80', line_col = 'grey15', compact = FALSE) {
+                       grid_col = 'grey80', line_col = 'grey15', compact = FALSE, pad = 0) {
+  # pad: extra outward offset (triangle units) for axis titles and plot limits,
+  # used when text is large relative to the triangle (print-size legibility)
   v <- c(0.2, 0.4, 0.6, 0.8)
   grid_df <- bind_rows(
     tibble(id = paste0('n', v), x = v,                 y = 0,          xend = v + (1 - v) / 2,  yend = (1 - v) * S3),
@@ -48,17 +50,17 @@ tern_frame <- function(base_size = 9, grid = TRUE, labels = TRUE, titles = TRUE,
   }
   if (titles) {
     tt_df <- if (compact) {
-      tibble(x = c(0.5, 0.835, 0.165), y = c(-0.145, 0.505, 0.505), angle = c(0, -60, 60),
+      tibble(x = c(0.5, 0.835 + 0.866 * pad, 0.165 - 0.866 * pad), y = c(-0.145 - pad, 0.505 + 0.5 * pad, 0.505 + 0.5 * pad), angle = c(0, -60, 60),
              label = c(paste(lab_nap, '\u2192'), paste('\u2190', lab_doc), paste('\u2190', lab_chl)))
     } else {
-      tibble(x = c(0.5, 0.86, 0.14), y = c(-0.17, 0.52, 0.52), angle = c(0, -60, 60),
+      tibble(x = c(0.5, 0.86 + 0.866 * pad, 0.14 - 0.866 * pad), y = c(-0.17 - pad, 0.52 + 0.5 * pad, 0.52 + 0.5 * pad), angle = c(0, -60, 60),
              label = c(paste(lab_nap, '\u2192'), paste('\u2190', lab_doc), paste('\u2190', lab_chl)))
     }
     p <- p + geom_text(data = tt_df, aes(x, y, label = label, angle = angle),
                        size = fs * 1.05, inherit.aes = FALSE)
   }
-  xlims <- if (compact) c(-0.10, 1.12) else c(-0.2, 1.2)
-  ylims <- if (compact) c(-0.17, 0.90) else c(-0.22, 0.93)
+  xlims <- (if (compact) c(-0.10, 1.12) else c(-0.2, 1.2)) + c(-1, 1) * 1.1 * pad
+  ylims <- (if (compact) c(-0.17, 0.90) else c(-0.22, 0.93)) + c(-1.25, 0.35) * pad
   p + scale_x_continuous(limits = xlims, expand = c(0, 0)) +
     scale_y_continuous(limits = ylims, expand = c(0, 0))
 }

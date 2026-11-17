@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-10-21" />
+<meta name="date" content="2026-11-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -145,6 +145,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#preamble-how-this-project-got-here-and-what-ai-had-to-do-with-it"><i class="fa fa-check"></i>Preamble: how this project got here, and what AI had to do with it</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#the-science-in-brief"><i class="fa fa-check"></i>The science in brief</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation"><i class="fa fa-check"></i>Why Optical Partitioning &amp; Total Visibility Both Matter (<code>{sonicray}</code> 3D Simulation)</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#continental-ternary-partitioning-at-a-glance"><i class="fa fa-check"></i>Continental Ternary Partitioning at a Glance</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#pipeline-funnel-dataset-summary"><i class="fa fa-check"></i>Pipeline Funnel &amp; Dataset Summary</a></li>
@@ -163,7 +165,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="nap.html"><a href="nap.html"><i class="fa fa-check"></i><b>3</b> Separating Non-Algal Particles (NAP) from Bulk TSS</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-biomass-formulation-method-tiers"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to Biomass Formulation &amp; Method Tiers</a></li>
+<li class="chapter" data-level="3.1" data-path="nap.html"><a href="nap.html#sensitivity-to-biomass-formulation-method-tiers"><i class="fa fa-check"></i><b>3.1</b> Sensitivity to Biomass Formulation &amp; Method Tiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="nap.html"><a href="nap.html#algal-mass-sensitivity"><i class="fa fa-check"></i><b>3.1.1</b> Does the algal-mass assumption change the partition?</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
@@ -225,15 +230,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">Ternary Partitioning of Continental-Scale Water Clarity</h1>
 <h2 class="subtitle"><em>Bio-Optical Modeling and Ternary Diagnostics Across U.S. Streams, Lakes, and Estuaries (1970–2025)</em></h2>
 <p class="author"><em>James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross</em></p>
-<p class="date"><em>October 21, 2026</em></p>
+<p class="date"><em>November 17, 2026</em></p>
 </div>
 <div id="overview" class="section level1 unnumbered hasAnchor">
 <h1>Overview<a href="index.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="preamble-how-this-project-got-here-and-what-ai-had-to-do-with-it" class="section level2 unnumbered hasAnchor">
+<h2>Preamble: how this project got here, and what AI had to do with it<a href="index.html#preamble-how-this-project-got-here-and-what-ai-had-to-do-with-it" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This project started in May of 2018, about three months before I, Matt R. (as opposed to Matt C.), started as an Assistant Professor at Colorado State University, and 16 months before the birth of my son. It was a time when I probably peaked in my own ability to produce and write code, and I had grand visions of continuing to build detailed bookdown documentation, paired with compelling visuals, reproducible code, and grand architectures that would make my papers something beyond the PDF. It was an absolute pleasure to work in this flow state of peak technical ability, and I was proud that I could be an engine for many of the ideas Jim, Matt C., and I were bouncing off each other. Over the years, that pride turned sour as I entered my overpromise-and-underdeliver phase of life, where I constantly underestimated how much deep-work time I would have and therefore kept underdelivering on the work I had promised to do myself. Progress on this project languished, as it was unfunded and a collaboration between three very busy profs. This slow, slow, and not at all steady progress was punctuated by Jim flying to France to visit me on sabbatical, where we hammered out all the remaining details that ultimately led to submitting. It was a heroic effort by Jim, and I finally understood my limits better and was ready to let the project get published and move on.</p>
+<p>Then our esteemed Limnology and Oceanography Associate Editor (name reveal pending approval) correctly chastised us for not using our own data products to update our analysis. We had started this in 2018, and my own lab had published massive updates to the underlying data in 2024–2026, yet we weren’t using them because of the relatively high burden for me to go back into my code and fix everything around the new data. In the background, I was increasingly using AI to offload my own coding and to better understand how to teach Environmental Analysis, so instead of pushing back against the new data, I unleashed Claude and Gemini to rewrite the codebase around the new data, build out the documentation, explore model decisions further, and so on. This site is the result of that handoff, and it is the first project that actually accomplishes my vision of a more reproducible, clearer, and better version of my own science, all because AI can take care of the details far better than I ever can.</p>
+<p>So why the long preamble? I think many in my academic circles view AI as a net evil, a dehumanizing force that rips away from us our most cherished artifacts: writing, code, discovery. While this may be true in parts, my experience in this particular case is essentially the opposite. AI allowed me to accomplish a vision I didn’t have time to realize on my own, and at a higher quality than I ever could have marshaled. So yes, all of the code and documentation here was edited, reworked, or redone with AI, but the core ideas are ours and the entire codebase is so much better for it.</p>
+<p><em>— Matt R.</em></p>
+<p><strong>AI use, plainly.</strong> The R pipeline in <code>R/</code>, the figures, and this bookdown documentation were written or rewritten with Claude (Anthropic) and Gemini (Google) under Matt R.’s direction, starting from the analysis code and manuscript we developed by hand between 2018 and 2025. The questions, hypotheses, model structure, and interpretation predate that handoff and are ours. The rewritten pipeline was checked against the original analysis, and an automated audit (Section 10) ties the numbers quoted in the manuscript to pipeline output. AI was also used to prepare <em>draft</em> revisions of the manuscript text and the response to reviewers; the authors reviewed and edited those drafts and are responsible for what is submitted.</p>
+<hr />
+</div>
+<div id="the-science-in-brief" class="section level2 unnumbered hasAnchor">
+<h2>The science in brief<a href="index.html#the-science-in-brief" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Water clarity is one of our oldest and most intuitive lenses into aquatic ecosystems. For more than a century, hydrologists and limnologists have lowered Secchi disks into rivers, lakes, and estuaries to measure how deeply light penetrates the water column. Yet Secchi disk depth (<span class="math inline">\(z_{SD}\)</span>, in meters) alone tells us only <em>how much</em> light is lost—not <em>what</em> is blocking it.</p>
 <p>Across inland and coastal waters, diffuse light attenuation (<span class="math inline">\(k_d = 1 / z_{SD}\)</span>; Lee et al. 2015) is governed by pure water (<span class="math inline">\(k_w\)</span>) and three primary light-attenuating constituents (LACs): <strong>non-algal particles (NAP)</strong>, <strong>dissolved organic carbon (DOC)</strong>, and <strong>phytoplankton chlorophyll <em>a</em> (<span class="math inline">\(\text{Chl }a\)</span>)</strong>. Under the additive Beer–Lambert model, Secchi depth can be written directly in terms of constituent concentrations:</p>
 <p><span class="math display">\[z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a}\]</span></p>
 <p>To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the <strong>AquaMatch</strong> data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to <strong>AquaSat</strong> (Ross et al. 2019). Combining <strong><code>274,445</code> simultaneous four-variable matchups</strong> (<code>Secchi + Chl a + DOC + TSS/SSC</code>) for model calibration with <strong><code>479,666</code> three-constituent matchups</strong> across <strong><code>39,423</code> monitoring stations</strong> (<code>1970–2025</code>), we estimate regional specific attenuation coefficients (<span class="math inline">\(\alpha_i\)</span>) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.</p>
 <hr />
+</div>
 <div id="why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation" class="section level2 unnumbered hasAnchor">
 <h2>Why Optical Partitioning &amp; Total Visibility Both Matter (<code>{sonicray}</code> 3D Simulation)<a href="index.html#why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Ternary diagrams are a powerful way to visualize which constituent dominates light attenuation (<span class="math inline">\(f_{\text{NAP}} + f_{\text{DOC}} + f_{\text{Chl }a} = 1\)</span>), but proportions alone miss a critical physical dimension: <strong>total visibility (<span class="math inline">\(z_{SD}\)</span>)</strong>. Two lakes sitting at the exact same coordinate in ternary space can represent either a crystal-clear oligotrophic basin (<span class="math inline">\(z_{SD} &gt; 5\text{ m}\)</span>) or a murky waterbody (<span class="math inline">\(z_{SD} &lt; 0.4\text{ m}\)</span>) when total constituent concentrations scale up. Moreover, each constituent alters the underwater light field in a distinct way:</p>

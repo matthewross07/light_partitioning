@@ -4,6 +4,8 @@ fig:ch1-coverage-fig
 fig:simul-map
 fig:pairs
 fig:nap-fig
+tab:algal-envelope
+tab:algal-sensitivity
 fig:qc-fig
 tab:extremes-preserved
 fig:kd-hist
@@ -29,6 +31,7 @@ spatial-seasonal-footprint-of-matchups
 log-log-covariance-structure
 nap
 sensitivity-to-biomass-formulation-method-tiers
+algal-mass-sensitivity
 training
 stage-1-analytical-reporting-floors-trim_simultaneous
 stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule

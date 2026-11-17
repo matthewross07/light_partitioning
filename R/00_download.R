@@ -4,10 +4,10 @@
 #
 # Uses AquaMatchr::download_parameters() to retrieve the harmonized in-situ WQP
 # products from the Environmental Data Initiative (EDI):
-#   - sdd  (Secchi disk depth,                 edi.1856.1; Brousil et al. 2025)
-#   - chla (Chlorophyll a,                     edi.1756.2; Brousil et al. 2024)
-#   - doc  (Dissolved organic carbon,          edi.1809.1; Brousil et al. 2024)
-#   - tss  (Total suspended solids & SSC,      edi.2048.2; De La Torre et al. 2025)
+#   - sdd  (Secchi disk depth,                 edi.1856.1; De La Torre et al. 2025)
+#   - chla (Chlorophyll a,                     edi.1756.2; Brousil et al. 2024a)
+#   - doc  (Dissolved organic carbon,          edi.1809.1; Brousil et al. 2024b)
+#   - tss  (Total suspended solids & SSC,      edi.2048.2; Brousil et al. 2025)
 #
 # Note on EDI PASTA authentication (July 2026+):
 #   EDI now requires an EDI_API_KEY header on pasta.lternet.edu REST endpoints
@@ -20,10 +20,10 @@
 
 AQUAMATCH_EDI_MANIFEST <- dplyr::tribble(
   ~param, ~package_id,   ~revision, ~entity_name,            ~entity_id,                         ~bytes,     ~citation,
-  "sdd",  "edi.1856.1",  1L,        "sdd_harmonized_final",  "723fe7603c501a8e68b0f523a",        635344442,  "Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., Topp, S.N., & Ross, M.R.V. (2025). AquaMatch Secchi Disk Depth from Water Quality Portal ~1970-2024 (edi.1856.1). Environmental Data Initiative.",
-  "chla", "edi.1756.2",  2L,        "chla_harmonized_final", "c97458622bc2126fa6d6c84e183101cf", 815049179,  "Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., Topp, S.N., & Ross, M.R.V. (2024). AquaMatch Chlorophyll a from Water Quality Portal ~1970-2024 (edi.1756.2). Environmental Data Initiative.",
-  "doc",  "edi.1809.1",  1L,        "doc_harmonized_final",  "c50dc72b8ea5cb6605abb613b105429a", 419874195,  "Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., Topp, S.N., & Ross, M.R.V. (2024). AquaMatch Dissolved Organic Carbon from Water Quality Portal ~1970-2024 (edi.1809.1). Environmental Data Initiative.",
-  "tss",  "edi.2048.2",  2L,        "tss_harmonized_final",  "b258b13368563cdc63113e2a972a42db", 1030574938, "De La Torre, J., Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., & Ross, M.R.V. (2025). AquaMatch Total Suspended Solids and Suspended Sediment Concentration from Water Quality Portal ~1970-2025 (edi.2048.2). Environmental Data Initiative."
+  "sdd",  "edi.1856.1",  1L,        "sdd_harmonized_final",  "723fe7603c501a8e68b0f523a",        635344442,  "De La Torre, J., Steele, B.G., Brousil, M.R., Meyer, M.F., Willi, K., & Ross, M.R.V. (2025). AquaMatch Secchi Disk Depth Data from Water Quality Portal: ~1970-2024 (edi.1856.1). Environmental Data Initiative. https://doi.org/10.6073/pasta/542a305e8484ae5abc33881bd7761308",
+  "chla", "edi.1756.2",  2L,        "chla_harmonized_final", "c97458622bc2126fa6d6c84e183101cf", 815049179,  "Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., De La Torre, J., & Ross, M.R.V. (2024). AquaMatch Chlorophyll a Data from Water Quality Portal: ~1970-2024 (edi.1756.2). Environmental Data Initiative. https://doi.org/10.6073/pasta/2f750544112e5408928dd9a61e6ace30",
+  "doc",  "edi.1809.1",  1L,        "doc_harmonized_final",  "c50dc72b8ea5cb6605abb613b105429a", 419874195,  "Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., & Ross, M.R.V. (2024). AquaMatch Dissolved Organic Carbon Data from Water Quality Portal: ~1970-2024 (edi.1809.1). Environmental Data Initiative. https://doi.org/10.6073/pasta/31d271897f074da990a4f25108ff2a40",
+  "tss",  "edi.2048.2",  2L,        "tss_harmonized_final",  "b258b13368563cdc63113e2a972a42db", 1030574938, "Brousil, M.R., Meyer, M.F., Willi, K., Steele, B.G., Gardner, J.R., & Ross, M.R.V. (2025). AquaMatch Total Suspended Solids from Water Quality Portal ~1970-2025 (edi.2048.2). Environmental Data Initiative. https://doi.org/10.6073/pasta/6cde7f8613ef5e7e2bef3a19160e02ea"
 )
 
 #' Shim EDIutils when EDI_API_KEY is not set so AquaMatchr::download_parameters()
