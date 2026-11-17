@@ -289,8 +289,8 @@ fig_qc_discordance <- function(trimmed) {
   n_ret <- sum(abs(d$z_r) <= max_sd)
   pct_ret <- 100 * n_ret / nrow(d)
   ret_lbl <- sprintf('Retained within +/-%.1f SD (%.2f%%, n = %s)', max_sd, pct_ret, fmt_n(n_ret))
-  up_lbl  <- sprintf('Upper tail (> +%.1f SD, ~5x): Secchi odd-one-out (shallow bottom hits; LACs rescued)', max_sd)
-  lo_lbl  <- sprintf('Lower tail (< -%.1f SD, ~1/5x): Chemistry odd-one-out (unit/bottle errors; dropped)', max_sd)
+  up_lbl  <- sprintf('Upper tail (> +%.1f SD, ~5x): Secchi much shallower than expected (LACs kept)', max_sd)
+  lo_lbl  <- sprintf('Lower tail (< -%.1f SD, ~1/5x): Secchi much deeper than expected (dropped)', max_sd)
 
   d <- d %>%
     mutate(
@@ -323,7 +323,7 @@ fig_qc_discordance <- function(trimmed) {
     guides(colour = guide_legend(override.aes = list(size = 2.5, alpha = 0.9))) +
     labs(
       title = 'a) Beer-Lambert residual screen (+/-2.5 SD ~ 5-fold)',
-      x = expression(Canonical~literature~k[d*","*lit]~(m^-1)),
+      x = expression(Reference~k[d*","*lit]~(m^-1)),
       y = expression(Observed~k[d] == 1/z[SD]~(m^-1))
     ) +
     theme_bw(base_size = 10.5) +

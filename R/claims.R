@@ -81,33 +81,35 @@ test_dominance_secchi <- function(fd) {
   list(summary = summary_tbl, omnibus = omnibus_tbl, pairwise = pairs)
 }
 
-#' Compare fitted attenuation coefficients against theoretical and empirical
-#' bio-optical benchmarks in the literature (Bannister 1974; Kirk 1994; etc.).
+#' Compare fitted attenuation coefficients with published coefficients for diffuse
+#' attenuation of PAR. Published values were read from the sources themselves:
+#' Bannister (1974) k_c; Gohin et al. (2005) Eq. 21; Gallegos (2001) Table 5.
+#' Our coefficients are fitted to 1/z_SD (a = 1 in Kd = a / z_SD); a is reported to
+#' range from 1 to 2, so the comparison column gives Model 1 values times 1 to 2.
 compare_bannister_literature <- function(models = get_models()) {
   c1 <- models$m1$coefs %>% select(term, estimate) %>% deframe()
   c2 <- models$m2$coefs %>% select(type, term, estimate) %>%
     pivot_wider(names_from = type, values_from = estimate) %>%
     column_to_rownames('term')
+  by_type <- function(term) sprintf('Estuary: %.4f; Lake: %.4f; Stream: %.4f', c2[term, 'Estuary'], c2[term, 'Lake'], c2[term, 'Stream'])
+  times_a <- function(term, fmt = '%.3f - %.3f') sprintf(fmt, c1[[term]], 2 * c1[[term]])
 
   tribble(
-    ~Constituent, ~Units, ~`AquaMatch Global (Model 1)`, ~`AquaMatch by Type (Model 2)`, ~`Literature Range`, ~`Primary References`,
+    ~Constituent, ~Units, ~`AquaMatch Global (Model 1)`, ~`AquaMatch by Type (Model 2)`, ~`Model 1 x a, for a = 1 to 2`, ~`Published values for Kd(PAR)`, ~`Sources`,
     'Chl a (alpha_Chl)', 'm^2 (mg Chl a)^-1',
-    sprintf('%.4f', c1[['Chl_a']]),
-    sprintf('Estuary: %.4f; Lake: %.4f; Stream: %.4f', c2['Chl_a', 'Estuary'], c2['Chl_a', 'Lake'], c2['Chl_a', 'Stream']),
-    '0.008 - 0.020 (canonical k_c = 0.016)',
-    'Bannister (1974) L&O 19:1-12; Morel (1988) JGR 93:10749; Kirk (1994) Light and Photosynthesis in Aquatic Ecosystems',
+    sprintf('%.4f', c1[['Chl_a']]), by_type('Chl_a'), times_a('Chl_a', '%.4f - %.4f'),
+    '0.016 (Bannister 1974); 0.012 - 0.019 (Gallegos 2001, Chesapeake Bay)',
+    'Bannister (1974) Limnol. Oceanogr. 19:1-12; Gallegos (2001) Estuaries 24:381-397',
 
-    'NAP (alpha_NAP)', 'm^2 g^-1 (L mg^-1 m^-1)',
-    sprintf('%.4f', c1[['NAP']]),
-    sprintf('Estuary: %.4f; Lake: %.4f; Stream: %.4f', c2['NAP', 'Estuary'], c2['NAP', 'Lake'], c2['NAP', 'Stream']),
-    '0.025 - 0.070',
-    'Gohin et al. (2005) Int. J. Remote Sens. 26:1639; Gallegos et al. (2011) Estuar. Coast. Shelf Sci. 95:218; Kirk (1994)',
+    'NAP (alpha_NAP)', 'm^2 g^-1',
+    sprintf('%.4f', c1[['NAP']]), by_type('NAP'), times_a('NAP'),
+    '0.0625 for non-living suspended matter (Gohin et al. 2005, Bay of Biscay shelf); 0.074 - 0.095 for total suspended solids (Gallegos 2001)',
+    'Gohin et al. (2005) Remote Sens. Environ. 95:29-46; Gallegos (2001)',
 
-    'DOC (alpha_DOC)', 'm^2 g^-1 (L mg^-1 m^-1)',
-    sprintf('%.4f', c1[['DOC']]),
-    sprintf('Estuary: %.4f; Lake: %.4f; Stream: %.4f', c2['DOC', 'Estuary'], c2['DOC', 'Lake'], c2['DOC', 'Stream']),
-    '0.030 - 0.150',
-    'Morris et al. (1995) L&O 40:1381; Spencer et al. (2012) JGR 117:G03001; Griffin et al. (2018) Water Res. 144:719'
+    'DOC (alpha_DOC)', 'm^2 g^-1',
+    sprintf('%.4f', c1[['DOC']]), by_type('DOC'), times_a('DOC'),
+    '0.037 - 0.051 (Gallegos 2001, Chesapeake Bay)',
+    'Gallegos (2001)'
   )
 }
 
@@ -117,7 +119,7 @@ verified_literature_table <- function() {
   tribble(
     ~Step_or_Decision, ~Equation_or_Parameter, ~Citation, ~Identifier_or_DOI, ~Verification_Notes,
     'In-situ Secchi depth (sdd)', 'AquaMatch harmonized WQP Secchi depth (2.74M records, 1970-2024)',
-    'Brousil et al. (2025)', 'EDI package edi.1856.1',
+    'De La Torre et al. (2025)', 'EDI package edi.1856.1',
     'Retrieved via AquaMatchr::download_parameters("sdd"); records with sdd_mdl >= 2 (<=0.01 m floor placeholders) set to NA.',
 
     'In-situ Chlorophyll a (chla)', 'AquaMatch harmonized WQP Chlorophyll a (3.39M records, 1970-2024)',
@@ -129,27 +131,27 @@ verified_literature_table <- function() {
     'Retrieved via AquaMatchr::download_parameters("doc").',
 
     'In-situ Total Suspended Solids & SSC (tss)', 'AquaMatch harmonized WQP TSS & SSC (4.61M records, 1970-2025)',
-    'De La Torre et al. (2025)', 'EDI package edi.2048.2',
+    'Brousil et al. (2025)', 'EDI package edi.2048.2',
     'Retrieved via AquaMatchr::download_parameters("tss"); prefers TSS when both TSS and SSC are measured on the same sample.',
 
     'Diffuse attenuation from Secchi depth', 'K_d = 1 / z_SD (Eq. 1 with a = 1)',
-    'Lee et al. (2015, 2018)', '10.1002/2015GL065066; 10.1029/2018JC014018',
+    'Lee et al. (2015, 2018)', '10.1016/j.rse.2015.08.002; 10.1002/lno.10940',
     'Contrast-transmittance theory showing K_d(tr) is inversely proportional to Secchi depth without empirical Poole & Atkins (1929) constants.',
 
     'Algal dry biomass & NAP separation', 'biomass [mg/L] = 0.234 * (Chl a)^0.57; NAP = TSS - biomass',
-    'Gohin et al. (2005)', '10.1080/01431160512331338032',
+    'Gohin et al. (2005)', '10.1016/j.rse.2004.11.007',
     'Nonlinear power-law conversion accounting for lower C:Chl ratios at high algal concentrations; prevents over-subtraction of algal mass.',
 
-    'Specific Chl a attenuation benchmark', 'k_c = 0.016 m^2 (mg Chl a)^-1 (range 0.008 - 0.020)',
-    'Bannister (1974); Kirk (1994)', '10.4319/lo.1974.19.1.0001',
-    'Matches AquaMatch global alpha_Chl = 0.0088 m^2/mg and Estuary alpha_Chl = 0.0136 m^2/mg.',
+    'Published Chl a attenuation coefficient', 'k_c = 0.016 m^2 (mg Chl a)^-1 for diffuse attenuation of PAR',
+    'Bannister (1974)', '10.4319/lo.1974.19.1.0001',
+    'An estimate, not an upper limit. Our global alpha_Chl (0.0088 m^2/mg) is fitted to 1/z_SD (a = 1); multiplied by a = 1 to 2 it is 0.009 to 0.018.',
 
-    'A priori WQP Beer-Lambert residual screen', '|z_r| <= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using published k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016',
-    'Bannister (1974); Kirk (1994); Morris et al. (1995); Gohin et al. (2005)', '10.4319/lo.1974.19.1.0001; 10.4319/lo.1995.40.8.1381',
-    'Flags 2.49% discordant records: 1.84% upper-tail shallow bottom hits (Secchi set to NA so valid 3-LAC chemistry is retained in application) and 0.65% lower-tail chemistry unit errors.',
+    'A priori WQP Beer-Lambert residual screen', '|z_r| <= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using reference coefficients set a priori (k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016), within about a factor of two of published values',
+    'Bannister (1974); Gallegos (2001); Gohin et al. (2005)', '10.4319/lo.1974.19.1.0001; 10.2307/1353240; 10.1016/j.rse.2004.11.007',
+    'Flags 2.49% discordant records: 1.84% where Secchi depth is much shallower than expected (Secchi set to NA so the 3-LAC chemistry is retained in application) and 0.65% where it is much deeper than expected (dropped).',
 
     'DOC as CDOM proxy & regional SUVA variation', 'alpha_DOC varies across ecoregions with DOM aromaticity',
-    'Spencer et al. (2012); Griffin et al. (2018)', '10.1029/2011JG001928; 10.1016/j.watres.2018.07.066',
+    'Spencer et al. (2012); Griffin et al. (2018)', '10.1029/2011JG001928; 10.1016/j.watres.2018.08.007',
     'Justifies ecoregion-stratified attenuation slopes (Model 7) to capture regional differences in CDOM:DOC stoichiometry.',
 
     'Hierarchical Ecoregion Stratification', 'EPA / CEC North American Ecoregions Levels I-IV',

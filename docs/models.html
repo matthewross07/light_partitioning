@@ -641,17 +641,17 @@ Yes
 <p><strong>Why We Select Model 7 (<code>Level III Ecoregions</code>) for Continental Ternary Analysis</strong></p>
 <ol style="list-style-type: decimal">
 <li><strong>Strong regional skill and parsimony:</strong> Moving from the global model (Model 1, <span class="math inline">\(R^2 = 0.45\)</span>) to Level III ecoregions (Model 7, <code>47</code> groups, <span class="math inline">\(R^2 = 0.54\)</span>) increases <span class="math inline">\(R^2\)</span> by <span class="math inline">\(+0.09\)</span> and improves BIC by <strong><span class="math inline">\(\Delta\text{BIC} = -55{,}486\)</span></strong>, while preserving a median group size of <span class="math inline">\(n = 685\)</span> (<code>107–120,350</code>).</li>
-<li><strong>Physical positivity:</strong> In Model 7, <strong>39 of 47 Level III ecoregions</strong> have strictly positive, highly significant (<span class="math inline">\(p &lt; 0.001\)</span>) slopes for all three constituents. Subdividing further to Level IV (Models 9–10) pushes median group size down to <span class="math inline">\(n = 341\text{–}364\)</span>—well below the <span class="math inline">\(n \approx 1{,}000\)</span> convergence threshold (<code>Figure S1</code>)—for only <span class="math inline">\(+0.02\text{ to }+0.03\)</span> gain in <span class="math inline">\(R^2\)</span>.</li>
+<li><strong>Physical positivity:</strong> In Model 7, <strong>39 of 47 Level III ecoregions</strong> have strictly positive slopes for all three constituents (all three with <span class="math inline">\(p &lt; 0.001\)</span> in 27 of them; the eight remaining ecoregions have a non-positive Chl a slope and use the global coefficients). Subdividing further to Level IV (Models 9–10) pushes median group size down to <span class="math inline">\(n = 341\text{–}364\)</span>—well below the <span class="math inline">\(n \approx 1{,}000\)</span> convergence threshold (<code>Figure S1</code>)—for only <span class="math inline">\(+0.02\text{ to }+0.03\)</span> gain in <span class="math inline">\(R^2\)</span>.</li>
 <li><strong>Seamless river–estuary continuity:</strong> Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only <span class="math inline">\(+0.02\)</span> in <span class="math inline">\(R^2\)</span> (<code>0.54</code> <span class="math inline">\(\rightarrow\)</span> <code>0.56</code>). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (<code>Figure 3</code>).</li>
 </ol>
 </div>
 </div>
 <div id="comparison-with-published-bio-optical-benchmarks" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Comparison with Published Bio-Optical Benchmarks<a href="models.html#comparison-with-published-bio-optical-benchmarks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In global Model 1 (<span class="math inline">\(n = 274{,}445\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span> (ratios <span class="math inline">\(\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}\)</span> in Model 1, and <span class="math inline">\(\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}\)</span> across all regional groups in Table S1). These empirically fitted values align closely with first-principles biophysical derivations and field optics studies:</p>
+<p>In global Model 1 (<span class="math inline">\(n = 274{,}445\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span> (ratios <span class="math inline">\(\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}\)</span> in Model 1, and <span class="math inline">\(\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}\)</span> on average across the Level III ecoregion fits of Model 7). The table compares these values with published coefficients for diffuse attenuation of photosynthetically active radiation, <span class="math inline">\(K_d(\text{PAR})\)</span>. The two are not on the same scale: our coefficients are fitted to <span class="math inline">\(1/z_{SD}\)</span>, that is with <span class="math inline">\(a = 1\)</span> in <span class="math inline">\(K_d = a / z_{SD}\)</span>, and <span class="math inline">\(a\)</span> is reported to range from 1 to 2 (Lee et al. 2018). The fifth column therefore gives the Model 1 values multiplied by 1 to 2. On that basis the Chl a and NAP coefficients overlap the published values, while the DOC coefficient is higher than the Chesapeake Bay values of Gallegos (2001):</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:bannister-table">Table 6.3: </span><span id="tab:bannister-table">Table 6.4: </span>Comparison of empirically fitted specific attenuation coefficients (Models 1 &amp; 2) against theoretical and field bio-optical benchmarks.
+<span id="tab:bannister-table">Table 6.3: </span><span id="tab:bannister-table">Table 6.4: </span>Fitted specific attenuation coefficients (Models 1 and 2) compared with published coefficients for diffuse attenuation of PAR.
 </caption>
 <thead>
 <tr>
@@ -668,10 +668,13 @@ AquaMatch Global (Model 1)
 AquaMatch by Type (Model 2)
 </th>
 <th style="text-align:left;">
-Literature Range
+Model 1 x a, for a = 1 to 2
 </th>
 <th style="text-align:left;">
-Primary References
+Published values for Kd(PAR)
+</th>
+<th style="text-align:left;">
+Sources
 </th>
 </tr>
 </thead>
@@ -690,10 +693,13 @@ m^2 (mg Chl a)^-1
 Estuary: 0.0122; Lake: 0.0080; Stream: 0.0110
 </td>
 <td style="text-align:left;">
-0.008 - 0.020 (canonical k_c = 0.016)
+0.0088 - 0.0175
 </td>
 <td style="text-align:left;">
-Bannister (1974) L&amp;O 19:1-12; Morel (1988) JGR 93:10749; Kirk (1994) Light and Photosynthesis in Aquatic Ecosystems
+0.016 (Bannister 1974); 0.012 - 0.019 (Gallegos 2001, Chesapeake Bay)
+</td>
+<td style="text-align:left;">
+Bannister (1974) Limnol. Oceanogr. 19:1-12; Gallegos (2001) Estuaries 24:381-397
 </td>
 </tr>
 <tr>
@@ -701,7 +707,7 @@ Bannister (1974) L&amp;O 19:1-12; Morel (1988) JGR 93:10749; Kirk (1994) Light a
 NAP (alpha_NAP)
 </td>
 <td style="text-align:left;">
-m^2 g^-1 (L mg^-1 m^-1)
+m^2 g^-1
 </td>
 <td style="text-align:left;">
 0.0442
@@ -710,10 +716,13 @@ m^2 g^-1 (L mg^-1 m^-1)
 Estuary: 0.0320; Lake: 0.0461; Stream: 0.0491
 </td>
 <td style="text-align:left;">
-0.025 - 0.070
+0.044 - 0.088
 </td>
 <td style="text-align:left;">
-Gohin et al. (2005) Int. J. Remote Sens. 26:1639; Gallegos et al. (2011) Estuar. Coast. Shelf Sci. 95:218; Kirk (1994)
+0.0625 for non-living suspended matter (Gohin et al. 2005, Bay of Biscay shelf); 0.074 - 0.095 for total suspended solids (Gallegos 2001)
+</td>
+<td style="text-align:left;">
+Gohin et al. (2005) Remote Sens. Environ. 95:29-46; Gallegos (2001)
 </td>
 </tr>
 <tr>
@@ -721,7 +730,7 @@ Gohin et al. (2005) Int. J. Remote Sens. 26:1639; Gallegos et al. (2011) Estua
 DOC (alpha_DOC)
 </td>
 <td style="text-align:left;">
-m^2 g^-1 (L mg^-1 m^-1)
+m^2 g^-1
 </td>
 <td style="text-align:left;">
 0.0711
@@ -730,10 +739,13 @@ m^2 g^-1 (L mg^-1 m^-1)
 Estuary: 0.0654; Lake: 0.0577; Stream: 0.0752
 </td>
 <td style="text-align:left;">
-0.030 - 0.150
+0.071 - 0.142
 </td>
 <td style="text-align:left;">
-Morris et al. (1995) L&amp;O 40:1381; Spencer et al. (2012) JGR 117:G03001; Griffin et al. (2018) Water Res. 144:719
+0.037 - 0.051 (Gallegos 2001, Chesapeake Bay)
+</td>
+<td style="text-align:left;">
+Gallegos (2001)
 </td>
 </tr>
 </tbody>

@@ -34,22 +34,47 @@ tibble(
 
 When all four measurements (`Secchi`, `Chl a`, `DOC`, and `TSS`) are collected on the same water sample, they provide an internal physical cross-check: **do the three water-chemistry constituents agree with the observed Secchi depth in Beer–Lambert space, or is one of the four measurements an obvious outlier?**
 
-To evaluate physical agreement *a priori*—without using any fitted regression parameters from our data—we compare observed diffuse attenuation ($k_d = 1 / z_{SD}$) against canonical Beer–Lambert attenuation ($k_{d,\text{lit}}$) computed from published optical cross-sections (Kirk 1994; Morris et al. 1995; Bannister 1974; Gohin et al. 2005):
+To evaluate physical agreement *a priori*—without using any fitted regression parameters from our data—we compare observed diffuse attenuation ($k_d = 1 / z_{SD}$) against a reference Beer–Lambert attenuation ($k_{d,\text{lit}}$). Its four coefficients were set *a priori* and are within about a factor of two of published coefficients for diffuse attenuation of photosynthetically active radiation (Bannister 1974; Gallegos 2001; Gohin et al. 2005; table below):
 
 $$k_{d,\text{lit}} = 0.080 + 0.040\,\max(0, \text{NAP}) + 0.070\,\text{DOC} + 0.016\,\text{Chl }a, \qquad r = \log_{10}\!\left(\frac{k_d}{k_{d,\text{lit}}}\right)$$
 
-Across all `281,439` four-variable matchups, the log residual $r$ is centered at virtually zero ($\bar{r} = 0.013$, confirming that literature cross-sections match the continental median without bias) with a standard deviation of $\text{SD}(r) = 0.270\text{ log}_{10}\text{ units}$. Standardizing each sample's residual as $z_r = (r - \bar{r}) / \text{SD}(r)$, we require $|z_r| \le 2.5\text{ SD}$ (`|r - r_bar| <= 0.674`, a **`4.7-fold` [$\sim 5\times$]** tolerance). This retains **`274,445` (`97.51%`)** training observations and flags **`6,994` (`2.49%`)** discordant outliers, which fall into two distinct physical categories with asymmetric disposition (`Figure` \@ref(fig:qc-fig)a):
+| Source | Water (m⁻¹) | Particles (m² g⁻¹) | DOC (m² g⁻¹) | Chl a (m² mg⁻¹) |
+|:---|:---|:---|:---|:---|
+| Reference values used in the screen | 0.08 | 0.040 (NAP) | 0.070 | 0.016 |
+| Bannister (1974) | | | | 0.016 |
+| Gohin et al. (2005), Bay of Biscay shelf | 0.1 | 0.0625 (non-living suspended matter) | | 0.05 Chl^0.80^ |
+| Gallegos (2001), Chesapeake Bay | 0.33–0.55 (regression intercept) | 0.074–0.095 (total suspended solids) | 0.037–0.051 | 0.012–0.019 |
 
-1. **Upper Tail ($z_r > +2.5\text{ SD}$, `5,177` records = `1.84%`) — `Secchi` is the odd one out (shallow streambed bottom hits):** Field crews lower a Secchi disk in a clear, shallow stream ($0.05\text{–}0.20\text{ m}$ deep) where the disk rests on the gravel streambed while still visible, and record the water depth as the Secchi depth (`Secchi = 0.05–0.20 m`, implying $k_d = 5\text{–}20\text{ m}^{-1}$) even though `Chl a`, `DOC`, and `TSS` are all low and mutually consistent ($\text{TSS} < 3\text{ mg L}^{-1}$, $\text{DOC} < 3\text{ mg L}^{-1}$). Because `Secchi` is censored by the streambed while the three water-chemistry measurements are valid, these records are **excluded from regression training** (`build_training()`), but in the **ternary application dataset (`build_application()`) only `Secchi` is set to `NA`**—rescuing the valid 3-constituent water chemistry with a modeled Secchi depth!
-2. **Lower Tail ($z_r < -2.5\text{ SD}$, `1,817` records = `0.65%`) — One of the chemistry constituents (`Chl a`, `DOC`, or `TSS`) is the odd one out:** A clear `Secchi` reading (`2–10 m`) is paired with two low chemistry measurements and one extreme chemistry spike ($\text{Chl }a > 500\ \mu\text{g L}^{-1}$ or $\text{TSS} > 200\text{ mg L}^{-1}$), typically caused by a $1{,}000\times$ unit conversion error ($\text{ng L}^{-1}$ entered as $\mu\text{g L}^{-1}$) or bottle mismatch. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.
+Table: Reference coefficients used in the screen, with published coefficients for diffuse attenuation of photosynthetically active radiation.
 
-```{r qc-fig, echo = FALSE, fig.width = 10.5, fig.height = 5.6, fig.cap = '(a) Observed diffuse attenuation (kd = 1/z_SD) vs. a priori Beer–Lambert expectation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail streambed bottom hits (red; Secchi dropped but 3-LAC chemistry rescued in application), and lower-tail chemistry unit errors (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff.'}
+The reference values are not taken from any single study, and the published values describe $K_d(\text{PAR})$ whereas the screen uses $1/z_{SD}$. Neither affects which records are flagged, because each record's ratio is compared with the mean ratio: multiplying all four reference coefficients by a constant leaves the flags unchanged.
+
+Across all `281,439` four-variable matchups, the log residual $r$ is centered near zero ($\bar{r} = 0.013$) with a standard deviation of $\text{SD}(r) = 0.270\text{ log}_{10}\text{ units}$. Standardizing each sample's residual as $z_r = (r - \bar{r}) / \text{SD}(r)$, we require $|z_r| \le 2.5\text{ SD}$ (`|r - r_bar| <= 0.674`, a **`4.7-fold` [$\sim 5\times$]** tolerance). This retains **`274,445` (`97.51%`)** training observations and flags **`6,994` (`2.49%`)** discordant outliers, which fall into two distinct physical categories with asymmetric disposition (`Figure` \@ref(fig:qc-fig)a):
+
+```{r tail-summary, include = FALSE}
+tails <- get_trimmed() %>% add_nap() %>%
+  mutate(secchi = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits),
+         kd = round(1 / secchi, P$kd_digits),
+         r = log10(kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tss_dead) + P$lit_alpha_doc * doc + P$lit_alpha_chl * chl_a)),
+         z_r = (r - mean(r)) / sd(r)) %>%
+  filter(abs(z_r) > P$kd_discordance_sd) %>%
+  group_by(tail = ifelse(z_r > 0, 'upper', 'lower')) %>%
+  summarize(n = n(), pct_stream = round(100 * mean(type == 'Stream')), secchi = round(median(secchi), 2),
+            tss = round(median(tss), 1), doc = round(median(doc), 1), chl = round(median(chl_a), 1))
+up <- filter(tails, tail == 'upper'); lo <- filter(tails, tail == 'lower')
+stopifnot(up$n == 5177, lo$n == 1817)
+```
+
+1. **Upper Tail ($z_r > +2.5\text{ SD}$, `5,177` records = `1.84%`) — `Secchi` is the odd one out:** Secchi depth is much shallower than the three constituents imply. These records are `r up$pct_stream`% streams, with a median Secchi depth of `r up$secchi` m and low constituent concentrations (median `TSS` `r up$tss` mg L⁻¹, `DOC` `r up$doc` mg L⁻¹, `Chl a` `r up$chl` µg L⁻¹). That pattern is consistent with a disk resting on the bed of a clear, shallow stream, but we did not check it against field notes. Because the three water-chemistry measurements agree with each other, these records are **excluded from regression training** (`build_training()`), but in the **ternary application dataset (`build_application()`) only `Secchi` is set to `NA`**, so the 3-constituent water chemistry is kept with a modeled Secchi depth.
+2. **Lower Tail ($z_r < -2.5\text{ SD}$, `1,817` records = `0.65%`) — One of the chemistry constituents (`Chl a`, `DOC`, or `TSS`) is the odd one out:** Secchi depth is much deeper than the three constituents imply (median Secchi depth `r lo$secchi` m alongside a median `TSS` of `r lo$tss` mg L⁻¹). Possible causes include unit-entry or sample-matching errors, which we did not verify. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.
+
+```{r qc-fig, echo = FALSE, fig.width = 10.5, fig.height = 5.6, fig.cap = '(a) Observed diffuse attenuation (kd = 1/z_SD) vs. the reference Beer–Lambert attenuation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail records where Secchi depth is much shallower than expected (red; Secchi dropped but 3-LAC chemistry kept in application), and lower-tail records where it is much deeper than expected (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff.'}
 p_qc <- fig_qc_discordance(trimmed)
 save_fig(p_qc, 'fig_qc_discordance', 10.5, 5.6)
 p_qc
 ```
 
-Because this screen acts only on the **ratio** $k_d / k_{d,\text{lit}}$, **100% of true environmental extremes** (`Secchi` up to `13.96 m`, `TSS` up to `978 mg/L`, `Chl a` up to `990 µg/L`) pass intact:
+Because this screen acts only on the **ratio** $k_d / k_{d,\text{lit}}$, the extremes of each variable (`Secchi` up to `13.96 m`, `TSS` up to `978 mg/L`, `Chl a` up to `990 µg/L`) pass intact:
 
 ```{r extremes-preserved, echo = FALSE}
 d_before <- trimmed %>%
@@ -79,7 +104,7 @@ bind_rows(
 
 ## Pure-Water Attenuation Offset ($k_w$) and $k_d$ Distributions
 
-Following Lee et al. (2015, 2018) and Kirk (1994), we set diffuse attenuation to $k_d = 1 / z_{SD}$ and define baseline pure-water attenuation ($k_w$) from the clearest water in the training set ($\max(z_{SD}) = `r max(training$secchi)`\text{ m}$):
+Following Lee et al. (2015, 2018), we set diffuse attenuation to $k_d = 1 / z_{SD}$ and define baseline pure-water attenuation ($k_w$) from the clearest water in the training set ($\max(z_{SD}) = `r max(training$secchi)`\text{ m}$):
 
 $$k_w = \frac{1}{1.5 \times \max(z_{SD})} = \frac{1}{1.5 \times `r max(training$secchi)`\text{ m}} = `r round(k_w, 5)`\ \text{m}^{-1}$$
 

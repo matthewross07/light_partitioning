@@ -90,17 +90,17 @@ perf %>%
 **Why We Select Model 7 (`Level III Ecoregions`) for Continental Ternary Analysis**
 
 1. **Strong regional skill and parsimony:** Moving from the global model (Model 1, $R^2 = 0.45$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.54$) increases $R^2$ by $+0.09$ and improves BIC by **$\Delta\text{BIC} = -55{,}486$**, while preserving a median group size of $n = 685$ (`107–120,350`).
-2. **Physical positivity:** In Model 7, **39 of 47 Level III ecoregions** have strictly positive, highly significant ($p < 0.001$) slopes for all three constituents. Subdividing further to Level IV (Models 9–10) pushes median group size down to $n = 341\text{–}364$—well below the $n \approx 1{,}000$ convergence threshold (`Figure S1`)—for only $+0.02\text{ to }+0.03$ gain in $R^2$.
+2. **Physical positivity:** In Model 7, **39 of 47 Level III ecoregions** have strictly positive slopes for all three constituents (all three with $p < 0.001$ in 27 of them; the eight remaining ecoregions have a non-positive Chl a slope and use the global coefficients). Subdividing further to Level IV (Models 9–10) pushes median group size down to $n = 341\text{–}364$—well below the $n \approx 1{,}000$ convergence threshold (`Figure S1`)—for only $+0.02\text{ to }+0.03$ gain in $R^2$.
 3. **Seamless river–estuary continuity:** Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only $+0.02$ in $R^2$ (`0.54` $\rightarrow$ `0.56`). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (`Figure 3`).
 :::
 
 ## Comparison with Published Bio-Optical Benchmarks
 
-In global Model 1 ($n = 274{,}445$), $\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}$ across all regional groups in Table S1). These empirically fitted values align closely with first-principles biophysical derivations and field optics studies:
+In global Model 1 ($n = 274{,}445$), $\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}$ on average across the Level III ecoregion fits of Model 7). The table compares these values with published coefficients for diffuse attenuation of photosynthetically active radiation, $K_d(\text{PAR})$. The two are not on the same scale: our coefficients are fitted to $1/z_{SD}$, that is with $a = 1$ in $K_d = a / z_{SD}$, and $a$ is reported to range from 1 to 2 (Lee et al. 2018). The fifth column therefore gives the Model 1 values multiplied by 1 to 2. On that basis the Chl a and NAP coefficients overlap the published values, while the DOC coefficient is higher than the Chesapeake Bay values of Gallegos (2001):
 
 ```{r bannister-table, echo = FALSE}
 compare_bannister_literature(models) %>%
-  kable(caption = 'Comparison of empirically fitted specific attenuation coefficients (Models 1 & 2) against theoretical and field bio-optical benchmarks.') %>%
+  kable(caption = 'Fitted specific attenuation coefficients (Models 1 and 2) compared with published coefficients for diffuse attenuation of PAR.') %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 

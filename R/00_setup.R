@@ -35,7 +35,7 @@ P <- list(
   max_tss_mgL    = 1000,    # tss < 1000 mg/L
   max_doc_mgL    = 50,      # doc < 50 mg/L
 
-  # -- AquaMatch Secchi MDL floor & WQP QA/QC handling (Brousil et al. 2025, edi.1856.1):
+  # -- AquaMatch Secchi MDL floor & WQP QA/QC handling (De La Torre et al. 2025, edi.1856.1):
   #    In AquaMatch harmonize_sdd.R, WQP Secchi entries <= 0.01 m (including
   #    0.0 m placeholders) were mutated to 0.01 m with mdl_flag >= 2. Treating
   #    sdd_mdl >= 2 as missing (NA) prevents the artificial 0.01 m floor from
@@ -50,11 +50,14 @@ P <- list(
   # -- A priori bio-optical physical plausibility screen (Rules 1 & 2):
   #    Rule 1 (Standard Deviation Screen): Across simultaneous 4-variable matchups,
   #    compute the log Beer-Lambert residual r = log10(kd / kd_lit) using
-  #    independent published bio-optical constants (zero fitted parameters):
-  #      k_w,lit   = 0.080 m^-1      (Kirk 1994; Lee et al. 2015)
-  #      k_NAP,lit = 0.040 m^2 g^-1  (Kirk 1994; Gohin et al. 2005)
-  #      k_DOC,lit = 0.070 m^2 g^-1  (Morris et al. 1995; Griffin et al. 2018)
-  #      k_Chl,lit = 0.016 m^2 mg^-1 (Bannister 1974; Kirk 1994)
+  #    reference coefficients set a priori (zero fitted parameters), within about a
+  #    factor of two of published Kd(PAR) coefficients (Bannister 1974: Chl a 0.016;
+  #    Gohin et al. 2005: water 0.1, non-living SPM 0.0625; Gallegos 2001: DOC
+  #    0.037-0.051, TSS 0.074-0.095, Chl a 0.012-0.019):
+  #      k_w,lit   = 0.080 m^-1
+  #      k_NAP,lit = 0.040 m^2 g^-1
+  #      k_DOC,lit = 0.070 m^2 g^-1
+  #      k_Chl,lit = 0.016 m^2 mg^-1 (Bannister 1974)
   #    Across the 281,439 matchups, mean(r) = 0.013 and SD(r) = 0.270 log10 units.
   #    Standardizing z_r = (r - mean(r)) / SD(r), we require |z_r| <= 2.5 SD
   #    (equivalent to |r - mean(r)| <= 0.675 log10 units, a ~4.7-fold [~5x] tolerance),

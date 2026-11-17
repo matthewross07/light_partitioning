@@ -537,7 +537,7 @@ In-situ Secchi depth (sdd)
 AquaMatch harmonized WQP Secchi depth (2.74M records, 1970-2024)
 </td>
 <td style="text-align:left;">
-Brousil et al. (2025)
+De La Torre et al. (2025)
 </td>
 <td style="text-align:left;">
 EDI package edi.1856.1
@@ -588,7 +588,7 @@ In-situ Total Suspended Solids &amp; SSC (tss)
 AquaMatch harmonized WQP TSS &amp; SSC (4.61M records, 1970-2025)
 </td>
 <td style="text-align:left;">
-De La Torre et al. (2025)
+Brousil et al. (2025)
 </td>
 <td style="text-align:left;">
 EDI package edi.2048.2
@@ -608,7 +608,7 @@ K_d = 1 / z_SD (Eq. 1 with a = 1)
 Lee et al. (2015, 2018)
 </td>
 <td style="text-align:left;">
-10.1002/2015GL065066; 10.1029/2018JC014018
+10.1016/j.rse.2015.08.002; 10.1002/lno.10940
 </td>
 <td style="text-align:left;">
 Contrast-transmittance theory showing K_d(tr) is inversely proportional to Secchi depth without empirical Poole &amp; Atkins (1929) constants.
@@ -625,7 +625,7 @@ biomass [mg/L] = 0.234 * (Chl a)^0.57; NAP = TSS - biomass
 Gohin et al. (2005)
 </td>
 <td style="text-align:left;">
-10.1080/01431160512331338032
+10.1016/j.rse.2004.11.007
 </td>
 <td style="text-align:left;">
 Nonlinear power-law conversion accounting for lower C:Chl ratios at high algal concentrations; prevents over-subtraction of algal mass.
@@ -633,19 +633,19 @@ Nonlinear power-law conversion accounting for lower C:Chl ratios at high algal c
 </tr>
 <tr>
 <td style="text-align:left;">
-Specific Chl a attenuation benchmark
+Published Chl a attenuation coefficient
 </td>
 <td style="text-align:left;">
-k_c = 0.016 m^2 (mg Chl a)^-1 (range 0.008 - 0.020)
+k_c = 0.016 m^2 (mg Chl a)^-1 for diffuse attenuation of PAR
 </td>
 <td style="text-align:left;">
-Bannister (1974); Kirk (1994)
+Bannister (1974)
 </td>
 <td style="text-align:left;">
 10.4319/lo.1974.19.1.0001
 </td>
 <td style="text-align:left;">
-Matches AquaMatch global alpha_Chl = 0.0088 m^2/mg and Estuary alpha_Chl = 0.0136 m^2/mg.
+An estimate, not an upper limit. Our global alpha_Chl (0.0088 m^2/mg) is fitted to 1/z_SD (a = 1); multiplied by a = 1 to 2 it is 0.009 to 0.018.
 </td>
 </tr>
 <tr>
@@ -653,16 +653,16 @@ Matches AquaMatch global alpha_Chl = 0.0088 m^2/mg and Estuary alpha_Chl = 0.013
 A priori WQP Beer-Lambert residual screen
 </td>
 <td style="text-align:left;">
-&amp;#124;z_r&amp;#124; &lt;= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using published k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016
+&amp;#124;z_r&amp;#124; &lt;= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using reference coefficients set a priori (k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016), within about a factor of two of published values
 </td>
 <td style="text-align:left;">
-Bannister (1974); Kirk (1994); Morris et al. (1995); Gohin et al. (2005)
+Bannister (1974); Gallegos (2001); Gohin et al. (2005)
 </td>
 <td style="text-align:left;">
-10.4319/lo.1974.19.1.0001; 10.4319/lo.1995.40.8.1381
+10.4319/lo.1974.19.1.0001; 10.2307/1353240; 10.1016/j.rse.2004.11.007
 </td>
 <td style="text-align:left;">
-Flags 2.49% discordant records: 1.84% upper-tail shallow bottom hits (Secchi set to NA so valid 3-LAC chemistry is retained in application) and 0.65% lower-tail chemistry unit errors.
+Flags 2.49% discordant records: 1.84% where Secchi depth is much shallower than expected (Secchi set to NA so the 3-LAC chemistry is retained in application) and 0.65% where it is much deeper than expected (dropped).
 </td>
 </tr>
 <tr>
@@ -676,7 +676,7 @@ alpha_DOC varies across ecoregions with DOM aromaticity
 Spencer et al. (2012); Griffin et al. (2018)
 </td>
 <td style="text-align:left;">
-10.1029/2011JG001928; 10.1016/j.watres.2018.07.066
+10.1029/2011JG001928; 10.1016/j.watres.2018.08.007
 </td>
 <td style="text-align:left;">
 Justifies ecoregion-stratified attenuation slopes (Model 7) to capture regional differences in CDOM:DOC stoichiometry.
