@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-11-17" />
+<meta name="date" content="2026-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -230,7 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">Ternary Partitioning of Continental-Scale Water Clarity</h1>
 <h2 class="subtitle"><em>Bio-Optical Modeling and Ternary Diagnostics Across U.S. Streams, Lakes, and Estuaries (1970–2025)</em></h2>
 <p class="author"><em>James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross</em></p>
-<p class="date"><em>November 17, 2026</em></p>
+<p class="date"><em>November 20, 2026</em></p>
 </div>
 <div id="overview" class="section level1 unnumbered hasAnchor">
 <h1>Overview<a href="index.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -240,7 +240,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Then our esteemed Limnology and Oceanography Associate Editor (name reveal pending approval) correctly chastised us for not using our own data products to update our analysis. We had started this in 2018, and my own lab had published massive updates to the underlying data in 2024–2026, yet we weren’t using them because of the relatively high burden for me to go back into my code and fix everything around the new data. In the background, I was increasingly using AI to offload my own coding and to better understand how to teach Environmental Analysis, so instead of pushing back against the new data, I unleashed Claude and Gemini to rewrite the codebase around the new data, build out the documentation, explore model decisions further, and so on. This site is the result of that handoff, and it is the first project that actually accomplishes my vision of a more reproducible, clearer, and better version of my own science, all because AI can take care of the details far better than I ever can.</p>
 <p>So why the long preamble? I think many in my academic circles view AI as a net evil, a dehumanizing force that rips away from us our most cherished artifacts: writing, code, discovery. While this may be true in parts, my experience in this particular case is essentially the opposite. AI allowed me to accomplish a vision I didn’t have time to realize on my own, and at a higher quality than I ever could have marshaled. So yes, all of the code and documentation here was edited, reworked, or redone with AI, but the core ideas are ours and the entire codebase is so much better for it.</p>
 <p><em>— Matt R.</em></p>
-<p><strong>AI use, plainly.</strong> The R pipeline in <code>R/</code>, the figures, and this bookdown documentation were written or rewritten with Claude (Anthropic) and Gemini (Google) under Matt R.’s direction, starting from the analysis code and manuscript we developed by hand between 2018 and 2025. The questions, hypotheses, model structure, and interpretation predate that handoff and are ours. The rewritten pipeline was checked against the original analysis, and an automated audit (Section 10) ties the numbers quoted in the manuscript to pipeline output. AI was also used to prepare <em>draft</em> revisions of the manuscript text and the response to reviewers; the authors reviewed and edited those drafts and are responsible for what is submitted.</p>
+<p><strong>AI use, plainly.</strong> The R pipeline in <code>R/</code>, the figures, and this bookdown documentation were written or rewritten with Claude (Anthropic) and Gemini (Google) under Matt R.’s direction, starting from the analysis code and manuscript we developed by hand between 2018 and 2025. The questions, hypotheses, model structure, and interpretation predate that handoff and are ours. The rewritten pipeline was checked against the original analysis, and an automated audit (Section 10) ties the numbers quoted in the manuscript to pipeline output. Claude was also allowed to make edits in the manuscript and in the response to reviewers, solely pertaining to model updates and to changes that came with switching data sources. All of this was reviewed and double-checked by the authors, who are responsible for what is submitted.</p>
 <hr />
 </div>
 <div id="the-science-in-brief" class="section level2 unnumbered hasAnchor">

@@ -27,7 +27,7 @@ So why the long preamble? I think many in my academic circles view AI as a net e
 
 *— Matt R.*
 
-**AI use, plainly.** The R pipeline in `R/`, the figures, and this bookdown documentation were written or rewritten with Claude (Anthropic) and Gemini (Google) under Matt R.'s direction, starting from the analysis code and manuscript we developed by hand between 2018 and 2025. The questions, hypotheses, model structure, and interpretation predate that handoff and are ours. The rewritten pipeline was checked against the original analysis, and an automated audit (Section 10) ties the numbers quoted in the manuscript to pipeline output. AI was also used to prepare *draft* revisions of the manuscript text and the response to reviewers; the authors reviewed and edited those drafts and are responsible for what is submitted.
+**AI use, plainly.** The R pipeline in `R/`, the figures, and this bookdown documentation were written or rewritten with Claude (Anthropic) and Gemini (Google) under Matt R.'s direction, starting from the analysis code and manuscript we developed by hand between 2018 and 2025. The questions, hypotheses, model structure, and interpretation predate that handoff and are ours. The rewritten pipeline was checked against the original analysis, and an automated audit (Section 10) ties the numbers quoted in the manuscript to pipeline output. Claude was also allowed to make edits in the manuscript and in the response to reviewers, solely pertaining to model updates and to changes that came with switching data sources. All of this was reviewed and double-checked by the authors, who are responsible for what is submitted.
 
 ---
 
