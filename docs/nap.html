@@ -170,9 +170,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.1" data-path="nap.html"><a href="nap.html#algal-mass-sensitivity"><i class="fa fa-check"></i><b>3.1.1</b> Does the algal-mass assumption change the partition?</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
 <li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
 <li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
@@ -313,7 +313,7 @@ Global R²
 0.0097
 </td>
 <td style="text-align:right;">
-0.4514
+0.4515
 </td>
 </tr>
 <tr>
@@ -324,16 +324,16 @@ Global R²
 1.7079
 </td>
 <td style="text-align:right;">
-0.0441
+0.0442
 </td>
 <td style="text-align:right;">
-0.0699
+0.0700
 </td>
 <td style="text-align:right;">
-0.0119
+0.0117
 </td>
 <td style="text-align:right;">
-0.4514
+0.4513
 </td>
 </tr>
 <tr>
@@ -344,16 +344,16 @@ Global R²
 6.0928
 </td>
 <td style="text-align:right;">
-0.0441
+0.0444
 </td>
 <td style="text-align:right;">
-0.0699
+0.0708
 </td>
 <td style="text-align:right;">
-0.0164
+0.0146
 </td>
 <td style="text-align:right;">
-0.4514
+0.4488
 </td>
 </tr>
 <tr>
@@ -370,10 +370,10 @@ Global R²
 0.0711
 </td>
 <td style="text-align:right;">
-0.0088
+0.0087
 </td>
 <td style="text-align:right;">
-0.4504
+0.4505
 </td>
 </tr>
 </tbody>
@@ -423,16 +423,16 @@ Gohin et al. (2005)
 14,551
 </td>
 <td style="text-align:right;">
-186
+115
 </td>
 <td style="text-align:right;">
-305
+250
 </td>
 <td style="text-align:right;">
-435
+400
 </td>
 <td style="text-align:right;">
-1,429
+1,423
 </td>
 <td style="text-align:right;">
 182
@@ -446,10 +446,10 @@ Gohin et al. (2005)
 24,518
 </td>
 <td style="text-align:right;">
-67
+45
 </td>
 <td style="text-align:right;">
-127
+112
 </td>
 <td style="text-align:right;">
 199
@@ -469,7 +469,7 @@ Gohin et al. (2005)
 24,324
 </td>
 <td style="text-align:right;">
-39
+32
 </td>
 <td style="text-align:right;">
 105
@@ -532,7 +532,7 @@ Gohin et al. (2005)
 </tr>
 </tbody>
 </table>
-<p><strong>The partition moves by a few points.</strong> Refitting Models 1 and 7 (Section <a href="models.html#models">6</a>) and re-running the continental application (Section <a href="application.html#application">8</a>) under five rules gives the table below (<code>algal_mass_sensitivity()</code> in <code>R/models.R</code>; the Gohin row is the canonical pipeline). From no subtraction at all to a constant <code>100:1</code>, the mean Chl <em>a</em> share goes from about 7% to 10% nationally and from 15% to 20% in lakes, while the DOC share stays between 56% and 58%.</p>
+<p><strong>The partition moves by a few points.</strong> Refitting Models 1 and 7 (Section <a href="models.html#models">6</a>) and re-running the continental application (Section <a href="application.html#application">8</a>) under five rules gives the table below (<code>algal_mass_sensitivity()</code> in <code>R/models.R</code>; the Gohin row is the canonical pipeline). From no subtraction at all to a constant <code>100:1</code>, the mean Chl <em>a</em> share goes from about 7% to 10% nationally and from 15% to 19% in lakes, while the DOC share stays between 56% and 58%.</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:algal-sensitivity">Table 3.3: </span><span id="tab:algal-sensitivity">Table 3.4: </span>Sensitivity of model fit and mean non-water attenuation shares to the assumed algal dry mass : Chl a relation (Supplemental Table S2 of the manuscript).
@@ -570,7 +570,7 @@ Lakes &gt; 100 µg/L Chl a (%)
 Samples &gt; 70% Chl a
 </th>
 <th style="text-align:left;">
-Samples with NAP below 0.5 mg/L (set to 0.5)
+Samples with algal mass ≥ TSS (NAP drawn below 0.5 mg/L)
 </th>
 </tr>
 </thead>
@@ -595,16 +595,16 @@ None (TSS used directly)
 0.53
 </td>
 <td style="text-align:left;">
-7.3 / 56.2 / 36.5
+7.3 / 56.2 / 36.4
 </td>
 <td style="text-align:left;">
-14.6 / 57.3 / 28.1
+14.6 / 57.4 / 28.0
 </td>
 <td style="text-align:left;">
 35.6 / 34.3 / 30.1
 </td>
 <td style="text-align:left;">
-414
+419
 </td>
 <td style="text-align:left;">
 0.0%
@@ -621,7 +621,7 @@ Gohin et al. (2005): 0.234 Chl^0.57
 0.0711
 </td>
 <td style="text-align:left;">
-0.0088
+0.0087
 </td>
 <td style="text-align:left;">
 0.45
@@ -630,19 +630,19 @@ Gohin et al. (2005): 0.234 Chl^0.57
 0.54
 </td>
 <td style="text-align:left;">
-8.3 / 57.6 / 34.0
+8.3 / 57.7 / 34.0
 </td>
 <td style="text-align:left;">
-16.4 / 59.3 / 24.3
+16.4 / 59.5 / 24.1
 </td>
 <td style="text-align:left;">
 38.6 / 35.3 / 26.1
 </td>
 <td style="text-align:left;">
-708
+717
 </td>
 <td style="text-align:left;">
-2.9%
+1.0%
 </td>
 </tr>
 <tr>
@@ -665,19 +665,19 @@ Constant 50:1
 0.54
 </td>
 <td style="text-align:left;">
-8.8 / 56.6 / 34.5
+8.8 / 56.7 / 34.5
 </td>
 <td style="text-align:left;">
-17.1 / 58.4 / 24.6
+16.9 / 58.6 / 24.4
 </td>
 <td style="text-align:left;">
-42.3 / 35.0 / 22.7
+42.2 / 35.0 / 22.8
 </td>
 <td style="text-align:left;">
-1,023
+1,006
 </td>
 <td style="text-align:left;">
-2.3%
+0.4%
 </td>
 </tr>
 <tr>
@@ -685,13 +685,13 @@ Constant 50:1
 Constant 67:1
 </td>
 <td style="text-align:left;">
-0.0441
+0.0442
 </td>
 <td style="text-align:left;">
 0.0699
 </td>
 <td style="text-align:left;">
-0.0105
+0.0104
 </td>
 <td style="text-align:left;">
 0.45
@@ -700,19 +700,19 @@ Constant 67:1
 0.54
 </td>
 <td style="text-align:left;">
-9.4 / 56.6 / 34.0
+9.3 / 56.7 / 34.0
 </td>
 <td style="text-align:left;">
-18.1 / 58.3 / 23.6
+17.9 / 58.6 / 23.5
 </td>
 <td style="text-align:left;">
-44.7 / 34.9 / 20.4
+44.5 / 35.0 / 20.5
 </td>
 <td style="text-align:left;">
-1,368
+1,327
 </td>
 <td style="text-align:left;">
-2.6%
+0.7%
 </td>
 </tr>
 <tr>
@@ -720,13 +720,13 @@ Constant 67:1
 Constant 100:1
 </td>
 <td style="text-align:left;">
-0.0441
+0.0442
 </td>
 <td style="text-align:left;">
-0.0699
+0.0700
 </td>
 <td style="text-align:left;">
-0.0119
+0.0117
 </td>
 <td style="text-align:left;">
 0.45
@@ -735,26 +735,26 @@ Constant 100:1
 0.54
 </td>
 <td style="text-align:left;">
-10.4 / 56.7 / 33.0
+10.1 / 56.9 / 33.0
 </td>
 <td style="text-align:left;">
-19.8 / 58.5 / 21.7
+19.3 / 59.0 / 21.7
 </td>
 <td style="text-align:left;">
-48.9 / 34.9 / 16.3
+48.3 / 35.3 / 16.4
 </td>
 <td style="text-align:left;">
-2,274
+2,121
 </td>
 <td style="text-align:left;">
-3.5%
+1.4%
 </td>
 </tr>
 </tbody>
 </table>
 <p>Two consequences for how the results should be read:</p>
 <ul>
-<li>The Chl <em>a</em> term is a conservative estimate of the algal contribution. In the greenest lakes (<span class="math inline">\(&gt; 100\ \mu\text{g L}^{-1}\)</span>) its mean share is the largest of the three under every rule (36–49%), but that mean never reaches the 70% we use to call a sample dominated by one constituent.</li>
+<li>The Chl <em>a</em> term is a conservative estimate of the algal contribution. In the greenest lakes (<span class="math inline">\(&gt; 100\ \mu\text{g L}^{-1}\)</span>) its mean share is the largest of the three under every rule (36–48%), but that mean never reaches the 70% we use to call a sample dominated by one constituent.</li>
 <li>That is not mainly a matter of the ratio. In those lakes DOC carries about 35% and particles 16–30% whichever rule is used, because dissolved organic matter and detritus rise together with algae in eutrophic water and a statistical partition cannot separate algal-derived material from other sources.</li>
 </ul>
 <p>We keep the Gohin et al. (2005) relation as the canonical choice: it never assigns more mass to algae than the samples contain, and the conclusions above hold under any of the alternatives.</p>
@@ -788,10 +788,10 @@ Unique Sites
 All harmonized AquaMatch tiers (canonical training set)
 </td>
 <td style="text-align:left;">
-274,445
+274,439
 </td>
 <td style="text-align:left;">
-22,357
+22,356
 </td>
 <td style="text-align:right;">
 0.0442
@@ -800,7 +800,7 @@ All harmonized AquaMatch tiers (canonical training set)
 0.0711
 </td>
 <td style="text-align:right;">
-0.0088
+0.0087
 </td>
 </tr>
 <tr>
@@ -808,10 +808,10 @@ All harmonized AquaMatch tiers (canonical training set)
 Strict top analytical tiers only (Tier 1 chemistry, Tier 1–2 Secchi)
 </td>
 <td style="text-align:left;">
-45,851
+45,849
 </td>
 <td style="text-align:left;">
-10,199
+10,198
 </td>
 <td style="text-align:right;">
 0.0388

@@ -97,26 +97,89 @@ build_simultaneous <- function(am, require_secchi = TRUE) {
   out
 }
 
+# ---- Values below reporting limits ---------------------------------------------
+# Substituting the limit (or any single value) for every result below a reporting
+# limit distorts the low end of the distribution (Helsel 2006, Chemosphere 65:
+# 2434-2439). Following the "fill-in" approach of Lubin et al. (2004, Environ.
+# Health Perspect. 112:1691-1696), each value below the limit is replaced by a
+# random draw from a lognormal distribution fitted to that variable by maximum
+# likelihood for left-censored data and truncated at the limit. Fewer than 3% of
+# values are affected, well under the ~30% at which Lubin et al. found the approach
+# starts to bias variances. Draws are tied to the record (site, date, variable), so
+# a record gets the same value in the training and the application set and results
+# are reproducible without a random seed.
+
+#' Reproducible uniform(0, 1) number for each record and variable.
+key_unif <- function(SiteID, date_unity, variable) {
+  key <- paste(variable, SiteID, format(date_unity, '%Y-%m-%d %H:%M:%S', tz = 'UTC'), sep = '|')
+  (as.numeric(digest::digest2int(key, seed = P$random_seed)) + 2^31 + 0.5) / 2^32
+}
+
+#' Lognormal fitted by maximum likelihood to data left-censored at `limit`.
+fit_censored_lognormal <- function(x, limit) {
+  obs <- log(x[x >= limit]); n_below <- sum(x < limit)
+  nll <- function(p) -(sum(dnorm(obs, p[1], exp(p[2]), log = TRUE)) +
+                         n_below * pnorm(log(limit), p[1], exp(p[2]), log.p = TRUE))
+  o <- optim(c(mean(obs), log(sd(obs))), nll, method = 'BFGS')
+  list(mu = o$par[1], sigma = exp(o$par[2]), limit = limit, n_below = n_below, n = length(x))
+}
+
+#' Draws from the fitted lognormal, truncated to (0, limit), at uniform numbers `u`.
+draw_below_limit <- function(u, fit) exp(qnorm(u * pnorm(log(fit$limit), fit$mu, fit$sigma), fit$mu, fit$sigma))
+
+#' Fit the four censored distributions (Chl a, DOC, TSS and derived NAP) on every
+#' record that has the three LACs.
+censor_fits <- function(d) {
+  d <- d %>% filter(if_all(c(chl_a, doc, tss), ~ !is.na(.) & . >= 0))
+  fits <- list(chl_a = fit_censored_lognormal(d$chl_a, P$chl_floor),
+               doc   = fit_censored_lognormal(d$doc,   P$doc_floor),
+               tss   = fit_censored_lognormal(d$tss,   P$tss_floor))
+  d2 <- add_nap(impute_lacs(d, fits), impute = FALSE)
+  fits$nap <- fit_censored_lognormal(d2$nap_raw, P$nap_floor)
+  fits
+}
+
+#' Replace Chl a, DOC and TSS values below their reporting limits by draws below the limit.
+impute_lacs <- function(df, fits = get_censor_fits()) {
+  for (v in c('chl_a', 'doc', 'tss')) {
+    below <- !is.na(df[[v]]) & df[[v]] < fits[[v]]$limit
+    if (any(below)) df[[v]][below] <- draw_below_limit(key_unif(df$SiteID[below], df$date_unity[below], v), fits[[v]])
+  }
+  df
+}
+
+#' NAP for records where the algal dry mass estimate equals or exceeds TSS (raw NAP <= 0):
+#' the non-algal mass is below what TSS can resolve, so it is drawn below the TSS
+#' reporting limit in the same way. Positive estimates are kept as calculated.
+impute_nap <- function(nap_raw, SiteID, date_unity, fit = get_censor_fits()$nap) {
+  below <- !is.na(nap_raw) & nap_raw <= 0
+  if (any(below)) nap_raw[below] <- draw_below_limit(key_unif(SiteID[below], date_unity[below], 'nap'), fit)
+  nap_raw
+}
+
 #' Algal dry biomass from Chl a and non-algal particles (NAP, `tss_dead`).
 #' biomass [mg/L] = (a/1000) * chl_a[ug/L]^b   (Gohin et al. 2005: a = 234, b = 0.57)
-add_nap <- function(df, a = P$chl_biomass_a, b = if (a == 234) P$chl_biomass_b else 1) {
-  df %>% mutate(chl_ratio = a, power = b,
-                chl_a_biomass = exp(log(chl_ratio / 1000) + log(chl_a) * power),
-                tss_dead = tss - chl_a_biomass)
+#' `nap_raw` is TSS minus algal dry mass as calculated; `tss_dead` is the NAP used
+#' everywhere else, in which raw values <= 0 are drawn below the TSS reporting limit
+#' (impute_nap()). Set `impute = FALSE` to get the raw difference only.
+add_nap <- function(df, a = P$chl_biomass_a, b = if (a == 234) P$chl_biomass_b else 1, impute = TRUE) {
+  out <- df %>% mutate(chl_ratio = a, power = b,
+                       chl_a_biomass = exp(log(chl_ratio / 1000) + log(chl_a) * power),
+                       nap_raw = tss - chl_a_biomass,
+                       tss_dead = nap_raw)
+  if (impute) out$tss_dead <- impute_nap(out$nap_raw, out$SiteID, out$date_unity)
+  out
 }
 
 #' Step 1 of training data: analytical reporting floors (or optional quantile trimming).
 #'   1. all four variables >= 0
-#'   2. sub-detection / zero values replaced via ifelse(x < floor, floor, x)
-#'      using standard EPA/USGS analytical reporting floors (P$chl_floor,
-#'      P$doc_floor, P$tss_floor, P$secchi_floor)
+#'   2. Chl a, DOC and TSS values below their reporting limits (P$chl_floor,
+#'      P$doc_floor, P$tss_floor) replaced by draws below the limit (impute_lacs())
 trim_simultaneous <- function(simul) {
   out <- simul %>%
     filter(if_all(c(chl_a, doc, secchi, tss), ~ !is.na(.) & . >= 0)) %>%
+    impute_lacs() %>%
     mutate(
-      chl_a  = ifelse(chl_a  < P$chl_floor,    P$chl_floor,    chl_a),
-      doc    = ifelse(doc    < P$doc_floor,    P$doc_floor,    doc),
-      tss    = ifelse(tss    < P$tss_floor,    P$tss_floor,    tss),
       secchi = ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi),
       type   = ifelse(grepl('Lake', type), 'Lake', type)
     )
@@ -193,10 +256,10 @@ k_w_from_training <- function(training_or_trimmed) 1 / P$k_w_divisor / max(train
 
 #' Application data: every record with all 3 LACs (Secchi optional) whose LAC
 #' values fall inside the range spanned by the training data. No record is dropped
-#' for its NAP value: where estimated NAP (TSS minus algal dry mass) is below the TSS
-#' reporting limit (P$nap_floor), it is set to that limit when the partition is
-#' calculated (apply_model7()), the same rule used for the measured variables.
-#' Sub-detection / zero values are floored via ifelse() to match the training set.
+#' for its NAP value: where the algal dry mass estimate equals or exceeds TSS, NAP is
+#' drawn below the TSS reporting limit (add_nap() / impute_nap()), in training and
+#' application alike.
+#' Values below reporting limits are drawn below the limit exactly as in the training set.
 #' Applies Rule 2 ("Odd-One-Out" asymmetric disposition) when a measured Secchi
 #' depth is present:
 #'   - Upper tail (z_r > +2.5 SD): Secchi is much too shallow for the clear water
@@ -216,15 +279,13 @@ build_application <- function(no_secchi, training, stats = kd_discordance_stats(
   r_chl <- rng('chl_a'); r_tss <- rng('tss'); r_doc <- rng('doc'); r_sec <- rng('secchi')
   out <- no_secchi %>%
     filter(if_all(c(chl_a, doc, tss), ~ !is.na(.) & . >= 0)) %>%
+    impute_lacs() %>%
     mutate(
-      chl_a  = ifelse(chl_a  < P$chl_floor, P$chl_floor, chl_a),
-      doc    = ifelse(doc    < P$doc_floor, P$doc_floor, doc),
-      tss    = ifelse(tss    < P$tss_floor, P$tss_floor, tss),
       secchi = ifelse(!is.na(secchi) & secchi >= 0 & secchi < P$secchi_floor, P$secchi_floor, secchi)
     ) %>%
-    filter(chl_a <= r_chl[2] & chl_a >= r_chl[1],
-           tss   <= r_tss[2] & tss   >= r_tss[1],
-           doc   <= r_doc[2] & doc   >= r_doc[1],
+    # upper bounds only: every value below a reporting limit is a draw below that limit,
+    # so the lower end of the training range is the limit itself
+    filter(chl_a <= r_chl[2], tss <= r_tss[2], doc <= r_doc[2],
            (secchi <= r_sec[2] & secchi >= r_sec[1]) | is.na(secchi)) %>%
     mutate(type = ifelse(grepl('Lake', type), 'Lake', type)) %>%
     add_nap()

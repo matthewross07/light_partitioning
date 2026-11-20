@@ -13,6 +13,7 @@ suppressPackageStartupMessages({
   library(scales)
   library(knitr)
   library(kableExtra)
+  stopifnot('package "digest" is needed for reproducible draws below reporting limits' = requireNamespace('digest', quietly = TRUE))
 })
 
 sf_use_s2(FALSE)   # all spatial ops are on projected (Albers) ecoregion layers
@@ -61,7 +62,7 @@ P <- list(
   #    Across the 281,439 matchups, mean(r) = 0.013 and SD(r) = 0.270 log10 units.
   #    Standardizing z_r = (r - mean(r)) / SD(r), we require |z_r| <= 2.5 SD
   #    (equivalent to |r - mean(r)| <= 0.675 log10 units, a ~4.7-fold [~5x] tolerance),
-  #    retaining 97.51% (274,445) of training observations and flagging 2.49% (6,994).
+  #    retaining 97.51% (274,439) of training observations and flagging 2.49% (7,000).
   #    Rule 2 ("Odd-One-Out" Disposition in Application):
   #      - Upper tail (z_r > +2.5 SD, 1.84%): Secchi is the odd one out (shallow
   #        streambed bottom hit in clear water where Chl a, DOC, and TSS agree).
@@ -89,7 +90,8 @@ P <- list(
   #    Rather than dropping the 0.1% and 99.9% tails of each variable (which
   #    discards valid oligotrophic clear-water and storm/bloom extremes), values
   #    reported as zero or below standard analytical method detection limits (MDLs)
-  #    are floored via ifelse(x < floor, floor, x):
+  #    are replaced by random draws below the limit (impute_lacs() in R/prep.R;
+  #    Lubin et al. 2004; Helsel 2006). Secchi has no values below its limit:
   #      chl_floor    = 0.10 ug/L (standard fluorometric/spectrophotometric Chl a MDL)
   #      doc_floor    = 0.25 mg/L (EPA Method 415.1 / USGS NWQL DOC reporting limit)
   #      tss_floor    = 0.50 mg/L (standard gravimetric TSS reporting limit)
@@ -129,7 +131,7 @@ P <- list(
   fig4_s7_min_obs     = 100,    # insets 2-3 drawn from sites with > 100 observations
   dominance_threshold = 0.70,   # a LAC is "dominant" where it supplies > 70% of non-water attenuation
   majority_threshold  = 0.50,   # ... the "majority contributor" where it supplies > 50%
-  nap_floor           = 0.50    # mg/L: estimated NAP below the TSS reporting limit is set to that limit in the partition
+  nap_floor           = 0.50    # mg/L: where algal dry mass >= TSS, NAP is drawn below this limit (the TSS reporting limit)
 )
 
 # ---- Plot palettes ----------------------------------------------------------

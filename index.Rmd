@@ -40,7 +40,7 @@ Across inland and coastal waters, diffuse light attenuation ($k_d = 1 / z_{SD}$;
 
 $$z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a}$$
 
-To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the **AquaMatch** data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to **AquaSat** (Ross et al. 2019). Combining **`274,445` simultaneous four-variable matchups** (`Secchi + Chl a + DOC + TSS/SSC`) for model calibration with **`r fmt_n(nrow(get_final_data()))` three-constituent matchups** across **`r fmt_n(dplyr::n_distinct(get_final_data()$SiteID))` monitoring stations** (`1970–2025`), we estimate regional specific attenuation coefficients ($\alpha_i$) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.
+To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the **AquaMatch** data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to **AquaSat** (Ross et al. 2019). Combining **`r fmt_n(nrow(get_training()))` simultaneous four-variable matchups** (`Secchi + Chl a + DOC + TSS/SSC`) for model calibration with **`r fmt_n(nrow(get_final_data()))` three-constituent matchups** across **`r fmt_n(dplyr::n_distinct(get_final_data()$SiteID))` monitoring stations** (`1970–2025`), we estimate regional specific attenuation coefficients ($\alpha_i$) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.
 
 ---
 
@@ -99,7 +99,7 @@ tribble(
   '1. Raw AquaMatch Inputs', 'Harmonized WQP records (sdd, chla, doc, tss; 1970–2025)', '12,580,000+', '150,000+', 'Downloaded via AquaMatchr (Section 1)',
   '2. 3-Constituent Matchups', 'Same-site, same-day Chl a + DOC + TSS/SSC', fmt_n(nrow(no_sdd)), fmt_n(n_distinct(no_sdd$SiteID)), 'Ambient Stream, Lake, and Estuary stations (Section 2)',
   '3. 4-Variable Matchups', 'Same-site, same-day Secchi + Chl a + DOC + TSS/SSC', fmt_n(nrow(simul)), fmt_n(n_distinct(simul$SiteID)), 'Excludes turbidity tubes & <=0.01 m floor flags (Section 2)',
-  '4. Analytical Floor Step', 'Sub-detection values floored at EPA/USGS MDLs', fmt_n(nrow(trimmed)), fmt_n(n_distinct(trimmed$SiteID)), 'Chl a 0.10 µg/L, DOC 0.25 mg/L, TSS 0.50 mg/L (Section 4)',
+  '4. Values Below Reporting Limits', 'Chl a, DOC and TSS below reporting limits drawn below the limit', fmt_n(nrow(trimmed)), fmt_n(n_distinct(trimmed$SiteID)), 'Chl a 0.10 µg/L, DOC 0.25 mg/L, TSS 0.50 mg/L (Section 4)',
   '5. Beer–Lambert QC Screen', 'A priori residual screen |z_r| <= 2.5 SD (~5-fold)', fmt_n(nrow(tr)), fmt_n(n_distinct(tr$SiteID)), 'Final Training Set: removes 2.49% discordant outliers (Section 4)',
   '6. Continental Application', 'All 3-constituent matchups inside training bounds (Model 7)', fmt_n(nrow(fd)), fmt_n(n_distinct(fd$SiteID)), sprintf('%s Measured + %s Modeled Secchi (Section 8)', fmt_n(sum(fd$secchi_status == 'Measured')), fmt_n(sum(fd$secchi_status == 'Modeled'))),
   '7. Temporal Stability Set', 'Long-term stations with > 7 matchups (Fig. 4)', fmt_n(sum(areas$n)), fmt_n(nrow(areas)), sprintf('%s streams, %s lakes, %s estuaries (Section 9)', fmt_n(sum(areas$type == 'Stream')), fmt_n(sum(areas$type == 'Lake')), fmt_n(sum(areas$type == 'Estuary')))
@@ -121,7 +121,7 @@ bookdown::render_book()      # Runs pipeline, saves figs/*.png & *.pdf, builds d
 | Script / Folder | Role |
 |---|---|
 | `R/00_setup.R`, `R/00_download.R` | Package setup, parameter registry (`P`), and programmatic `{AquaMatchr}` / spatial data retrieval |
-| `R/prep.R` | Same-day matchup assembly, Gohin et al. (2005) NAP derivation, MDL floors, and Beer–Lambert plausibility screening |
+| `R/prep.R` | Same-day matchup assembly, Gohin et al. (2005) NAP derivation, draws below reporting limits, and Beer–Lambert plausibility screening |
 | `R/ecoregions.R`, `R/models.R` | EPA Level I–IV ecoregion joins, Models 1–10 OLS fitting, stability cones, and Model 7 ternary projection |
 | `R/ternary.R`, `R/figures.R` | Ternary geometry, Sutherland–Hodgman $\pm k\text{ SD}$ polygon clipping, and Figures 1–4 / S1 |
 | `R/sonicray_lake.R` | Apple Silicon Metal GPU 3D lake optical titration renderer (`{sonicray}`) |

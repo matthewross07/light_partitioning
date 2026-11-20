@@ -170,9 +170,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.1" data-path="nap.html"><a href="nap.html#algal-mass-sensitivity"><i class="fa fa-check"></i><b>3.1.1</b> Does the algal-mass assumption change the partition?</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
 <li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
 <li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
@@ -319,7 +319,7 @@ Analytical-floor &amp; Beer-Lambert screened training obs.
 &gt; 250,000
 </td>
 <td style="text-align:left;">
-274,445
+274,439
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -370,10 +370,10 @@ Pure-water offset k_w = 1 / (1.5 * max Secchi) [m^-1]
 1-to-1 site assignment (no boundary row duplication)
 </td>
 <td style="text-align:left;">
-274,445
+274,439
 </td>
 <td style="text-align:left;">
-274,445
+274,439
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -445,7 +445,7 @@ Secchi ordering: NAP &lt; Chl a &lt; DOC &lt; Mixed
 Monotonic increase
 </td>
 <td style="text-align:left;">
-NAP dominant: 0.60 m &lt; Chl a dominant: 0.79 m &lt; DOC dominant: 1.18 m &lt; Mixed: 1.25 m
+NAP dominant: 0.60 m &lt; Chl a dominant: 0.86 m &lt; DOC dominant: 1.22 m &lt; Mixed: 1.24 m
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -463,7 +463,7 @@ All 6 pairwise class differences significant at p &lt; 0.01 (Welch &amp; Wilcoxo
 6 / 6 pairs p &lt; 0.01
 </td>
 <td style="text-align:left;">
-Welch max p = 0.0000; Wilcoxon max p = 6.85e-07
+Welch max p = 0.0000; Wilcoxon max p = 1.45e-08
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -481,7 +481,7 @@ Exact ternary area fraction (normalized by sqrt(3)/4): Streams &amp; Estuaries &
 Stream, Estuary (~10%) &lt; Lake (~15%)
 </td>
 <td style="text-align:left;">
-Stream 10.5%, Estuary 11.4% &lt; Lake 16.1%
+Stream 10.5%, Estuary 11.5% &lt; Lake 16.5%
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -648,6 +648,23 @@ Bannister (1974)
 </td>
 <td style="text-align:left;">
 An estimate, not an upper limit. Our global alpha_Chl (0.0088 m^2/mg) is fitted to 1/z_SD (a = 1); multiplied by a = 1 to 2 it is 0.009 to 0.018.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Values below reporting limits
+</td>
+<td style="text-align:left;">
+Chl a, DOC, TSS (and NAP where algal mass &gt;= TSS) below the limit replaced by draws from a fitted lognormal truncated at the limit
+</td>
+<td style="text-align:left;">
+Lubin et al. (2004); Helsel (2006)
+</td>
+<td style="text-align:left;">
+10.1289/ehp.7199; 10.1016/j.chemosphere.2006.04.051
+</td>
+<td style="text-align:left;">
+Fill-in from a fitted distribution instead of substituting the limit; fewer than 3% of values are affected. Draws are tied to the record so training and application use the same value.
 </td>
 </tr>
 <tr>

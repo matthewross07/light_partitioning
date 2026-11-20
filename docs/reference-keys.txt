@@ -6,6 +6,7 @@ fig:pairs
 fig:nap-fig
 tab:algal-envelope
 tab:algal-sensitivity
+tab:below-limit-fits
 fig:qc-fig
 tab:extremes-preserved
 fig:kd-hist
@@ -34,7 +35,7 @@ nap
 sensitivity-to-biomass-formulation-method-tiers
 algal-mass-sensitivity
 training
-stage-1-analytical-reporting-floors-trim_simultaneous
+below-limits
 stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule
 pure-water-attenuation-offset-k_w-and-k_d-distributions
 ecoregions

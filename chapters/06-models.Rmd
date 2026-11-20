@@ -82,7 +82,7 @@ perf %>%
     `Strictly Positive Groups` = sprintf('%d / %d', n_groups - n_neg_groups, n_groups),
     `ΔBIC vs. Model 1` = fmt_n(round(bic_common - bic_common[1]))
   ) %>%
-  kable(caption = 'Table 1: Summary of the 10 hierarchical general linear models evaluated across all 274,445 training observations.') %>%
+  kable(caption = paste0('Table 1: Summary of the 10 hierarchical general linear models evaluated across all ', fmt_n(nrow(get_training())), ' training observations.')) %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 

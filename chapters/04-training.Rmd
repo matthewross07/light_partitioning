@@ -1,4 +1,4 @@
-# Analytical Floors & Beer–Lambert Plausibility Screening {#training}
+# Values Below Reporting Limits & Beer–Lambert Plausibility Screening {#training}
 
 ```{r ch4-setup, include = FALSE}
 source('R/00_setup.R')
@@ -6,11 +6,30 @@ source('R/00_setup.R')
 
 Even after parameter and unit harmonization, roughly **2% of multi-agency WQP records contain field-recording or unit-entry anomalies** that can heavily leverage ordinary least squares (OLS) slopes. However, simple marginal quantile trimming (clipping the top and bottom `0.1%` or `1%` of each variable independently) throws away genuine oligotrophic alpine lakes (`Secchi` up to `13.96 m`) and real storm-flow sediment plumes (`TSS` up to `978 mg/L`) while missing **joint physical contradictions** in the middle of the distribution.
 
-To clean recording errors without truncating real extremes or introducing statistical circularity, `R/prep.R` uses a two-stage protocol (`n = 274,445`):
+To clean recording errors without truncating real extremes or introducing statistical circularity, `R/prep.R` uses a two-stage protocol (n = `r fmt_n(nrow(get_training()))`):
 
-## Stage 1: Analytical Reporting Floors (`trim_simultaneous()`)
+## Stage 1: Values Below Reporting Limits (`trim_simultaneous()`) {#below-limits}
 
-Rather than dropping low-concentration tails, entries reported below standard EPA/USGS Method Detection Limits (MDLs) are floored via `ifelse(x < floor, floor, x)` (`chl_a = 0.10 µg/L`, `doc = 0.25 mg/L`, `tss = 0.50 mg/L`, `secchi = 0.01 m`), retaining **100% of the `281,439` simultaneous 4-variable matchups**:
+Some Chl *a*, DOC and TSS values lie below the limits at which they can be reliably reported (Chl *a* `r P$chl_floor` µg/L, DOC `r P$doc_floor` mg/L, TSS `r P$tss_floor` mg/L). They are kept, so all **`r fmt_n(nrow(get_trimmed()))` simultaneous 4-variable matchups** are retained, but they are not all given the value of the limit. Substituting the limit (or any other single number) for every such result distorts the low end of the distribution (Helsel 2006). Instead, following the "fill-in" approach of Lubin et al. (2004), each value below a limit is replaced by a random draw from a lognormal distribution that was fitted to that constituent by maximum likelihood for left-censored data and truncated at the limit (`impute_lacs()` in `R/prep.R`). Fewer than 3% of values are affected, well below the roughly 30% at which Lubin et al. found that the approach starts to bias variances.
+
+```{r below-limit-fits, echo = FALSE}
+cf <- get_censor_fits(); si <- get_simul('simul'); tm <- get_trimmed()
+map_dfr(c('chl_a', 'doc', 'tss'), function(v) {
+  b <- si[[v]] < cf[[v]]$limit
+  tibble(Variable = c(chl_a = 'Chlorophyll a (µg/L)', doc = 'Dissolved organic carbon (mg/L)', tss = 'Total suspended solids (mg/L)')[[v]],
+         `Reporting limit` = cf[[v]]$limit,
+         `Below limit, all 3-LAC records` = sprintf('%s (%.2f%%)', fmt_n(cf[[v]]$n_below), 100 * cf[[v]]$n_below / cf[[v]]$n),
+         `Below limit, 4-variable matchups` = sprintf('%s (%.2f%%)', fmt_n(sum(b)), 100 * mean(b)),
+         `Fitted lognormal median` = signif(exp(cf[[v]]$mu), 3), `Fitted log SD` = round(cf[[v]]$sigma, 2),
+         `Draws: 10th percentile` = signif(quantile(tm[[v]][b], 0.1), 2), `Draws: median` = signif(median(tm[[v]][b]), 2), `Draws: 90th percentile` = signif(quantile(tm[[v]][b], 0.9), 2))
+}) %>%
+  kable(caption = 'Values below reporting limits and the draws that replace them.') %>%
+  kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
+```
+
+Each draw is tied to its record (site, date and variable), so a record has the same value in the training set and in the application set and the results are reproducible without a random seed. Secchi depth has no values below its 0.01 m limit after the flag screening of Section \@ref(simultaneous).
+
+The same rule is applied to non-algal particles. NAP is TSS minus the algal dry mass estimated from Chl *a*. Where that estimate equals or exceeds TSS (`r fmt_n(sum(get_training()$nap_raw <= 0))` training matchups, `r sprintf('%.2f', 100 * mean(get_training()$nap_raw <= 0))`%), the non-algal mass is below what TSS can resolve, and NAP is drawn below the TSS reporting limit from a lognormal fitted to NAP in the same way (`impute_nap()`). Positive NAP estimates are kept as calculated.
 
 ```{r trim-bounds, echo = FALSE}
 simul <- get_simul('simul')
@@ -19,7 +38,8 @@ training <- get_training()
 k_w <- get_k_w()
 tibble(
   Variable = c('Chlorophyll a (µg/L)', 'Dissolved Organic Carbon (mg/L)', 'Total Suspended Solids / SSC (mg/L)', 'Secchi Disk Depth (m)'),
-  `Analytical Floor (MDL)` = c(P$chl_floor, P$doc_floor, P$tss_floor, P$secchi_floor),
+  `Reporting limit` = c(P$chl_floor, P$doc_floor, P$tss_floor, P$secchi_floor),
+  `Minimum` = c(min(trimmed$chl_a), min(trimmed$doc), min(trimmed$tss), min(trimmed$secchi)),
   `Median` = c(median(trimmed$chl_a), median(trimmed$doc), median(trimmed$tss), median(trimmed$secchi)),
   `99.9th Percentile` = c(quantile(trimmed$chl_a, 0.999), quantile(trimmed$doc, 0.999), quantile(trimmed$tss, 0.999), quantile(trimmed$secchi, 0.999)),
   `Maximum Retained` = c(max(trimmed$chl_a), max(trimmed$doc), max(trimmed$tss), max(trimmed$secchi))
@@ -49,7 +69,7 @@ Table: Reference coefficients used in the screen, with published coefficients fo
 
 The reference values are not taken from any single study, and the published values describe $K_d(\text{PAR})$ whereas the screen uses $1/z_{SD}$. Neither affects which records are flagged, because each record's ratio is compared with the mean ratio: multiplying all four reference coefficients by a constant leaves the flags unchanged.
 
-Across all `281,439` four-variable matchups, the log residual $r$ is centered near zero ($\bar{r} = 0.013$) with a standard deviation of $\text{SD}(r) = 0.270\text{ log}_{10}\text{ units}$. Standardizing each sample's residual as $z_r = (r - \bar{r}) / \text{SD}(r)$, we require $|z_r| \le 2.5\text{ SD}$ (`|r - r_bar| <= 0.674`, a **`4.7-fold` [$\sim 5\times$]** tolerance). This retains **`274,445` (`97.51%`)** training observations and flags **`6,994` (`2.49%`)** discordant outliers, which fall into two distinct physical categories with asymmetric disposition (`Figure` \@ref(fig:qc-fig)a):
+Across all `281,439` four-variable matchups, the log residual $r$ is centered near zero ($\bar{r} = 0.013$) with a standard deviation of $\text{SD}(r) = 0.270\text{ log}_{10}\text{ units}$. Standardizing each sample's residual as $z_r = (r - \bar{r}) / \text{SD}(r)$, we require $|z_r| \le 2.5\text{ SD}$ (`|r - r_bar| <= 0.674`, a **`4.7-fold` [$\sim 5\times$]** tolerance). This retains **`r fmt_n(get_screen_counts()$kept)` (`r sprintf('%.2f', 100 * get_screen_counts()$kept / get_screen_counts()$n)`%)** training observations and flags **`r fmt_n(get_screen_counts()$flagged)` (`r sprintf('%.2f', 100 * get_screen_counts()$flagged / get_screen_counts()$n)`%)** discordant outliers, which fall into two distinct physical categories with asymmetric disposition (`Figure` \@ref(fig:qc-fig)a):
 
 ```{r tail-summary, include = FALSE}
 tails <- get_trimmed() %>% add_nap() %>%
@@ -62,11 +82,11 @@ tails <- get_trimmed() %>% add_nap() %>%
   summarize(n = n(), pct_stream = round(100 * mean(type == 'Stream')), secchi = round(median(secchi), 2),
             tss = round(median(tss), 1), doc = round(median(doc), 1), chl = round(median(chl_a), 1))
 up <- filter(tails, tail == 'upper'); lo <- filter(tails, tail == 'lower')
-stopifnot(up$n == 5177, lo$n == 1817)
+stopifnot(up$n == get_screen_counts()$upper, lo$n == get_screen_counts()$lower)
 ```
 
-1. **Upper Tail ($z_r > +2.5\text{ SD}$, `5,177` records = `1.84%`) — `Secchi` is the odd one out:** Secchi depth is much shallower than the three constituents imply. These records are `r up$pct_stream`% streams, with a median Secchi depth of `r up$secchi` m and low constituent concentrations (median `TSS` `r up$tss` mg L⁻¹, `DOC` `r up$doc` mg L⁻¹, `Chl a` `r up$chl` µg L⁻¹). That pattern is consistent with a disk resting on the bed of a clear, shallow stream, but we did not check it against field notes. Because the three water-chemistry measurements agree with each other, these records are **excluded from regression training** (`build_training()`), but in the **ternary application dataset (`build_application()`) only `Secchi` is set to `NA`**, so the 3-constituent water chemistry is kept with a modeled Secchi depth.
-2. **Lower Tail ($z_r < -2.5\text{ SD}$, `1,817` records = `0.65%`) — One of the chemistry constituents (`Chl a`, `DOC`, or `TSS`) is the odd one out:** Secchi depth is much deeper than the three constituents imply (median Secchi depth `r lo$secchi` m alongside a median `TSS` of `r lo$tss` mg L⁻¹). Possible causes include unit-entry or sample-matching errors, which we did not verify. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.
+1. **Upper Tail ($z_r > +2.5\text{ SD}$, `r fmt_n(up$n)` records = `r sprintf('%.2f', 100 * up$n / get_screen_counts()$n)`%) — `Secchi` is the odd one out:** Secchi depth is much shallower than the three constituents imply. These records are `r up$pct_stream`% streams, with a median Secchi depth of `r up$secchi` m and low constituent concentrations (median `TSS` `r up$tss` mg L⁻¹, `DOC` `r up$doc` mg L⁻¹, `Chl a` `r up$chl` µg L⁻¹). That pattern is consistent with a disk resting on the bed of a clear, shallow stream, but we did not check it against field notes. Because the three water-chemistry measurements agree with each other, these records are **excluded from regression training** (`build_training()`), but in the **ternary application dataset (`build_application()`) only `Secchi` is set to `NA`**, so the 3-constituent water chemistry is kept with a modeled Secchi depth.
+2. **Lower Tail ($z_r < -2.5\text{ SD}$, `r fmt_n(lo$n)` records = `r sprintf('%.2f', 100 * lo$n / get_screen_counts()$n)`%) — One of the chemistry constituents (`Chl a`, `DOC`, or `TSS`) is the odd one out:** Secchi depth is much deeper than the three constituents imply (median Secchi depth `r lo$secchi` m alongside a median `TSS` of `r lo$tss` mg L⁻¹). Possible causes include unit-entry or sample-matching errors, which we did not verify. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.
 
 ```{r qc-fig, echo = FALSE, fig.width = 10.5, fig.height = 5.6, fig.cap = '(a) Observed diffuse attenuation (kd = 1/z_SD) vs. the reference Beer–Lambert attenuation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail records where Secchi depth is much shallower than expected (red; Secchi dropped but 3-LAC chemistry kept in application), and lower-tail records where it is much deeper than expected (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff.'}
 p_qc <- fig_qc_discordance(trimmed)
@@ -93,7 +113,7 @@ q_summary <- function(df, label) {
 }
 
 bind_rows(
-  q_summary(d_before, 'Before plausibility screen (Stage 1 analytical floors only)'),
+  q_summary(d_before, 'Before plausibility screen (Stage 1 only)'),
   q_summary(training, 'After plausibility screen (Stage 2 final training set)')
 ) %>%
   kable(caption = 'Range and median of all four variables before vs. after the Beer–Lambert plausibility screen.') %>%
@@ -110,7 +130,7 @@ $$k_w = \frac{1}{1.5 \times \max(z_{SD})} = \frac{1}{1.5 \times `r max(training$
 
 This value of $k_w$ is used consistently across both model fitting and Secchi depth prediction ($\hat{z}_{SD} = 1 / [\hat{k}_{d,\text{non-water}} + k_w]$).
 
-```{r kd-hist, echo = FALSE, fig.width = 9.5, fig.height = 3.2, fig.cap = 'Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 274,445).'}
+```{r kd-hist, echo = FALSE, fig.width = 9.5, fig.height = 3.2, fig.cap = paste0('Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = ', fmt_n(nrow(get_training())), ').')}
 ggplot(training, aes(kd, fill = type)) + geom_histogram(bins = 60, colour = NA) +
   scale_x_log10() + scale_fill_manual(values = TYPE_COLS) +
   facet_wrap(~type, nrow = 1) + theme_bw(base_size = 11) + theme(legend.position = 'none') +

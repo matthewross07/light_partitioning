@@ -160,6 +160,10 @@ verified_literature_table <- function() {
     'Bannister (1974)', '10.4319/lo.1974.19.1.0001',
     'An estimate, not an upper limit. Our global alpha_Chl (0.0088 m^2/mg) is fitted to 1/z_SD (a = 1); multiplied by a = 1 to 2 it is 0.009 to 0.018.',
 
+    'Values below reporting limits', 'Chl a, DOC, TSS (and NAP where algal mass >= TSS) below the limit replaced by draws from a fitted lognormal truncated at the limit',
+    'Lubin et al. (2004); Helsel (2006)', '10.1289/ehp.7199; 10.1016/j.chemosphere.2006.04.051',
+    'Fill-in from a fitted distribution instead of substituting the limit; fewer than 3% of values are affected. Draws are tied to the record so training and application use the same value.',
+
     'A priori WQP Beer-Lambert residual screen', '|z_r| <= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using reference coefficients set a priori (k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016), within about a factor of two of published values',
     'Bannister (1974); Gallegos (2001); Gohin et al. (2005)', '10.4319/lo.1974.19.1.0001; 10.2307/1353240; 10.1016/j.rse.2004.11.007',
     'Flags 2.49% discordant records: 1.84% where Secchi depth is much shallower than expected (Secchi set to NA so the 3-LAC chemistry is retained in application) and 0.65% where it is much deeper than expected (dropped).',

@@ -170,9 +170,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.1" data-path="nap.html"><a href="nap.html#algal-mass-sensitivity"><i class="fa fa-check"></i><b>3.1.1</b> Does the algal-mass assumption change the partition?</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Analytical Floors &amp; Beer–Lambert Plausibility Screening</a>
+<li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#stage-1-analytical-reporting-floors-trim_simultaneous"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Analytical Reporting Floors (<code>trim_simultaneous()</code>)</a></li>
+<li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
 <li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
 <li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
@@ -243,10 +243,10 @@ Figure 6.1: (a) Explained variance (R²) across Models 1–10, comparing ecoregi
 </div>
 <div id="table1" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)<a href="models.html#table1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across all <strong>274,445</strong> training matchups:</p>
+<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across all <strong>274,439</strong> training matchups:</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:table1-aquamatch">Table 6.1: </span><span id="tab:table1-aquamatch">Table 6.2: </span>Table 1: Summary of the 10 hierarchical general linear models evaluated across all 274,445 training observations.
+<span id="tab:table1-aquamatch">Table 6.1: </span><span id="tab:table1-aquamatch">Table 6.2: </span>Table 1: Summary of the 10 hierarchical general linear models evaluated across all 274,439 training observations.
 </caption>
 <thead>
 <tr>
@@ -300,7 +300,7 @@ No
 1
 </td>
 <td style="text-align:left;">
-274,445
+274,439
 </td>
 <td style="text-align:right;">
 0.45
@@ -335,7 +335,7 @@ Yes
 3
 </td>
 <td style="text-align:left;">
-63,208 (60,868 – 150,369)
+63,208 (60,867 – 150,364)
 </td>
 <td style="text-align:right;">
 0.48
@@ -353,7 +353,7 @@ Yes
 3 / 3
 </td>
 <td style="text-align:left;">
--11,932
+-11,936
 </td>
 </tr>
 <tr>
@@ -370,7 +370,7 @@ No
 7
 </td>
 <td style="text-align:left;">
-1,361 (261 – 239,570)
+1,361 (261 – 239,564)
 </td>
 <td style="text-align:right;">
 0.49
@@ -388,7 +388,7 @@ No
 5 / 7
 </td>
 <td style="text-align:left;">
--15,255
+-15,261
 </td>
 </tr>
 <tr>
@@ -405,7 +405,7 @@ Yes
 16
 </td>
 <td style="text-align:left;">
-1,322 (104 – 136,937)
+1,322 (104 – 136,932)
 </td>
 <td style="text-align:right;">
 0.52
@@ -423,7 +423,7 @@ Yes
 12 / 16
 </td>
 <td style="text-align:left;">
--35,721
+-35,738
 </td>
 </tr>
 <tr>
@@ -440,7 +440,7 @@ No
 16
 </td>
 <td style="text-align:left;">
-1,912 (118 – 187,534)
+1,912 (118 – 187,531)
 </td>
 <td style="text-align:right;">
 0.51
@@ -458,7 +458,7 @@ No
 14 / 16
 </td>
 <td style="text-align:left;">
--31,344
+-31,336
 </td>
 </tr>
 <tr>
@@ -475,7 +475,7 @@ Yes
 31
 </td>
 <td style="text-align:left;">
-1,315 (104 – 106,121)
+1,315 (104 – 106,119)
 </td>
 <td style="text-align:right;">
 0.53
@@ -493,7 +493,7 @@ Yes
 25 / 31
 </td>
 <td style="text-align:left;">
--45,902
+-45,913
 </td>
 </tr>
 <tr>
@@ -510,7 +510,7 @@ No
 47
 </td>
 <td style="text-align:left;">
-685 (107 – 120,350)
+685 (107 – 120,348)
 </td>
 <td style="text-align:right;">
 0.54
@@ -528,7 +528,7 @@ No
 39 / 47
 </td>
 <td style="text-align:left;">
--55,487
+-55,486
 </td>
 </tr>
 <tr>
@@ -545,7 +545,7 @@ Yes
 70
 </td>
 <td style="text-align:left;">
-550 (102 – 58,066)
+550 (102 – 58,064)
 </td>
 <td style="text-align:right;">
 0.56
@@ -563,7 +563,7 @@ Yes
 57 / 70
 </td>
 <td style="text-align:left;">
--68,519
+-68,530
 </td>
 </tr>
 <tr>
@@ -595,10 +595,10 @@ No
 369
 </td>
 <td style="text-align:left;">
-107 / 123
+106 / 123
 </td>
 <td style="text-align:left;">
--67,115
+-67,120
 </td>
 </tr>
 <tr>
@@ -630,10 +630,10 @@ Yes
 483
 </td>
 <td style="text-align:left;">
-135 / 161
+134 / 161
 </td>
 <td style="text-align:left;">
--74,503
+-74,513
 </td>
 </tr>
 </tbody>
@@ -688,13 +688,13 @@ Chl a (alpha_Chl)
 m^2 (mg Chl a)^-1
 </td>
 <td style="text-align:left;">
-0.0088
+0.0087
 </td>
 <td style="text-align:left;">
 Estuary: 0.0122; Lake: 0.0080; Stream: 0.0110
 </td>
 <td style="text-align:left;">
-0.0088 - 0.0175
+0.0087 - 0.0175
 </td>
 <td style="text-align:left;">
 0.016 (Bannister 1974); 0.012 - 0.019 (Gallegos 2001, Chesapeake Bay)
@@ -714,7 +714,7 @@ m^2 g^-1
 0.0442
 </td>
 <td style="text-align:left;">
-Estuary: 0.0320; Lake: 0.0461; Stream: 0.0491
+Estuary: 0.0320; Lake: 0.0462; Stream: 0.0491
 </td>
 <td style="text-align:left;">
 0.044 - 0.088
@@ -802,7 +802,7 @@ USA
 All
 </td>
 <td style="text-align:left;">
-274,445
+274,439
 </td>
 <td style="text-align:right;">
 0.0442
@@ -811,7 +811,7 @@ All
 0.0711
 </td>
 <td style="text-align:right;">
-0.0088
+0.0087
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -866,10 +866,10 @@ USA
 Lake
 </td>
 <td style="text-align:left;">
-60,868
+60,867
 </td>
 <td style="text-align:right;">
-0.0461
+0.0462
 </td>
 <td style="text-align:right;">
 0.0577
@@ -898,7 +898,7 @@ USA
 Stream
 </td>
 <td style="text-align:left;">
-150,369
+150,364
 </td>
 <td style="text-align:right;">
 0.0491
@@ -936,19 +936,19 @@ All
 0.0244
 </td>
 <td style="text-align:right;">
-0.0531
+0.0534
 </td>
 <td style="text-align:right;">
 0.0029
 </td>
 <td style="text-align:left;">
-0.0015
+0.0013
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0907
+0.0951
 </td>
 </tr>
 <tr>
@@ -965,22 +965,22 @@ All
 122
 </td>
 <td style="text-align:right;">
-0.0751
+0.0752
 </td>
 <td style="text-align:right;">
-0.0407
+0.0410
 </td>
 <td style="text-align:right;">
-0.0569
+0.0558
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0013
+0.0012
 </td>
 <td style="text-align:left;">
-2.5e-07
+4.5e-07
 </td>
 </tr>
 <tr>
@@ -1012,7 +1012,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-5.4e-07
+5.5e-07
 </td>
 </tr>
 <tr>
@@ -1061,13 +1061,13 @@ All
 9,579
 </td>
 <td style="text-align:right;">
-0.0842
+0.0843
 </td>
 <td style="text-align:right;">
 0.0485
 </td>
 <td style="text-align:right;">
-0.0063
+0.0062
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1076,7 +1076,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-1.3e-16
+1.8e-16
 </td>
 </tr>
 <tr>
@@ -1093,13 +1093,13 @@ All
 1,313
 </td>
 <td style="text-align:right;">
-0.0586
+0.0587
 </td>
 <td style="text-align:right;">
 0.0253
 </td>
 <td style="text-align:right;">
-0.0095
+0.0094
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1108,7 +1108,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-1.1e-13
+1.3e-13
 </td>
 </tr>
 <tr>
@@ -1125,22 +1125,22 @@ All
 152
 </td>
 <td style="text-align:right;">
-0.1160
+0.1159
 </td>
 <td style="text-align:right;">
-0.0035
+0.0039
 </td>
 <td style="text-align:right;">
-0.0019
+0.0018
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.7299
+0.7014
 </td>
 <td style="text-align:left;">
-0.6706
+0.6867
 </td>
 </tr>
 <tr>
@@ -1157,13 +1157,13 @@ All
 799
 </td>
 <td style="text-align:right;">
-0.0443
+0.0473
 </td>
 <td style="text-align:right;">
-0.0594
+0.0584
 </td>
 <td style="text-align:right;">
-0.0094
+0.0085
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1189,13 +1189,13 @@ All
 798
 </td>
 <td style="text-align:right;">
-0.1112
+0.1117
 </td>
 <td style="text-align:right;">
-0.0290
+0.0286
 </td>
 <td style="text-align:right;">
-0.0046
+0.0044
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1204,7 +1204,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-4.5e-05
+9.7e-05
 </td>
 </tr>
 <tr>
@@ -1259,7 +1259,7 @@ All
 0.0855
 </td>
 <td style="text-align:right;">
-0.0103
+0.0102
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1349,13 +1349,13 @@ All
 587
 </td>
 <td style="text-align:right;">
-0.0999
+0.1011
 </td>
 <td style="text-align:right;">
-0.0757
+0.0746
 </td>
 <td style="text-align:right;">
-0.0096
+0.0094
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1381,13 +1381,13 @@ All
 2,465
 </td>
 <td style="text-align:right;">
-0.0523
+0.0524
 </td>
 <td style="text-align:right;">
 0.0816
 </td>
 <td style="text-align:right;">
-0.0216
+0.0215
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1416,10 +1416,10 @@ All
 0.0277
 </td>
 <td style="text-align:right;">
-0.1260
+0.1256
 </td>
 <td style="text-align:right;">
-0.0159
+0.0158
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1442,7 +1442,7 @@ All
 All
 </td>
 <td style="text-align:left;">
-33,735
+33,732
 </td>
 <td style="text-align:right;">
 0.0477
@@ -1492,7 +1492,7 @@ All
 3.1e-16
 </td>
 <td style="text-align:left;">
-2.6e-09
+2.7e-09
 </td>
 </tr>
 <tr>
@@ -1541,10 +1541,10 @@ All
 209
 </td>
 <td style="text-align:right;">
-0.0962
+0.0969
 </td>
 <td style="text-align:right;">
-0.0450
+0.0439
 </td>
 <td style="text-align:right;">
 0.0421
@@ -1553,10 +1553,10 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0024
+0.0030
 </td>
 <td style="text-align:left;">
-3.6e-08
+3.2e-08
 </td>
 </tr>
 <tr>
@@ -1573,13 +1573,13 @@ All
 394
 </td>
 <td style="text-align:right;">
-0.0641
+0.0704
 </td>
 <td style="text-align:right;">
-0.1271
+0.1251
 </td>
 <td style="text-align:right;">
-0.0178
+0.0160
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1588,7 +1588,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-&lt; 1e-16
+6.5e-16
 </td>
 </tr>
 <tr>
@@ -1605,13 +1605,13 @@ All
 1,308
 </td>
 <td style="text-align:right;">
-0.0913
+0.0937
 </td>
 <td style="text-align:right;">
-0.0647
+0.0635
 </td>
 <td style="text-align:right;">
-0.0142
+0.0135
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1637,13 +1637,13 @@ All
 259
 </td>
 <td style="text-align:right;">
-0.1101
+0.1119
 </td>
 <td style="text-align:right;">
-0.0771
+0.0750
 </td>
 <td style="text-align:right;">
-0.0046
+0.0047
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1652,7 +1652,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0017
+0.0013
 </td>
 </tr>
 <tr>
@@ -1672,7 +1672,7 @@ All
 0.0419
 </td>
 <td style="text-align:right;">
-0.0693
+0.0694
 </td>
 <td style="text-align:right;">
 0.0118
@@ -1698,7 +1698,7 @@ All
 All
 </td>
 <td style="text-align:left;">
-63,815
+63,814
 </td>
 <td style="text-align:right;">
 0.0355
@@ -1762,7 +1762,7 @@ All
 All
 </td>
 <td style="text-align:left;">
-120,350
+120,348
 </td>
 <td style="text-align:right;">
 0.0252
@@ -1893,13 +1893,13 @@ All
 3,173
 </td>
 <td style="text-align:right;">
-0.0676
+0.0678
 </td>
 <td style="text-align:right;">
-0.0806
+0.0803
 </td>
 <td style="text-align:right;">
-0.0076
+0.0075
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -2036,7 +2036,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.9593
+0.9589
 </td>
 </tr>
 <tr>
@@ -2056,7 +2056,7 @@ All
 0.0542
 </td>
 <td style="text-align:right;">
-0.1850
+0.1849
 </td>
 <td style="text-align:right;">
 0.0011
@@ -2068,7 +2068,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.7332
+0.7329
 </td>
 </tr>
 <tr>
@@ -2088,7 +2088,7 @@ All
 0.0461
 </td>
 <td style="text-align:right;">
-0.2004
+0.2003
 </td>
 <td style="text-align:right;">
 0.0144
@@ -2217,16 +2217,16 @@ p (Chl a)
 0
 </td>
 <td style="text-align:right;">
-0.0531
+0.0535
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
--0.0029
+-0.0034
 </td>
 <td style="text-align:right;">
-0.6344
+0.5825
 </td>
 </tr>
 <tr>
@@ -2243,16 +2243,16 @@ p (Chl a)
 0
 </td>
 <td style="text-align:right;">
-0.1080
+0.1079
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
--0.0030
+-0.0031
 </td>
 <td style="text-align:right;">
-0.7214
+0.7173
 </td>
 </tr>
 <tr>
@@ -2269,7 +2269,7 @@ p (Chl a)
 0
 </td>
 <td style="text-align:right;">
-0.0941
+0.0942
 </td>
 <td style="text-align:right;">
 0
@@ -2278,7 +2278,7 @@ p (Chl a)
 -0.0032
 </td>
 <td style="text-align:right;">
-0.0830
+0.0826
 </td>
 </tr>
 <tr>
@@ -2304,7 +2304,7 @@ p (Chl a)
 -0.0002
 </td>
 <td style="text-align:right;">
-0.8531
+0.8528
 </td>
 </tr>
 <tr>
@@ -2341,13 +2341,13 @@ p (Chl a)
 144
 </td>
 <td style="text-align:right;">
-0.0484
+0.0491
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-0.1252
+0.1235
 </td>
 <td style="text-align:right;">
 0
@@ -2356,7 +2356,7 @@ p (Chl a)
 -0.0034
 </td>
 <td style="text-align:right;">
-0.1053
+0.0970
 </td>
 </tr>
 <tr>
@@ -2382,7 +2382,7 @@ p (Chl a)
 -0.0011
 </td>
 <td style="text-align:right;">
-0.7555
+0.7553
 </td>
 </tr>
 <tr>

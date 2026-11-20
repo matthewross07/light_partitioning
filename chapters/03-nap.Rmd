@@ -64,7 +64,7 @@ Comparing the Gohin et al. (2005) power law against constant linear dry-mass:Chl
 ```{r ratio-sens, echo = FALSE}
 ratios <- tibble(a = P$chl_ratio_sensitivity)
 neg <- ratios %>% mutate(res = map(a, ~ add_nap(get_simul('no_secchi'), a = .x) %>%
-                                     summarize(pct_negative_nap = mean(tss_dead < 0) * 100))) %>%
+                                     summarize(pct_negative_nap = mean(nap_raw < 0) * 100))) %>%
   unnest(res)
 k_w <- get_k_w()
 slopes <- ratios %>% mutate(fit = map(a, function(a) {
@@ -121,10 +121,10 @@ sens %>%
             r2_model1 = sprintf('%.2f', r2_model1), r2_model7 = sprintf('%.2f', r2_model7),
             us = trio(us_chl, us_doc, us_nap), lake = trio(lake_chl, lake_doc, lake_nap),
             green = trio(green_chl, green_doc, green_nap), over80 = fmt_n(n_obs_chl_dominant),
-            excl = sprintf('%.1f%%', pct_nap_at_floor)) %>%
+            excl = sprintf('%.1f%%', pct_nap_drawn)) %>%
   kable(col.names = c('Algal dry mass rule', 'α_NAP (m²/g)', 'α_DOC (m²/g)', 'α_Chl a (m²/mg)', 'R² Model 1', 'R² Model 7',
                       'All waters: Chl a / DOC / NAP (%)', 'Lakes (%)', 'Lakes > 100 µg/L Chl a (%)',
-                      paste0('Samples > ', round(100 * P$dominance_threshold), '% Chl a'), paste0('Samples with NAP below ', P$nap_floor, ' mg/L (set to ', P$nap_floor, ')')),
+                      paste0('Samples > ', round(100 * P$dominance_threshold), '% Chl a'), paste0('Samples with algal mass ≥ TSS (NAP drawn below ', P$nap_floor, ' mg/L)')),
         caption = 'Sensitivity of model fit and mean non-water attenuation shares to the assumed algal dry mass : Chl a relation (Supplemental Table S2 of the manuscript).') %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```

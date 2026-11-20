@@ -26,8 +26,18 @@ get_simul <- function(which = c('simul', 'no_secchi')) {
   memo(which, readRDS(file.path(PATH$derived, paste0(which, '.rds'))))
 }
 
+get_censor_fits <- function() memo('censor_fits', censor_fits(get_simul('no_secchi')))
 get_trimmed     <- function() memo('trimmed', trim_simultaneous(get_simul('simul')))
 get_training    <- function() memo('training', build_training(get_trimmed()))
+#' Counts for the data screen: matchups, kept, flagged, and the two tails.
+get_screen_counts <- function() memo('screen_counts', {
+  t <- get_trimmed() %>% add_nap() %>%
+    mutate(secchi = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits), kd = round(1 / secchi, P$kd_digits),
+           r = log10(kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tss_dead) + P$lit_alpha_doc * doc + P$lit_alpha_chl * chl_a)),
+           z = (r - mean(r)) / sd(r))
+  list(n = nrow(t), kept = sum(abs(t$z) <= P$kd_discordance_sd), flagged = sum(abs(t$z) > P$kd_discordance_sd),
+       upper = sum(t$z > P$kd_discordance_sd), lower = sum(t$z < -P$kd_discordance_sd))
+})
 get_k_w         <- function() k_w_from_training(get_training())
 get_application <- function() memo('application', build_application(get_simul('no_secchi'), get_training(), kd_discordance_stats(get_trimmed())))
 get_eco         <- function() memo('eco', cache_rds('eco', read_ecoregions()))
