@@ -4,7 +4,21 @@
 #             verification benchmarks
 # -----------------------------------------------------------------------------
 
-#' Classify each record into one of the four LAC dominance classes (>80% threshold).
+#' Three ways of saying that one LAC leads, counted per LAC:
+#'   dominant            share > P$dominance_threshold (70%)
+#'   majority contributor share > P$majority_threshold (50%)
+#'   largest contributor  share is the largest of the three
+dominance_definitions <- function(fd) {
+  f <- cbind(NAP = fd$tss_kd, DOC = fd$doc_kd, `Chl a` = fd$chl_kd)
+  top <- colnames(f)[max.col(f, ties.method = 'first')]
+  tibble(LAC = colnames(f),
+         n_dominant = colSums(f > P$dominance_threshold), n_majority = colSums(f > P$majority_threshold),
+         n_largest = as.integer(table(factor(top, colnames(f))))) %>%
+    mutate(across(starts_with('n_'), ~ 100 * .x / nrow(fd), .names = 'pct_{.col}')) %>%
+    rename_with(~ sub('pct_n_', 'pct_', .x))
+}
+
+#' Classify each record into one of the four LAC dominance classes (share > P$dominance_threshold).
 classify_dominance <- function(fd, threshold = P$dominance_threshold) {
   fd %>%
     mutate(

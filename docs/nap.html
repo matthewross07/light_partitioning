@@ -192,9 +192,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-479666"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 479,666</code>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#application-dataset"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset</a></li>
 <li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
-<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-definitions"><i class="fa fa-check"></i><b>8.3</b> Dominant, Majority and Largest Contributor</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Water Clarity Across Dominance Regimes</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
 <ul>
@@ -419,13 +420,13 @@ Gohin et al. (2005)
 &lt; 3
 </td>
 <td style="text-align:left;">
-14,415
+14,551
 </td>
 <td style="text-align:right;">
-185
+186
 </td>
 <td style="text-align:right;">
-303
+305
 </td>
 <td style="text-align:right;">
 435
@@ -442,19 +443,19 @@ Gohin et al. (2005)
 3–10
 </td>
 <td style="text-align:left;">
-23,331
+24,518
 </td>
 <td style="text-align:right;">
-131
+67
 </td>
 <td style="text-align:right;">
-187
+127
 </td>
 <td style="text-align:right;">
-240
+199
 </td>
 <td style="text-align:right;">
-609
+583
 </td>
 <td style="text-align:right;">
 109
@@ -465,19 +466,19 @@ Gohin et al. (2005)
 10–30
 </td>
 <td style="text-align:left;">
-23,546
+24,324
 </td>
 <td style="text-align:right;">
-87
+39
 </td>
 <td style="text-align:right;">
-135
+105
 </td>
 <td style="text-align:right;">
-171
+154
 </td>
 <td style="text-align:right;">
-385
+375
 </td>
 <td style="text-align:right;">
 69
@@ -488,19 +489,19 @@ Gohin et al. (2005)
 30–100
 </td>
 <td style="text-align:left;">
-17,098
+17,339
 </td>
 <td style="text-align:right;">
-60
+38
 </td>
 <td style="text-align:right;">
-103
+93
 </td>
 <td style="text-align:right;">
-130
+125
 </td>
 <td style="text-align:right;">
-276
+274
 </td>
 <td style="text-align:right;">
 44
@@ -511,19 +512,19 @@ Gohin et al. (2005)
 &gt; 100
 </td>
 <td style="text-align:left;">
-3,672
+3,753
 </td>
 <td style="text-align:right;">
-41
+26
 </td>
 <td style="text-align:right;">
-69
+63
 </td>
 <td style="text-align:right;">
-94
+89
 </td>
 <td style="text-align:right;">
-198
+195
 </td>
 <td style="text-align:right;">
 28
@@ -531,7 +532,7 @@ Gohin et al. (2005)
 </tr>
 </tbody>
 </table>
-<p><strong>The partition moves by a few points.</strong> Refitting Models 1 and 7 (Section <a href="models.html#models">6</a>) and re-running the continental application (Section <a href="application.html#application">8</a>) under five rules gives the table below (<code>algal_mass_sensitivity()</code> in <code>R/models.R</code>; the Gohin row is the canonical pipeline). From no subtraction at all to a constant <code>100:1</code>, the mean Chl <em>a</em> share goes from about 7% to 10% nationally and from 14% to 19% in lakes, while the DOC share stays between 56% and 58%.</p>
+<p><strong>The partition moves by a few points.</strong> Refitting Models 1 and 7 (Section <a href="models.html#models">6</a>) and re-running the continental application (Section <a href="application.html#application">8</a>) under five rules gives the table below (<code>algal_mass_sensitivity()</code> in <code>R/models.R</code>; the Gohin row is the canonical pipeline). From no subtraction at all to a constant <code>100:1</code>, the mean Chl <em>a</em> share goes from about 7% to 10% nationally and from 15% to 20% in lakes, while the DOC share stays between 56% and 58%.</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:algal-sensitivity">Table 3.3: </span><span id="tab:algal-sensitivity">Table 3.4: </span>Sensitivity of model fit and mean non-water attenuation shares to the assumed algal dry mass : Chl a relation (Supplemental Table S2 of the manuscript).
@@ -566,10 +567,10 @@ Lakes (%)
 Lakes &gt; 100 µg/L Chl a (%)
 </th>
 <th style="text-align:left;">
-Samples &gt; 80% Chl a
+Samples &gt; 70% Chl a
 </th>
 <th style="text-align:left;">
-Samples dropped (NAP ≤ 0.01 mg/L)
+Samples with NAP below 0.5 mg/L (set to 0.5)
 </th>
 </tr>
 </thead>
@@ -594,19 +595,19 @@ None (TSS used directly)
 0.53
 </td>
 <td style="text-align:left;">
-7.2 / 56.1 / 36.7
+7.3 / 56.2 / 36.5
 </td>
 <td style="text-align:left;">
-14.3 / 57.1 / 28.6
+14.6 / 57.3 / 28.1
 </td>
 <td style="text-align:left;">
-35.3 / 34.3 / 30.4
+35.6 / 34.3 / 30.1
 </td>
 <td style="text-align:left;">
-44
+414
 </td>
 <td style="text-align:left;">
-0.00%
+0.0%
 </td>
 </tr>
 <tr>
@@ -629,19 +630,19 @@ Gohin et al. (2005): 0.234 Chl^0.57
 0.54
 </td>
 <td style="text-align:left;">
-8.2 / 57.7 / 34.1
+8.3 / 57.6 / 34.0
 </td>
 <td style="text-align:left;">
-16.1 / 59.3 / 24.5
+16.4 / 59.3 / 24.3
 </td>
 <td style="text-align:left;">
-38.3 / 35.4 / 26.3
+38.6 / 35.3 / 26.1
 </td>
 <td style="text-align:left;">
-109
+708
 </td>
 <td style="text-align:left;">
-0.00%
+2.9%
 </td>
 </tr>
 <tr>
@@ -664,19 +665,19 @@ Constant 50:1
 0.54
 </td>
 <td style="text-align:left;">
-8.7 / 56.6 / 34.7
+8.8 / 56.6 / 34.5
 </td>
 <td style="text-align:left;">
-16.6 / 58.3 / 25.0
+17.1 / 58.4 / 24.6
 </td>
 <td style="text-align:left;">
-41.4 / 35.2 / 23.5
+42.3 / 35.0 / 22.7
 </td>
 <td style="text-align:left;">
-164
+1,023
 </td>
 <td style="text-align:left;">
-0.06%
+2.3%
 </td>
 </tr>
 <tr>
@@ -699,19 +700,19 @@ Constant 67:1
 0.54
 </td>
 <td style="text-align:left;">
-9.2 / 56.6 / 34.2
+9.4 / 56.6 / 34.0
 </td>
 <td style="text-align:left;">
-17.6 / 58.4 / 24.1
+18.1 / 58.3 / 23.6
 </td>
 <td style="text-align:left;">
-43.1 / 35.3 / 21.6
+44.7 / 34.9 / 20.4
 </td>
 <td style="text-align:left;">
-204
+1,368
 </td>
 <td style="text-align:left;">
-0.18%
+2.6%
 </td>
 </tr>
 <tr>
@@ -734,27 +735,27 @@ Constant 100:1
 0.54
 </td>
 <td style="text-align:left;">
-10.0 / 56.7 / 33.3
+10.4 / 56.7 / 33.0
 </td>
 <td style="text-align:left;">
-18.8 / 58.8 / 22.4
+19.8 / 58.5 / 21.7
 </td>
 <td style="text-align:left;">
-45.9 / 35.6 / 18.5
+48.9 / 34.9 / 16.3
 </td>
 <td style="text-align:left;">
-306
+2,274
 </td>
 <td style="text-align:left;">
-0.68%
+3.5%
 </td>
 </tr>
 </tbody>
 </table>
 <p>Two consequences for how the results should be read:</p>
 <ul>
-<li>The Chl <em>a</em> term is a conservative estimate of the algal contribution. In the greenest lakes (<span class="math inline">\(&gt; 100\ \mu\text{g L}^{-1}\)</span>) it is the largest single term under every rule (35–46%), but it never reaches the 80% we use to call a sample dominated by one constituent.</li>
-<li>That is not mainly a matter of the ratio. In those lakes DOC carries about 35% and particles 19–30% whichever rule is used, because dissolved organic matter and detritus rise together with algae in eutrophic water and a statistical partition cannot separate algal-derived material from other sources.</li>
+<li>The Chl <em>a</em> term is a conservative estimate of the algal contribution. In the greenest lakes (<span class="math inline">\(&gt; 100\ \mu\text{g L}^{-1}\)</span>) its mean share is the largest of the three under every rule (36–49%), but that mean never reaches the 70% we use to call a sample dominated by one constituent.</li>
+<li>That is not mainly a matter of the ratio. In those lakes DOC carries about 35% and particles 16–30% whichever rule is used, because dissolved organic matter and detritus rise together with algae in eutrophic water and a statistical partition cannot separate algal-derived material from other sources.</li>
 </ul>
 <p>We keep the Gohin et al. (2005) relation as the canonical choice: it never assigns more mass to algae than the samples contain, and the conclusions above hold under any of the alternatives.</p>
 <p>Similarly, restricting calibration strictly to top-tier analytical methods (<code>Tier 1</code> chemistry and <code>Tier 1–2</code> Secchi) yields nearly identical attenuation slopes while pooling all harmonized AquaMatch tiers nearly triples spatial coverage:</p>

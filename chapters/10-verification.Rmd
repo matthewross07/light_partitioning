@@ -11,12 +11,15 @@ Every dataset, spatial join, model fit, simplex constraint, and statistical clai
 ```{r verify-summary, echo = FALSE}
 v <- run_verification()
 saveRDS(v, file.path(PATH$derived, 'verification_summary.rds'))
+n_fail <- sum(!v$pass)
 v %>%
   mutate(pass = ifelse(pass, '<span class="pass">✔ PASS</span>', '<span class="fail">✘ FAIL</span>'),
          across(c(expected, actual), as.character)) %>%
   kable(escape = FALSE, col.names = c('Pipeline Stage', 'Verification Check', 'Expected Criterion', 'Observed Value', 'Status')) %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
+
+`r if (n_fail > 0) paste0('**', n_fail, ' of ', nrow(v), ' checks ', ifelse(n_fail == 1, 'does', 'do'), ' not pass:** ', paste(v$check[!v$pass], collapse = '; '), '. See Section \\@ref(dominance-test) for the pairwise tests. The manuscript reports the result as it is.') else paste0('All ', nrow(v), ' checks pass.')`
 
 ---
 

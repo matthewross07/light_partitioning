@@ -192,7 +192,10 @@ build_training <- function(trimmed) {
 k_w_from_training <- function(training_or_trimmed) 1 / P$k_w_divisor / max(training_or_trimmed$secchi)
 
 #' Application data: every record with all 3 LACs (Secchi optional) whose LAC
-#' values fall inside the range spanned by the training data, with NAP > 0.01 mg/L.
+#' values fall inside the range spanned by the training data. No record is dropped
+#' for its NAP value: where estimated NAP (TSS minus algal dry mass) is below the TSS
+#' reporting limit (P$nap_floor), it is set to that limit when the partition is
+#' calculated (apply_model7()), the same rule used for the measured variables.
 #' Sub-detection / zero values are floored via ifelse() to match the training set.
 #' Applies Rule 2 ("Odd-One-Out" asymmetric disposition) when a measured Secchi
 #' depth is present:
@@ -203,10 +206,14 @@ k_w_from_training <- function(training_or_trimmed) 1 / P$k_w_divisor / max(train
 #'   - Lower tail (z_r < -2.5 SD): One of Chl a, DOC, or TSS is implausibly high
 #'     relative to a clear Secchi reading (e.g. a 1000x unit error). The row is
 #'     dropped because all 3 constituents are required for ternary partitioning.
-build_application <- function(no_secchi, trimmed) {
-  rng <- function(v) range(trimmed[[v]], na.rm = TRUE)
+#' `training` supplies the concentration ranges. `stats` must be the screen statistics
+#' from the full 4-variable set (kd_discordance_stats(get_trimmed())), i.e. the same
+#' mean and SD used to build the training set, so a record is treated the same way in
+#' both. (Taking them from the already-screened training set narrows the band from
+#' ~4.7-fold to ~3.8-fold and screens the application set a second time.)
+build_application <- function(no_secchi, training, stats = kd_discordance_stats(get_trimmed())) {
+  rng <- function(v) range(training[[v]], na.rm = TRUE)
   r_chl <- rng('chl_a'); r_tss <- rng('tss'); r_doc <- rng('doc'); r_sec <- rng('secchi')
-  stats <- kd_discordance_stats(trimmed)
   out <- no_secchi %>%
     filter(if_all(c(chl_a, doc, tss), ~ !is.na(.) & . >= 0)) %>%
     mutate(
@@ -220,8 +227,7 @@ build_application <- function(no_secchi, trimmed) {
            doc   <= r_doc[2] & doc   >= r_doc[1],
            (secchi <= r_sec[2] & secchi >= r_sec[1]) | is.na(secchi)) %>%
     mutate(type = ifelse(grepl('Lake', type), 'Lake', type)) %>%
-    add_nap() %>%
-    filter(tss_dead > P$apply_min_nap)
+    add_nap()
   if (!is.null(stats$max_sd) && is.finite(stats$max_sd)) {
     kd_lit <- P$lit_kw + P$lit_alpha_nap * pmax(0, out$tss_dead) +
               P$lit_alpha_doc * out$doc + P$lit_alpha_chl * out$chl_a

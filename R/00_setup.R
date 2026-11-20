@@ -115,7 +115,6 @@ P <- list(
   type_min       = 100,
 
   # -- Application to all LAC observations:
-  apply_min_nap  = 0.01,    # application rows need NAP > 0.01 mg/L
   apply_min_n    = 100,     # ecoregion needs > 100 application rows and positive slopes to use Model 7
   require_positive_coefs = TRUE, # fall back to global Model 1 if any group slope <= 0 (all have p > 0.01)
 
@@ -128,7 +127,9 @@ P <- list(
   long_term_min_years = 8,      # Delaware: DRBC sites with >= 8 distinct years
   fig4_min_obs        = 7,      # CDF: sites with > 7 observations
   fig4_s7_min_obs     = 100,    # insets 2-3 drawn from sites with > 100 observations
-  dominance_threshold = 0.80    # ">80% contribution" classes for Secchi depth comparison
+  dominance_threshold = 0.70,   # a LAC is "dominant" where it supplies > 70% of non-water attenuation
+  majority_threshold  = 0.50,   # ... the "majority contributor" where it supplies > 50%
+  nap_floor           = 0.50    # mg/L: estimated NAP below the TSS reporting limit is set to that limit in the partition
 )
 
 # ---- Plot palettes ----------------------------------------------------------

@@ -16,6 +16,7 @@ tab:bannister-table
 tab:m7-neg
 fig:figS1
 tab:means
+tab:dominance-definitions
 fig:dom-fig
 tab:secchi-classes
 tab:secchi-pairwise
@@ -45,8 +46,9 @@ comparison-with-published-bio-optical-benchmarks
 tableS1
 stability
 application
-continental-3-constituent-application-dataset-n-479666
+application-dataset
 intext
+dominance-definitions
 dominance-test
 figures
 fig1

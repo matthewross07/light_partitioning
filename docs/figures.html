@@ -192,9 +192,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-479666"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 479,666</code>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#application-dataset"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset</a></li>
 <li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
-<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-definitions"><i class="fa fa-check"></i><b>8.3</b> Dominant, Majority and Largest Contributor</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Water Clarity Across Dominance Regimes</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
 <ul>
@@ -234,7 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">9.1</span> Figure 1: Continental Data Distributions and Ecoregion Coverage<a href="figures.html#fig1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig1-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
 <ul>
-<li><strong>(a)</strong> Probability density distributions of <code>Chl a</code> (<span class="math inline">\(\mu\text{g L}^{-1}\)</span>), <code>DOC</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>), <code>Secchi</code> (<span class="math inline">\(\text{m}\)</span>), and <code>TSS</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>) by water-body type (<code>Estuary</code>, <code>Lake</code>, <code>Stream</code>) across all <strong>479,666</strong> application matchups, comparing samples with measured Secchi depth (<code>Measured</code>, solid lines; <span class="math inline">\(n = 267,895\)</span>) against samples where Secchi depth is modeled (<code>Modeled</code>, dashed lines; <span class="math inline">\(n = 211,771\)</span>).</li>
+<li><strong>(a)</strong> Probability density distributions of <code>Chl a</code> (<span class="math inline">\(\mu\text{g L}^{-1}\)</span>), <code>DOC</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>), <code>Secchi</code> (<span class="math inline">\(\text{m}\)</span>), and <code>TSS</code> (<span class="math inline">\(\text{mg L}^{-1}\)</span>) by water-body type (<code>Estuary</code>, <code>Lake</code>, <code>Stream</code>) across all <strong>484,528</strong> application matchups, comparing samples with measured Secchi depth (<code>Measured</code>, solid lines; <span class="math inline">\(n = 274,445\)</span>) against samples where Secchi depth is modeled (<code>Modeled</code>, dashed lines; <span class="math inline">\(n = 210,083\)</span>).</li>
 <li><strong>(b)</strong> Spatial density of matchups aggregated to <span class="math inline">\(0.1^\circ \times 0.1^\circ\)</span> cells over U.S. EPA Level III ecoregions.</li>
 </ul>
 <hr />
@@ -242,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="fig2" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Figure 2: Continental Ternary Partitioning by Water-Body Type<a href="figures.html#fig2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig2-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
-<p>Each point represents a sample’s non-water light-attenuation fractions <span class="math inline">\((f_{\text{Chl }a}, f_{\text{DOC}}, f_{\text{NAP}})\)</span> from Model 7 across <strong>(a)</strong> all waters (<span class="math inline">\(n = 479,666\)</span>), <strong>(b)</strong> streams (<span class="math inline">\(n = 320,411\)</span>), <strong>(c)</strong> lakes (<span class="math inline">\(n = 82,062\)</span>), and <strong>(d)</strong> estuaries (<span class="math inline">\(n = 77,193\)</span>). Blue circles mark arithmetic means; red and black polygons enclose <span class="math inline">\(\pm 1\text{ SD}\)</span> and <span class="math inline">\(\pm 2\text{ SD}\)</span> around each mean (<code>tern_sd_region()</code>).</p>
+<p>Each point represents a sample’s non-water light-attenuation fractions <span class="math inline">\((f_{\text{Chl }a}, f_{\text{DOC}}, f_{\text{NAP}})\)</span> from Model 7 across <strong>(a)</strong> all waters (<span class="math inline">\(n = 484,528\)</span>), <strong>(b)</strong> streams (<span class="math inline">\(n = 321,796\)</span>), <strong>(c)</strong> lakes (<span class="math inline">\(n = 84,485\)</span>), and <strong>(d)</strong> estuaries (<span class="math inline">\(n = 78,247\)</span>). Blue circles mark arithmetic means; red and black polygons enclose <span class="math inline">\(\pm 1\text{ SD}\)</span> and <span class="math inline">\(\pm 2\text{ SD}\)</span> around each mean (<code>tern_sd_region()</code>).</p>
 <hr />
 </div>
 <div id="fig3" class="section level2 hasAnchor" number="9.3">
@@ -312,10 +313,10 @@ Stream
 13
 </td>
 <td style="text-align:left;">
-73.4%
+73.5%
 </td>
 <td style="text-align:left;">
-22.6%
+22.5%
 </td>
 <td style="text-align:left;">
 4.0%
@@ -477,13 +478,13 @@ Estuary
 13
 </td>
 <td style="text-align:left;">
-41.3%
+40.7%
 </td>
 <td style="text-align:left;">
-52.9%
+53.6%
 </td>
 <td style="text-align:left;">
-5.9%
+5.7%
 </td>
 </tr>
 </tbody>
@@ -499,7 +500,7 @@ Estuary
 <div id="fig4" class="section level2 hasAnchor" number="9.4">
 <h2><span class="header-section-number">9.4</span> Figure 4: Site-Level Temporal Stability — Lucistatic vs. Lucidynamic Regimes<a href="figures.html#fig4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><img src="ternary_clarity_pipeline_files/figure-html/fig4-1.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
-<p>For each station with <span class="math inline">\(&gt; 7\)</span> simultaneous matchups (<strong>9,196 sites</strong> across the U.S.), the <strong>ternary area fraction</strong> (<code>tern_area_fraction()</code>) measures the share of the equilateral ternary triangle enclosed within <span class="math inline">\(\pm 2\text{ SD}\)</span> of that site’s mean composition. Streams (median <strong>10.4%</strong>) and estuaries (median <strong>11.4%</strong>) are more temporally compact (<em>lucistatic</em>) than lakes (median <strong>16.1%</strong>, <em>lucidynamic</em>). Fewer than <strong>5%</strong> of lakes (<code>4.1%</code>), <strong>3%</strong> of streams (<code>2.4%</code>), and <strong>2%</strong> of estuaries (<code>1.1%</code>) span <span class="math inline">\(\ge 50\%\)</span> of ternary space.</p>
+<p>For each station with <span class="math inline">\(&gt; 7\)</span> simultaneous matchups (<strong>9,257 sites</strong> across the U.S.), the <strong>ternary area fraction</strong> (<code>tern_area_fraction()</code>) measures the share of the equilateral ternary triangle enclosed within <span class="math inline">\(\pm 2\text{ SD}\)</span> of that site’s mean composition. Streams (median <strong>10.5%</strong>) and estuaries (median <strong>11.4%</strong>) are more temporally compact (<em>lucistatic</em>) than lakes (median <strong>16.1%</strong>, <em>lucidynamic</em>). Fewer than <strong>5%</strong> of lakes (4.3%), <strong>3%</strong> of streams (2.6%), and <strong>2%</strong> of estuaries (1.2%) span <span class="math inline">\(\ge 50\%\)</span> of ternary space.</p>
 <table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:fig4-medians">Table 9.3: </span><span id="tab:fig4-medians">Table 9.4: </span>Distribution of site-level ternary area fractions across water-body types (Figure 4 CDFs).
@@ -535,7 +536,7 @@ Mean Area Fraction
 Estuary
 </td>
 <td style="text-align:left;">
-1,460
+1,465
 </td>
 <td style="text-align:left;">
 5.9%
@@ -544,13 +545,13 @@ Estuary
 11.4%
 </td>
 <td style="text-align:left;">
-13.2%
+13.3%
 </td>
 <td style="text-align:left;">
-17.5%
+17.9%
 </td>
 <td style="text-align:left;">
-1.1%
+1.2%
 </td>
 </tr>
 <tr>
@@ -558,7 +559,7 @@ Estuary
 Lake
 </td>
 <td style="text-align:left;">
-2,354
+2,398
 </td>
 <td style="text-align:left;">
 7.5%
@@ -567,13 +568,13 @@ Lake
 16.1%
 </td>
 <td style="text-align:left;">
-19.1%
+19.3%
 </td>
 <td style="text-align:left;">
-27.5%
+27.9%
 </td>
 <td style="text-align:left;">
-4.1%
+4.3%
 </td>
 </tr>
 <tr>
@@ -581,22 +582,22 @@ Lake
 Stream
 </td>
 <td style="text-align:left;">
-5,382
+5,394
 </td>
 <td style="text-align:left;">
-4.3%
+4.4%
 </td>
 <td style="text-align:left;">
-10.4%
+10.5%
 </td>
 <td style="text-align:left;">
-14.0%
+14.2%
 </td>
 <td style="text-align:left;">
-19.2%
+19.5%
 </td>
 <td style="text-align:left;">
-2.4%
+2.6%
 </td>
 </tr>
 </tbody>
@@ -689,7 +690,7 @@ Estuary
 2.5%
 </td>
 <td style="text-align:left;">
-8.4%
+8.5%
 </td>
 <td style="text-align:left;">
 lucistatic DOC
@@ -718,7 +719,7 @@ Lake
 28.0%
 </td>
 <td style="text-align:left;">
-75.7%
+75.1%
 </td>
 <td style="text-align:left;">
 lucistatic Chl a
@@ -741,13 +742,13 @@ Lake Griffin (north station), FL
 Lake
 </td>
 <td style="text-align:right;">
-251
+252
 </td>
 <td style="text-align:left;">
-15.1%
+15.4%
 </td>
 <td style="text-align:left;">
-47.2%
+48.0%
 </td>
 <td style="text-align:left;">
 multi-annual trajectory

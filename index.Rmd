@@ -13,6 +13,7 @@ description: "Open-source data pipeline and interactive technical documentation 
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = 'center',
                       fig.width = 8.5, fig.height = 5.2, out.width = '100%')
 source('R/00_setup.R')
+ipc <- function(x) sprintf('%.1f%%', 100 * mean(x))
 ```
 
 # Overview {-}
@@ -39,7 +40,7 @@ Across inland and coastal waters, diffuse light attenuation ($k_d = 1 / z_{SD}$;
 
 $$z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a}$$
 
-To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the **AquaMatch** data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to **AquaSat** (Ross et al. 2019). Combining **`274,445` simultaneous four-variable matchups** (`Secchi + Chl a + DOC + TSS/SSC`) for model calibration with **`479,666` three-constituent matchups** across **`39,423` monitoring stations** (`1970–2025`), we estimate regional specific attenuation coefficients ($\alpha_i$) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.
+To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the **AquaMatch** data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to **AquaSat** (Ross et al. 2019). Combining **`274,445` simultaneous four-variable matchups** (`Secchi + Chl a + DOC + TSS/SSC`) for model calibration with **`r fmt_n(nrow(get_final_data()))` three-constituent matchups** across **`r fmt_n(dplyr::n_distinct(get_final_data()$SiteID))` monitoring stations** (`1970–2025`), we estimate regional specific attenuation coefficients ($\alpha_i$) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.
 
 ---
 
@@ -73,9 +74,9 @@ if (file.exists('figs/sonicray_optical_titration_sheet.png')) {
 
 ## Continental Ternary Partitioning at a Glance {-}
 
-Across `479,666` co-located U.S. water quality samples, dissolved organic matter (**DOC**, `57.7%`) and non-algal suspended sediment (**NAP**, `34.1%`) dominate average non-water light attenuation in streams and estuaries, whereas lakes span the full ternary simplex with more than double the phytoplankton attenuation share (**Chl *a***, `16.1%` vs. `6.7%` in streams and `6.0%` in estuaries):
+Across `r fmt_n(nrow(get_final_data()))` co-located U.S. water quality samples, dissolved organic matter (**DOC**, `r ipc(get_final_data()$doc_kd)`) and non-algal suspended sediment (**NAP**, `r ipc(get_final_data()$tss_kd)`) dominate average non-water light attenuation in streams and estuaries, whereas lakes span the full ternary simplex with more than double the phytoplankton attenuation share (**Chl *a***, `r ipc(get_final_data()$chl_kd[get_final_data()$type == 'Lake'])` vs. `r ipc(get_final_data()$chl_kd[get_final_data()$type == 'Stream'])` in streams and `r ipc(get_final_data()$chl_kd[get_final_data()$type == 'Estuary'])` in estuaries):
 
-```{r overview-fig2-preview, echo = FALSE, fig.cap = 'Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 479,666), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics).'}
+```{r overview-fig2-preview, echo = FALSE, fig.cap = paste0('Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = ', fmt_n(nrow(get_final_data())), '), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics).')}
 if (file.exists('figs/fig2_ternary_by_type.png')) {
   knitr::include_graphics('figs/fig2_ternary_by_type.png')
 }

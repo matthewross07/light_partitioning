@@ -192,9 +192,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="part"><span><b>III Continental Ternary Partitioning &amp; Figures</b></span></li>
 <li class="chapter" data-level="8" data-path="application.html"><a href="application.html"><i class="fa fa-check"></i><b>8</b> Continental Application &amp; Dominance Regimes (<code>apply_model7()</code>)</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#continental-3-constituent-application-dataset-n-479666"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset (<code>n = 479,666</code>)</a></li>
+<li class="chapter" data-level="8.1" data-path="application.html"><a href="application.html#application-dataset"><i class="fa fa-check"></i><b>8.1</b> Continental 3-Constituent Application Dataset</a></li>
 <li class="chapter" data-level="8.2" data-path="application.html"><a href="application.html#intext"><i class="fa fa-check"></i><b>8.2</b> Continental Mean Ternary Partitioning by Water-Body Type</a></li>
-<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.3</b> Water Clarity Across <span class="math inline">\(&gt;80\%\)</span> Dominance Regimes (<span class="math inline">\(p &lt; 0.01\)</span>)</a></li>
+<li class="chapter" data-level="8.3" data-path="application.html"><a href="application.html#dominance-definitions"><i class="fa fa-check"></i><b>8.3</b> Dominant, Majority and Largest Contributor</a></li>
+<li class="chapter" data-level="8.4" data-path="application.html"><a href="application.html#dominance-test"><i class="fa fa-check"></i><b>8.4</b> Water Clarity Across Dominance Regimes</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="figures.html"><a href="figures.html"><i class="fa fa-check"></i><b>9</b> Manuscript Figures Gallery (Figs. 1–4)</a>
 <ul>
@@ -248,7 +249,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Water clarity is one of our oldest and most intuitive lenses into aquatic ecosystems. For more than a century, hydrologists and limnologists have lowered Secchi disks into rivers, lakes, and estuaries to measure how deeply light penetrates the water column. Yet Secchi disk depth (<span class="math inline">\(z_{SD}\)</span>, in meters) alone tells us only <em>how much</em> light is lost—not <em>what</em> is blocking it.</p>
 <p>Across inland and coastal waters, diffuse light attenuation (<span class="math inline">\(k_d = 1 / z_{SD}\)</span>; Lee et al. 2015) is governed by pure water (<span class="math inline">\(k_w\)</span>) and three primary light-attenuating constituents (LACs): <strong>non-algal particles (NAP)</strong>, <strong>dissolved organic carbon (DOC)</strong>, and <strong>phytoplankton chlorophyll <em>a</em> (<span class="math inline">\(\text{Chl }a\)</span>)</strong>. Under the additive Beer–Lambert model, Secchi depth can be written directly in terms of constituent concentrations:</p>
 <p><span class="math display">\[z_{SD} = \frac{1}{k_w + \alpha_{\text{NAP}}\,\text{NAP} + \alpha_{\text{DOC}}\,\text{DOC} + \alpha_{\text{Chl }a}\,\text{Chl }a}\]</span></p>
-<p>To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the <strong>AquaMatch</strong> data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to <strong>AquaSat</strong> (Ross et al. 2019). Combining <strong><code>274,445</code> simultaneous four-variable matchups</strong> (<code>Secchi + Chl a + DOC + TSS/SSC</code>) for model calibration with <strong><code>479,666</code> three-constituent matchups</strong> across <strong><code>39,423</code> monitoring stations</strong> (<code>1970–2025</code>), we estimate regional specific attenuation coefficients (<span class="math inline">\(\alpha_i\)</span>) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.</p>
+<p>To understand how these three constituents partition water clarity across the contiguous United States, we built an open-source pipeline on top of the <strong>AquaMatch</strong> data suite (Brousil et al. 2024a, 2024b, 2025; De La Torre et al. 2025)—the successor to <strong>AquaSat</strong> (Ross et al. 2019). Combining <strong><code>274,445</code> simultaneous four-variable matchups</strong> (<code>Secchi + Chl a + DOC + TSS/SSC</code>) for model calibration with <strong>484,528 three-constituent matchups</strong> across <strong>39,614 monitoring stations</strong> (<code>1970–2025</code>), we estimate regional specific attenuation coefficients (<span class="math inline">\(\alpha_i\)</span>) across U.S. EPA Level III ecoregions and project nearly half a million water quality observations into ternary attenuation space.</p>
 <hr />
 </div>
 <div id="why-optical-partitioning-total-visibility-both-matter-sonicray-3d-simulation" class="section level2 unnumbered hasAnchor">
@@ -279,11 +280,11 @@ Figure 0.1: Six keyframe stages from the {sonicray} 3D water titration: (1–3) 
 </div>
 <div id="continental-ternary-partitioning-at-a-glance" class="section level2 unnumbered hasAnchor">
 <h2>Continental Ternary Partitioning at a Glance<a href="index.html#continental-ternary-partitioning-at-a-glance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Across <code>479,666</code> co-located U.S. water quality samples, dissolved organic matter (<strong>DOC</strong>, <code>57.7%</code>) and non-algal suspended sediment (<strong>NAP</strong>, <code>34.1%</code>) dominate average non-water light attenuation in streams and estuaries, whereas lakes span the full ternary simplex with more than double the phytoplankton attenuation share (<strong>Chl <em>a</em></strong>, <code>16.1%</code> vs. <code>6.7%</code> in streams and <code>6.0%</code> in estuaries):</p>
+<p>Across 484,528 co-located U.S. water quality samples, dissolved organic matter (<strong>DOC</strong>, 57.6%) and non-algal suspended sediment (<strong>NAP</strong>, 34.0%) dominate average non-water light attenuation in streams and estuaries, whereas lakes span the full ternary simplex with more than double the phytoplankton attenuation share (<strong>Chl <em>a</em></strong>, 16.4% vs. 6.8% in streams and 6.1% in estuaries):</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:overview-fig2-preview"></span>
-<img src="figs/fig2_ternary_by_type.png" alt="Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 479,666), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics)." width="100%" />
+<img src="figs/fig2_ternary_by_type.png" alt="Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 484,528), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics)." width="100%" />
 <p class="caption">
-Figure 0.2: Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 479,666), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics).
+Figure 0.2: Continental ternary partitioning of non-water light attenuation across (a) all U.S. waters (n = 484,528), (b) streams, (c) lakes, and (d) estuaries (see Section 8 and Section 9 for full diagnostics).
 </p>
 </div>
 <hr />
@@ -410,13 +411,13 @@ Final Training Set: removes 2.49% discordant outliers (Section 4)
 All 3-constituent matchups inside training bounds (Model 7)
 </td>
 <td style="text-align:left;">
-479,666
+484,528
 </td>
 <td style="text-align:left;">
-39,423
+39,614
 </td>
 <td style="text-align:left;">
-267,895 Measured + 211,771 Modeled Secchi (Section 8)
+274,445 Measured + 210,083 Modeled Secchi (Section 8)
 </td>
 </tr>
 <tr>
@@ -428,13 +429,13 @@ All 3-constituent matchups inside training bounds (Model 7)
 Long-term stations with &gt; 7 matchups (Fig. 4)
 </td>
 <td style="text-align:left;">
-420,503
+425,188
 </td>
 <td style="text-align:left;">
-9,196
+9,257
 </td>
 <td style="text-align:left;">
-5,382 streams, 2,354 lakes, 1,460 estuaries (Section 9)
+5,394 streams, 2,398 lakes, 1,465 estuaries (Section 9)
 </td>
 </tr>
 </tbody>

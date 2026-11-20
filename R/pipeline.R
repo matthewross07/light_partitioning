@@ -29,7 +29,7 @@ get_simul <- function(which = c('simul', 'no_secchi')) {
 get_trimmed     <- function() memo('trimmed', trim_simultaneous(get_simul('simul')))
 get_training    <- function() memo('training', build_training(get_trimmed()))
 get_k_w         <- function() k_w_from_training(get_training())
-get_application <- function() memo('application', build_application(get_simul('no_secchi'), get_training()))
+get_application <- function() memo('application', build_application(get_simul('no_secchi'), get_training(), kd_discordance_stats(get_trimmed())))
 get_eco         <- function() memo('eco', cache_rds('eco', read_ecoregions()))
 get_zone_sets   <- function() memo('zone_sets', cache_rds('zone_sets', build_zone_sets(get_training(), get_eco())))
 

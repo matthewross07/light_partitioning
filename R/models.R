@@ -258,7 +258,8 @@ apply_model7 <- function(application, eco, models, training,
 
   bind_rows(unmatched, matched) %>%
     left_join(ungroup(training) %>% select(SiteID, date_unity, kd), by = c('SiteID', 'date_unity')) %>%
-    mutate(att_nap = coef_NAP * tss_dead,
+    mutate(nap     = pmax(P$nap_floor, tss_dead),   # same rule as the measured variables: below the reporting limit -> the limit
+           att_nap = coef_NAP * nap,
            att_doc = coef_DOC * doc,
            att_chl = coef_Chl_a * chl_a,
            att_sum = att_nap + att_doc + att_chl,
@@ -304,7 +305,7 @@ algal_mass_sensitivity <- function(training, application, eco, k_w,
     with_coefs <- function(d, coefs) d %>% left_join(coefs, by = 'grp') %>%
       mutate(NAP = coalesce(NAP, c1[['NAP']]), DOC = coalesce(DOC, c1[['DOC']]), Chl = coalesce(Chl, c1[['Chl']]))
     pred <- with_coefs(t2, cg) %>% mutate(hat = NAP * nap + DOC * doc + Chl * chl_a + k_w)
-    keep <- with_coefs(a2, cg_app) %>% filter(nap > P$apply_min_nap) %>%
+    keep <- with_coefs(a2, cg_app) %>% mutate(nap = pmax(P$nap_floor, nap)) %>%   # as in apply_model7(): no record dropped
       mutate(s = NAP * nap + DOC * doc + Chl * chl_a,
              f_nap = NAP * nap / s, f_doc = DOC * doc / s, f_chl = Chl * chl_a / s)
     lk <- filter(keep, type == 'Lake'); gr <- filter(lk, chl_a > green_chl)
@@ -313,10 +314,10 @@ algal_mass_sensitivity <- function(training, application, eco, k_w,
            a_NAP = c1[['NAP']], a_DOC = c1[['DOC']], a_Chl_a = c1[['Chl']],
            r2_model1 = cor(t2$kd, c1[['NAP']] * t2$nap + c1[['DOC']] * t2$doc + c1[['Chl']] * t2$chl_a)^2,
            r2_model7 = cor(pred$kd, pred$hat)^2,
-           n_application = nrow(keep), pct_excluded_nap = 100 * (1 - nrow(keep) / nrow(a2)),
+           n_application = nrow(keep), pct_nap_at_floor = 100 * mean(a2$nap < P$nap_floor),
            us_chl = us[1], us_doc = us[2], us_nap = us[3],
            lake_chl = la[1], lake_doc = la[2], lake_nap = la[3],
            n_green_lake = nrow(gr), green_chl = gl[1], green_doc = gl[2], green_nap = gl[3],
-           n_obs_chl_over_80 = sum(keep$f_chl > 0.8))
+           n_obs_chl_dominant = sum(keep$f_chl > P$dominance_threshold))
   })
 }
