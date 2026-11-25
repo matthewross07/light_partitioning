@@ -4,7 +4,7 @@
 source('R/00_setup.R')
 ```
 
-Every dataset, spatial join, model fit, simplex constraint, and statistical claim in the manuscript is verified against 13 automated checks in `R/verify.R` and `R/claims.R`:
+Every dataset, spatial join, model fit, simplex constraint, and statistical claim in the manuscript is verified against automated checks in `R/verify.R` and `R/claims.R`:
 
 ## Automated Pipeline Verification Checklist
 
@@ -19,7 +19,7 @@ v %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 
-`r if (n_fail > 0) paste0('**', n_fail, ' of ', nrow(v), ' checks ', ifelse(n_fail == 1, 'does', 'do'), ' not pass:** ', paste(v$check[!v$pass], collapse = '; '), '. See Section \\@ref(dominance-test) for the pairwise tests. The manuscript reports the result as it is.') else paste0('All ', nrow(v), ' checks pass.')`
+`r if (n_fail > 0) paste0('**', n_fail, ' of ', nrow(v), ' checks ', ifelse(n_fail == 1, 'does', 'do'), ' not pass:** ', paste(v$check[!v$pass], collapse = '; '), '.') else paste0('All ', nrow(v), ' checks pass.')`
 
 ---
 

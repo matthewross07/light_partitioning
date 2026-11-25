@@ -33,12 +33,14 @@ get_training    <- function() memo('training', build_training(get_trimmed()))
 get_screen_counts <- function() memo('screen_counts', {
   t <- get_trimmed() %>% add_nap() %>%
     mutate(secchi = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits), kd = round(1 / secchi, P$kd_digits),
-           r = log10(kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tss_dead) + P$lit_alpha_doc * doc + P$lit_alpha_chl * chl_a)),
+           r = log10(kd / reference_attenuation(.)),
            z = (r - mean(r)) / sd(r))
   list(n = nrow(t), kept = sum(abs(t$z) <= P$kd_discordance_sd), flagged = sum(abs(t$z) > P$kd_discordance_sd),
        upper = sum(t$z > P$kd_discordance_sd), lower = sum(t$z < -P$kd_discordance_sd))
 })
 get_k_w         <- function() k_w_from_training(get_training())
+get_screen_null        <- function() memo('screen_null', cache_rds('screen_null', screen_null_test(get_trimmed())))
+get_screen_sensitivity <- function() memo('screen_sens', cache_rds('screen_sensitivity', screen_reference_sensitivity(get_trimmed(), get_eco())))
 get_application <- function() memo('application', build_application(get_simul('no_secchi'), get_training(), kd_discordance_stats(get_trimmed())))
 get_eco         <- function() memo('eco', cache_rds('eco', read_ecoregions()))
 get_zone_sets   <- function() memo('zone_sets', cache_rds('zone_sets', build_zone_sets(get_training(), get_eco())))

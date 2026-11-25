@@ -48,38 +48,35 @@ P <- list(
   exclude_sdd_approx = TRUE,
   dedup_same_day     = TRUE,
 
-  # -- A priori bio-optical physical plausibility screen (Rules 1 & 2):
-  #    Rule 1 (Standard Deviation Screen): Across simultaneous 4-variable matchups,
-  #    compute the log Beer-Lambert residual r = log10(kd / kd_lit) using
-  #    reference coefficients set a priori (zero fitted parameters), within about a
-  #    factor of two of published Kd(PAR) coefficients (Bannister 1974: Chl a 0.016;
-  #    Gohin et al. 2005: water 0.1, non-living SPM 0.0625; Gallegos 2001: DOC
-  #    0.037-0.051, TSS 0.074-0.095, Chl a 0.012-0.019):
-  #      k_w,lit   = 0.080 m^-1
-  #      k_NAP,lit = 0.040 m^2 g^-1
-  #      k_DOC,lit = 0.070 m^2 g^-1
-  #      k_Chl,lit = 0.016 m^2 mg^-1 (Bannister 1974)
-  #    Across the 281,439 matchups, mean(r) = 0.013 and SD(r) = 0.270 log10 units.
-  #    Standardizing z_r = (r - mean(r)) / SD(r), we require |z_r| <= 2.5 SD
-  #    (equivalent to |r - mean(r)| <= 0.675 log10 units, a ~4.7-fold [~5x] tolerance),
-  #    retaining 97.51% (274,439) of training observations and flagging 2.49% (7,000).
-  #    Rule 2 ("Odd-One-Out" Disposition in Application):
-  #      - Upper tail (z_r > +2.5 SD, 1.84%): Secchi is the odd one out (shallow
-  #        streambed bottom hit in clear water where Chl a, DOC, and TSS agree).
-  #        Excluded from regression training, but in ternary application only
-  #        Secchi is set to NA so the valid 3-constituent chemistry is retained.
-  #      - Lower tail (z_r < -2.5 SD, 0.65%): One of the chemistry constituents
-  #        (Chl a, DOC, or TSS) is the odd one out (e.g., 1000x unit error
-  #        contradicting a clear Secchi reading). Excluded from both training
-  #        and ternary application.
-  lit_kw                   = 0.080,
-  lit_alpha_nap            = 0.040,
-  lit_alpha_doc            = 0.070,
+  # -- Data screen (Rules 1 & 2): reference attenuation from published coefficients.
+  #    Each matchup's 1/z_SD is compared with a reference attenuation
+  #        K_ref = k_w + k_NAP * NAP + k_DOC * DOC + k_Chl * Chl a
+  #    whose four coefficients are published values for diffuse attenuation of PAR,
+  #    used exactly as printed (reference_attenuation() in R/prep.R):
+  #      k_w   = 0.1    m^-1       Gohin et al. (2005) Remote Sens. Environ. 95:29-46, Eq. 21
+  #      k_NAP = 0.0625 m^2 g^-1   Gohin et al. (2005), Eq. 21 (non-living suspended matter,
+  #                                 defined by the same subtraction we use, their Eqs. 15-16)
+  #      k_DOC = 0.22   m^2 g^-1   lakes and streams: Morris et al. (1995) Limnol. Oceanogr.
+  #                                 40:1381-1391, Table 3 (p. 1387), K_dPAR in 63 lakes
+  #            = 0.047  m^2 g^-1   estuaries: Gallegos (2001) Estuaries 24:381-397, Table 5
+  #                                 (p. 393), mean of four Chesapeake Bay stations
+  #      k_Chl = 0.016  m^2 mg^-1  Bannister (1974) Limnol. Oceanogr. 19:1-12, p. 6 (mean of
+  #                                 four estimates, 0.013-0.020, p. 10)
+  #    Rule 1: r = log10[(1/z_SD) / K_ref]; z_r = (r - mean(r)) / SD(r); keep |z_r| <= 2.5.
+  #    Published coefficients are per unit of K_d and 1/z_SD = K_d / a (Eq. 1), so a
+  #    constant a shifts every r by the same amount and cancels in z_r: no conversion
+  #    of the coefficients is needed, and none is applied.
+  #    Rule 2 (application set): for z_r > +2.5 (Secchi much shallower than the
+  #    constituents imply) only Secchi is set aside and the three constituents are
+  #    kept; for z_r < -2.5 (Secchi much deeper than they imply) the record is dropped.
+  lit_kw                   = 0.1,
+  lit_alpha_nap            = 0.0625,
+  lit_alpha_doc_inland     = 0.22,    # lakes and streams
+  lit_alpha_doc_estuary    = 0.047,   # estuaries
   lit_alpha_chl            = 0.016,
   kd_discordance_sd        = 2.5,
-  max_log10_kd_discordance = 0.675, # 2.5 * SD(r) = 2.5 * 0.2700 = 0.675 log10 units (~4.7-fold)
 
-  # -- Chl a -> algal dry biomass (Gohin et al. 2005, Int. J. Remote Sens. 26:1639-1663)
+  # -- Chl a -> algal dry biomass (Gohin et al. 2005, Remote Sens. Environ. 95:29-46, Eqs. 15-16)
   #    biomass [mg/L] = (234/1000) * chl_a[ug/L]^0.57
   #    NAP ("tss_dead") = TSS - biomass
   chl_biomass_a  = 234,

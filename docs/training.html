@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-11-20" />
+<meta name="date" content="2026-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,8 +173,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#screen"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Screen Against a Published Reference Attenuation &amp; “Odd-One-Out” Rule</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#screen-deep-dive"><i class="fa fa-check"></i><b>4.3</b> Deep Dive: Is the Screen Sourced, and Is It Circular?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#converting-between-attenuation-and-secchi-depth"><i class="fa fa-check"></i><b>4.3.1</b> Converting between attenuation and Secchi depth</a></li>
+<li class="chapter" data-level="4.3.2" data-path="training.html"><a href="training.html#does-the-screen-create-the-fit"><i class="fa fa-check"></i><b>4.3.2</b> Does the screen create the fit?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.4</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
@@ -230,7 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="training" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Section 4</span> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening<a href="training.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Even after parameter and unit harmonization, roughly <strong>2% of multi-agency WQP records contain field-recording or unit-entry anomalies</strong> that can heavily leverage ordinary least squares (OLS) slopes. However, simple marginal quantile trimming (clipping the top and bottom <code>0.1%</code> or <code>1%</code> of each variable independently) throws away genuine oligotrophic alpine lakes (<code>Secchi</code> up to <code>13.96 m</code>) and real storm-flow sediment plumes (<code>TSS</code> up to <code>978 mg/L</code>) while missing <strong>joint physical contradictions</strong> in the middle of the distribution.</p>
-<p>To clean recording errors without truncating real extremes or introducing statistical circularity, <code>R/prep.R</code> uses a two-stage protocol (n = 274,439):</p>
+<p>To clean recording errors without truncating real extremes or introducing statistical circularity, <code>R/prep.R</code> uses a two-stage protocol (n = 276,321):</p>
 <div id="below-limits" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)<a href="training.html#below-limits" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Some Chl <em>a</em>, DOC and TSS values lie below the limits at which they can be reliably reported (Chl <em>a</em> 0.1 µg/L, DOC 0.25 mg/L, TSS 0.5 mg/L). They are kept, so all <strong>281,439 simultaneous 4-variable matchups</strong> are retained, but they are not all given the value of the limit. Substituting the limit (or any other single number) for every such result distorts the low end of the distribution (Helsel 2006). Instead, following the “fill-in” approach of Lubin et al. (2004), each value below a limit is replaced by a random draw from a lognormal distribution that was fitted to that constituent by maximum likelihood for left-censored data and truncated at the limit (<code>impute_lacs()</code> in <code>R/prep.R</code>). Fewer than 3% of values are affected, well below the roughly 30% at which Lubin et al. found that the approach starts to bias variances.</p>
@@ -360,7 +365,7 @@ Total suspended solids (mg/L)
 </tbody>
 </table>
 <p>Each draw is tied to its record (site, date and variable), so a record has the same value in the training set and in the application set and the results are reproducible without a random seed. Secchi depth has no values below its 0.01 m limit after the flag screening of Section <a href="simultaneous.html#simultaneous">2</a>.</p>
-<p>The same rule is applied to non-algal particles. NAP is TSS minus the algal dry mass estimated from Chl <em>a</em>. Where that estimate equals or exceeds TSS (2,427 training matchups, 0.88%), the non-algal mass is below what TSS can resolve, and NAP is drawn below the TSS reporting limit from a lognormal fitted to NAP in the same way (<code>impute_nap()</code>). Positive NAP estimates are kept as calculated.</p>
+<p>The same rule is applied to non-algal particles. NAP is TSS minus the algal dry mass estimated from Chl <em>a</em>. Where that estimate equals or exceeds TSS (2,424 training matchups, 0.88%), the non-algal mass is below what TSS can resolve, and NAP is drawn below the TSS reporting limit from a lognormal fitted to NAP in the same way (<code>impute_nap()</code>). Positive NAP estimates are kept as calculated.</p>
 <table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -469,13 +474,14 @@ Secchi Disk Depth (m)
 </table>
 <hr />
 </div>
-<div id="stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule<a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="screen" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Stage 2: Screen Against a Published Reference Attenuation &amp; “Odd-One-Out” Rule<a href="training.html#screen" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>When all four measurements (<code>Secchi</code>, <code>Chl a</code>, <code>DOC</code>, and <code>TSS</code>) are collected on the same water sample, they provide an internal physical cross-check: <strong>do the three water-chemistry constituents agree with the observed Secchi depth in Beer–Lambert space, or is one of the four measurements an obvious outlier?</strong></p>
-<p>To evaluate physical agreement <em>a priori</em>—without using any fitted regression parameters from our data—we compare observed diffuse attenuation (<span class="math inline">\(k_d = 1 / z_{SD}\)</span>) against a reference Beer–Lambert attenuation (<span class="math inline">\(k_{d,\text{lit}}\)</span>). Its four coefficients were set <em>a priori</em> and are within about a factor of two of published coefficients for diffuse attenuation of photosynthetically active radiation (Bannister 1974; Gallegos 2001; Gohin et al. 2005; table below):</p>
-<p><span class="math display">\[k_{d,\text{lit}} = 0.080 + 0.040\,\max(0, \text{NAP}) + 0.070\,\text{DOC} + 0.016\,\text{Chl }a, \qquad r = \log_{10}\!\left(\frac{k_d}{k_{d,\text{lit}}}\right)\]</span></p>
+<p>We compare each matchup’s <span class="math inline">\(1/z_{SD}\)</span> with a reference attenuation calculated from its three constituents. Every coefficient in the reference is a published value for diffuse attenuation of photosynthetically active radiation, used exactly as printed in its source (<code>reference_attenuation()</code> in <code>R/prep.R</code>). None is fitted to, or adjusted with, our data.</p>
+<p><span class="math display">\[K_{\text{ref}} = 0.1 + 0.0625\,\text{NAP} + k_{\text{DOC}}\,\text{DOC} + 0.016\,\text{Chl }a, \qquad k_{\text{DOC}} = \begin{cases} 0.22 &amp; \text{lakes and streams} \\ 0.047 &amp; \text{estuaries} \end{cases}\]</span></p>
+<p><span class="math display">\[r = \log_{10}\!\left(\frac{1/z_{SD}}{K_{\text{ref}}}\right)\]</span></p>
 <table>
-<caption>Reference coefficients used in the screen, with published coefficients for diffuse attenuation of photosynthetically active radiation.</caption>
+<caption>The reference attenuation used by the data screen. Each coefficient is taken from the source listed, without change.</caption>
 <colgroup>
 <col width="20%" />
 <col width="20%" />
@@ -485,54 +491,66 @@ Secchi Disk Depth (m)
 </colgroup>
 <thead>
 <tr class="header">
+<th align="left">Term</th>
+<th align="left">Value</th>
 <th align="left">Source</th>
-<th align="left">Water (m⁻¹)</th>
-<th align="left">Particles (m² g⁻¹)</th>
-<th align="left">DOC (m² g⁻¹)</th>
-<th align="left">Chl a (m² mg⁻¹)</th>
+<th align="left">Where in the source</th>
+<th align="left">Measured in</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Reference values used in the screen</td>
-<td align="left">0.08</td>
-<td align="left">0.040 (NAP)</td>
-<td align="left">0.070</td>
-<td align="left">0.016</td>
+<td align="left">Background</td>
+<td align="left">0.1 m⁻¹</td>
+<td align="left">Gohin et al. (2005)</td>
+<td align="left">Eq. 21: <span class="math inline">\(K_{PAR} = 0.1 + 0.0625\,nLvSPM + 0.05\,\text{Chl}^{0.80}\)</span></td>
+<td align="left">Bay of Biscay shelf</td>
 </tr>
 <tr class="even">
-<td align="left">Bannister (1974)</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">0.016</td>
+<td align="left">Non-algal particles</td>
+<td align="left">0.0625 m² g⁻¹</td>
+<td align="left">Gohin et al. (2005)</td>
+<td align="left">Eq. 21. Their non-living suspended matter is defined by the same subtraction we use (their Eqs. 15–16)</td>
+<td align="left">Bay of Biscay shelf</td>
 </tr>
 <tr class="odd">
-<td align="left">Gohin et al. (2005), Bay of Biscay shelf</td>
-<td align="left">0.1</td>
-<td align="left">0.0625 (non-living suspended matter)</td>
-<td align="left"></td>
-<td align="left">0.05 Chl<sup>0.80</sup></td>
+<td align="left">DOC, lakes and streams</td>
+<td align="left">0.22 m² g⁻¹</td>
+<td align="left">Morris et al. (1995)</td>
+<td align="left">Table 3, p. 1387: <span class="math inline">\(K_{dPAR} = 0.22\,[\text{DOC}] + 0.07\,[\text{Chl }a] - 0.05\)</span> (<span class="math inline">\(n = 63\)</span>, <span class="math inline">\(r^2 = 0.68\)</span>)</td>
+<td align="left">63 lakes in Alaska, Colorado, Pennsylvania and Argentina</td>
 </tr>
 <tr class="even">
-<td align="left">Gallegos (2001), Chesapeake Bay</td>
-<td align="left">0.33–0.55 (regression intercept)</td>
-<td align="left">0.074–0.095 (total suspended solids)</td>
-<td align="left">0.037–0.051</td>
-<td align="left">0.012–0.019</td>
+<td align="left">DOC, estuaries</td>
+<td align="left">0.047 m² g⁻¹</td>
+<td align="left">Gallegos (2001)</td>
+<td align="left">Table 5, p. 393: mean of four stations (0.037–0.051)</td>
+<td align="left">Chesapeake Bay</td>
+</tr>
+<tr class="odd">
+<td align="left">Chl <em>a</em></td>
+<td align="left">0.016 m² mg⁻¹</td>
+<td align="left">Bannister (1974)</td>
+<td align="left">p. 6; on p. 10, the mean of four estimates from 0.013 to 0.020</td>
+<td align="left">Lakes and ocean</td>
 </tr>
 </tbody>
 </table>
-<p>The reference values are not taken from any single study, and the published values describe <span class="math inline">\(K_d(\text{PAR})\)</span> whereas the screen uses <span class="math inline">\(1/z_{SD}\)</span>. Neither affects which records are flagged, because each record’s ratio is compared with the mean ratio: multiplying all four reference coefficients by a constant leaves the flags unchanged.</p>
-<p>Across all <code>281,439</code> four-variable matchups, the log residual <span class="math inline">\(r\)</span> is centered near zero (<span class="math inline">\(\bar{r} = 0.013\)</span>) with a standard deviation of <span class="math inline">\(\text{SD}(r) = 0.270\text{ log}_{10}\text{ units}\)</span>. Standardizing each sample’s residual as <span class="math inline">\(z_r = (r - \bar{r}) / \text{SD}(r)\)</span>, we require <span class="math inline">\(|z_r| \le 2.5\text{ SD}\)</span> (<code>|r - r_bar| &lt;= 0.674</code>, a <strong><code>4.7-fold</code> [<span class="math inline">\(\sim 5\times\)</span>]</strong> tolerance). This retains <strong>274,439 (97.51%)</strong> training observations and flags <strong>7,000 (2.49%)</strong> discordant outliers, which fall into two distinct physical categories with asymmetric disposition (<code>Figure</code> <a href="training.html#fig:qc-fig">4.1</a>a):</p>
+<p>Three choices were made, and each is stated here so that it can be judged:</p>
+<ul>
+<li><strong>DOC by water type.</strong> Dissolved organic matter in lakes is far more coloured per unit carbon than in Chesapeake Bay, and the published coefficients differ nearly five-fold. Each is used in the kind of water it was measured in. No published coefficient for streams was found; streams are given the lake value.</li>
+<li><strong>Chl <em>a</em> from Bannister, not from Gohin or Morris.</strong> Bannister’s value is supported independently by Atlas and Bannister (1980; 0.014 ± 0.002 at the surface, from absorption spectra) and Smith and Baker (1977, Scripps report SIO Ref. 77-2, published 1978; 0.016 ± 0.003, from ocean irradiance profiles).</li>
+<li><strong>No conversion between attenuation and Secchi depth.</strong> See the deep dive below: a constant conversion factor cancels out of the screen.</li>
+</ul>
+<p>Across all 281,439 four-variable matchups, the log ratio <span class="math inline">\(r\)</span> has a mean of <span class="math inline">\(\bar{r} = -0.255\)</span> and a standard deviation of <span class="math inline">\(\text{SD}(r) = 0.294\)</span> log₁₀ units. Standardizing each matchup’s value as <span class="math inline">\(z_r = (r - \bar{r}) / \text{SD}(r)\)</span>, we keep matchups with <span class="math inline">\(|z_r| \le 2.5\)</span>, that is, within <strong>5.4-fold</strong> of the mean ratio either way. This retains <strong>276,321 (98.18%)</strong> training observations and flags <strong>5,118 (1.82%)</strong> discordant outliers, which fall into two distinct physical categories with asymmetric disposition (<code>Figure</code> <a href="training.html#fig:qc-fig">4.1</a>a):</p>
 <ol style="list-style-type: decimal">
-<li><strong>Upper Tail (<span class="math inline">\(z_r &gt; +2.5\text{ SD}\)</span>, 5,183 records = 1.84%) — <code>Secchi</code> is the odd one out:</strong> Secchi depth is much shallower than the three constituents imply. These records are 89% streams, with a median Secchi depth of 0.2 m and low constituent concentrations (median <code>TSS</code> 4 mg L⁻¹, <code>DOC</code> 4.4 mg L⁻¹, <code>Chl a</code> 1.4 µg L⁻¹). That pattern is consistent with a disk resting on the bed of a clear, shallow stream, but we did not check it against field notes. Because the three water-chemistry measurements agree with each other, these records are <strong>excluded from regression training</strong> (<code>build_training()</code>), but in the <strong>ternary application dataset (<code>build_application()</code>) only <code>Secchi</code> is set to <code>NA</code></strong>, so the 3-constituent water chemistry is kept with a modeled Secchi depth.</li>
-<li><strong>Lower Tail (<span class="math inline">\(z_r &lt; -2.5\text{ SD}\)</span>, 1,817 records = 0.65%) — One of the chemistry constituents (<code>Chl a</code>, <code>DOC</code>, or <code>TSS</code>) is the odd one out:</strong> Secchi depth is much deeper than the three constituents imply (median Secchi depth 2.13 m alongside a median <code>TSS</code> of 53 mg L⁻¹). Possible causes include unit-entry or sample-matching errors, which we did not verify. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.</li>
+<li><strong>Upper Tail (<span class="math inline">\(z_r &gt; +2.5\text{ SD}\)</span>, 3,496 records = 1.24%) — <code>Secchi</code> is the odd one out:</strong> Secchi depth is much shallower than the three constituents imply. These records are 74% streams, with a median Secchi depth of 0.2 m and low constituent concentrations (median <code>TSS</code> 4 mg L⁻¹, <code>DOC</code> 3.5 mg L⁻¹, <code>Chl a</code> 1.5 µg L⁻¹). That pattern is consistent with a disk resting on the bed of a clear, shallow stream, but we did not check it against field notes. Because the three water-chemistry measurements agree with each other, these records are <strong>excluded from regression training</strong> (<code>build_training()</code>), but in the <strong>ternary application dataset (<code>build_application()</code>) only <code>Secchi</code> is set to <code>NA</code></strong>, so the 3-constituent water chemistry is kept with a modeled Secchi depth.</li>
+<li><strong>Lower Tail (<span class="math inline">\(z_r &lt; -2.5\text{ SD}\)</span>, 1,622 records = 0.58%) — One of the chemistry constituents (<code>Chl a</code>, <code>DOC</code>, or <code>TSS</code>) is the odd one out:</strong> Secchi depth is much deeper than the three constituents imply (median Secchi depth 2.5 m alongside a median <code>TSS</code> of 5 mg L⁻¹). Possible causes include unit-entry or sample-matching errors, which we did not verify. Because all three constituents are required to place a sample in ternary space, lower-tail records are excluded from both training and ternary application.</li>
 </ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:qc-fig"></span>
-<img src="ternary_clarity_pipeline_files/figure-html/qc-fig-1.png" alt="(a) Observed diffuse attenuation (kd = 1/z_SD) vs. the reference Beer–Lambert attenuation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail records where Secchi depth is much shallower than expected (red; Secchi dropped but 3-LAC chemistry kept in application), and lower-tail records where it is much deeper than expected (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff." width="100%" />
+<img src="ternary_clarity_pipeline_files/figure-html/qc-fig-1.png" alt="(a) Observed diffuse attenuation (kd = 1/z_SD) vs. the reference Beer–Lambert attenuation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (5.4-fold) tolerance band, upper-tail records where Secchi depth is much shallower than expected (red; Secchi dropped but 3-LAC chemistry kept in application), and lower-tail records where it is much deeper than expected (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff." width="100%" />
 <p class="caption">
-Figure 4.1: (a) Observed diffuse attenuation (kd = 1/z_SD) vs. the reference Beer–Lambert attenuation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (~5-fold) tolerance band, upper-tail records where Secchi depth is much shallower than expected (red; Secchi dropped but 3-LAC chemistry kept in application), and lower-tail records where it is much deeper than expected (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff.
+Figure 4.1: (a) Observed diffuse attenuation (kd = 1/z_SD) vs. the reference Beer–Lambert attenuation (kd,lit) across all 281,439 matchups, showing the +/-2.5 SD (5.4-fold) tolerance band, upper-tail records where Secchi depth is much shallower than expected (red; Secchi dropped but 3-LAC chemistry kept in application), and lower-tail records where it is much deeper than expected (blue; dropped). (b) Sensitivity of R² and fitted slopes to the SD cutoff.
 </p>
 </div>
 <p>Because this screen acts only on the <strong>ratio</strong> <span class="math inline">\(k_d / k_{d,\text{lit}}\)</span>, the extremes of each variable (<code>Secchi</code> up to <code>13.96 m</code>, <code>TSS</code> up to <code>978 mg/L</code>, <code>Chl a</code> up to <code>990 µg/L</code>) pass intact:</p>
@@ -588,7 +606,7 @@ Before plausibility screen (Stage 1 only)
 After plausibility screen (Stage 2 final training set)
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:left;">
 0.02 / 0.80 / 13.96
@@ -597,25 +615,351 @@ After plausibility screen (Stage 2 final training set)
 0.04 / 8.7 / 978.0
 </td>
 <td style="text-align:left;">
-0.13 / 6.24 / 50.0
+0.13 / 6.22 / 50.0
 </td>
 <td style="text-align:left;">
-0.01 / 7.50 / 990.3
+0.01 / 7.48 / 990.3
 </td>
 </tr>
 </tbody>
 </table>
 <hr />
 </div>
-<div id="pure-water-attenuation-offset-k_w-and-k_d-distributions" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions<a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="screen-deep-dive" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Deep Dive: Is the Screen Sourced, and Is It Circular?<a href="training.html#screen-deep-dive" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A screen that compares Secchi depth with a function of the three constituents, and then fits a model of the same form, invites two questions. Where do the reference numbers come from? And does the screen create the fit it is meant to protect? This section answers both.</p>
+<div id="converting-between-attenuation-and-secchi-depth" class="section level3 hasAnchor" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Converting between attenuation and Secchi depth<a href="training.html#converting-between-attenuation-and-secchi-depth" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The published coefficients are per unit of diffuse attenuation <span class="math inline">\(K_d\)</span>. Our measurements are Secchi depths. The two are linked by (Eq. 1 of the manuscript)</p>
+<p><span class="math display">\[K_d = \frac{a}{z_{SD}} \quad\Longleftrightarrow\quad \frac{1}{z_{SD}} = \frac{K_d}{a}\]</span></p>
+<p>The factor <span class="math inline">\(a\)</span> has a theoretical basis. A Secchi disk disappears at a depth set by the sum of the beam attenuation coefficient <span class="math inline">\(\alpha\)</span> and the diffuse attenuation coefficient <span class="math inline">\(K\)</span>:</p>
+<p><span class="math display">\[z_{SD} = \frac{\Gamma}{\alpha + K}, \qquad \Gamma \approx 8 \text{ to } 9\]</span></p>
+<p>(Tyler 1968, Eq. 6, with <span class="math inline">\(\Gamma = 8.69\)</span>; Preisendorfer 1986, Eq. 55). Multiplying both sides by <span class="math inline">\(K\)</span> gives</p>
+<p><span class="math display">\[a = K\,z_{SD} = \frac{\Gamma}{1 + \alpha/K}\]</span></p>
+<p>so <span class="math inline">\(a\)</span> is small where scattering by particles makes <span class="math inline">\(\alpha\)</span> large relative to <span class="math inline">\(K\)</span>, and large where absorption by colour dominates. Measured values agree: in 58 Alaskan lakes, <span class="math inline">\(K_d \times z_{SD}\)</span> had a median of 1.86 in clear lakes, 0.93 in turbid lakes and 2.70 in stained lakes, and it ranged from 0.59 to 4.09 across 35 published studies (Koenings and Edmundson 1991, Table 2 and Table 6).</p>
+<p><strong>Why the screen needs no conversion.</strong> If <span class="math inline">\(1/z_{SD} = K_d / a\)</span>, then for a matchup whose true attenuation equals the reference,</p>
+<p><span class="math display">\[r = \log_{10}\!\left(\frac{1/z_{SD}}{K_{\text{ref}}}\right) = -\log_{10} a\]</span></p>
+<p>The screen uses <span class="math inline">\(z_r = (r - \bar r)/\text{SD}(r)\)</span>. A constant <span class="math inline">\(a\)</span> changes every <span class="math inline">\(r\)</span> by the same amount, changes <span class="math inline">\(\bar r\)</span> by that amount too, and leaves <span class="math inline">\(z_r\)</span> unchanged. Variation of <span class="math inline">\(a\)</span> between waters remains in <span class="math inline">\(r\)</span> and is part of what the 2.5 SD band has to accommodate.</p>
+<p><strong>An independent check on the reference.</strong> The mean log ratio is <span class="math inline">\(\bar r = -0.255\)</span>, which corresponds to <span class="math inline">\(a = 10^{-\bar r} = 1.80\)</span>. By water type, the median of <span class="math inline">\(K_{\text{ref}} \times z_{SD}\)</span> is:</p>
+<table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:kxsd-check">Table 4.5: </span><span id="tab:kxsd-check">Table 4.6: </span>Reference attenuation multiplied by measured Secchi depth, compared with published values of the same product. Published values as tabulated by Koenings and Edmundson (1991, Table 6).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Water type
+</th>
+<th style="text-align:left;">
+Matchups
+</th>
+<th style="text-align:right;">
+25th percentile
+</th>
+<th style="text-align:right;">
+Median
+</th>
+<th style="text-align:right;">
+75th percentile
+</th>
+<th style="text-align:left;">
+Published values of K_d × z_SD
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Estuary
+</td>
+<td style="text-align:left;">
+64,375
+</td>
+<td style="text-align:right;">
+0.93
+</td>
+<td style="text-align:right;">
+1.28
+</td>
+<td style="text-align:right;">
+1.85
+</td>
+<td style="text-align:left;">
+1.44 turbid coastal (Holmes 1970); 1.7 sea water (Poole and Atkins 1929)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lake
+</td>
+<td style="text-align:left;">
+61,593
+</td>
+<td style="text-align:right;">
+1.64
+</td>
+<td style="text-align:right;">
+2.46
+</td>
+<td style="text-align:right;">
+3.52
+</td>
+<td style="text-align:left;">
+1.86 clear, 2.70 stained, 0.93 turbid (Koenings and Edmundson 1991)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Stream
+</td>
+<td style="text-align:left;">
+155,471
+</td>
+<td style="text-align:right;">
+1.19
+</td>
+<td style="text-align:right;">
+1.82
+</td>
+<td style="text-align:right;">
+2.91
+</td>
+<td style="text-align:left;">
+none found
+</td>
+</tr>
+</tbody>
+</table>
+<p>Each coefficient was assigned to the kind of water it was measured in, and none was adjusted. With that assignment the reference gives products close to the published ones for each water type. To be plain about the order of events: we examined this table, and the alternatives in the sensitivity table below, before settling on DOC by water type. Secchi depth therefore informed one choice between two published DOC coefficients. It did not set the value of any coefficient.</p>
+</div>
+<div id="does-the-screen-create-the-fit" class="section level3 hasAnchor" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Does the screen create the fit?<a href="training.html#does-the-screen-create-the-fit" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Shuffled-Secchi test.</strong> Secchi depths are shuffled at random among the matchups, which removes any real relation between Secchi depth and the constituents. The screen is applied to the shuffled data and the global model is fitted to what remains (<code>screen_null_test()</code>). If the screen manufactured fit, <span class="math inline">\(R^2\)</span> would be well above zero.</p>
+<table class="table table-condensed table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:screen-null">Table 4.7: </span><span id="tab:screen-null">Table 4.8: </span>Shuffled-Secchi test of the data screen.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+R² of the global model
+</th>
+<th style="text-align:left;">
+Matchups flagged
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Shuffled Secchi, no screen
+</td>
+<td style="text-align:left;">
+0.0000 (mean of 20 shuffles)
+</td>
+<td style="text-align:left;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Shuffled Secchi, after the screen
+</td>
+<td style="text-align:left;">
+0.0019 (mean; maximum 0.0024)
+</td>
+<td style="text-align:left;">
+1.3%
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Real data, no screen
+</td>
+<td style="text-align:left;">
+0.256
+</td>
+<td style="text-align:left;">
+—
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Real data, after the screen
+</td>
+<td style="text-align:left;">
+0.404
+</td>
+<td style="text-align:left;">
+1.8%
+</td>
+</tr>
+</tbody>
+</table>
+<p>The screen adds 0.002 to <span class="math inline">\(R^2\)</span> when there is nothing to find. The gain on the real data comes from removing matchups that disagree with the other three measurements by more than 5.4-fold.</p>
+<p><strong>How much do the results depend on the reference?</strong> All ten models were refitted with each alternative below (<code>screen_reference_sensitivity()</code>).</p>
+<table class="table table-condensed table-striped" style="font-size: 12px; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:screen-sensitivity">Table 4.9: </span><span id="tab:screen-sensitivity">Table 4.10: </span>Results under alternative reference attenuations. The first row is the one used. The shuffled-Secchi column is the mean of 5 shuffles here; the table above uses 20.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Reference
+</th>
+<th style="text-align:left;">
+Kept
+</th>
+<th style="text-align:left;">
+Flagged
+</th>
+<th style="text-align:left;">
+R² Model 1 / 7 / 10
+</th>
+<th style="text-align:left;">
+Model 1 α: NAP / DOC / Chl a
+</th>
+<th style="text-align:left;">
+K_ref × z_SD: estuary / lake / stream
+</th>
+<th style="text-align:left;">
+R², shuffled Secchi
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Adopted: DOC 0.22 in lakes and streams (Morris), 0.047 in estuaries (Gallegos)
+</td>
+<td style="text-align:left;">
+276,321
+</td>
+<td style="text-align:left;">
+1.8%
+</td>
+<td style="text-align:left;">
+0.40 / 0.50 / 0.53
+</td>
+<td style="text-align:left;">
+0.0430 / 0.0753 / 0.0079
+</td>
+<td style="text-align:left;">
+1.28 / 2.46 / 1.82
+</td>
+<td style="text-align:left;">
+0.0017
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DOC 0.22 in all waters (Morris)
+</td>
+<td style="text-align:left;">
+276,041
+</td>
+<td style="text-align:left;">
+1.9%
+</td>
+<td style="text-align:left;">
+0.42 / 0.51 / 0.54
+</td>
+<td style="text-align:left;">
+0.0425 / 0.0747 / 0.0080
+</td>
+<td style="text-align:left;">
+2.44 / 2.46 / 1.82
+</td>
+<td style="text-align:left;">
+0.0022
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DOC 0.047 in all waters (Gallegos)
+</td>
+<td style="text-align:left;">
+273,109
+</td>
+<td style="text-align:left;">
+3.0%
+</td>
+<td style="text-align:left;">
+0.47 / 0.55 / 0.59
+</td>
+<td style="text-align:left;">
+0.0474 / 0.0685 / 0.0084
+</td>
+<td style="text-align:left;">
+1.28 / 1.10 / 0.92
+</td>
+<td style="text-align:left;">
+0.0025
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Earlier, unsourced values (0.08, 0.040, 0.070, 0.016)
+</td>
+<td style="text-align:left;">
+274,439
+</td>
+<td style="text-align:left;">
+2.5%
+</td>
+<td style="text-align:left;">
+0.45 / 0.54 / 0.57
+</td>
+<td style="text-align:left;">
+0.0442 / 0.0711 / 0.0087
+</td>
+<td style="text-align:left;">
+1.18 / 1.15 / 0.88
+</td>
+<td style="text-align:left;">
+0.0025
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+No screen
+</td>
+<td style="text-align:left;">
+281,439
+</td>
+<td style="text-align:left;">
+0.0%
+</td>
+<td style="text-align:left;">
+0.26 / 0.35 / 0.38
+</td>
+<td style="text-align:left;">
+0.0399 / 0.0787 / 0.0084
+</td>
+<td style="text-align:left;">
+—
+</td>
+<td style="text-align:left;">
+—
+</td>
+</tr>
+</tbody>
+</table>
+<p>Three things follow. No version of the screen creates fit by itself. The choice of DOC coefficient moves <span class="math inline">\(R^2\)</span> by up to 0.07 and the Model 1 coefficients by about 10% or less. And the adopted reference is the one whose <span class="math inline">\(K_{\text{ref}} \times z_{SD}\)</span> is closest to published values in each water type; it gives the lowest <span class="math inline">\(R^2\)</span> of the three sourced options.</p>
+<p><strong>What remains empirical.</strong> The width of the band, 2.5 standard deviations of <span class="math inline">\(r\)</span>, is taken from the data. It is a tolerance, not a fitted coefficient, and the right-hand panel of the figure above shows how <span class="math inline">\(R^2\)</span> and the coefficients change if it is made wider or narrower.</p>
+</div>
+</div>
+<div id="pure-water-attenuation-offset-k_w-and-k_d-distributions" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions<a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Following Lee et al. (2015, 2018), we set diffuse attenuation to <span class="math inline">\(k_d = 1 / z_{SD}\)</span> and define baseline pure-water attenuation (<span class="math inline">\(k_w\)</span>) from the clearest water in the training set (<span class="math inline">\(\max(z_{SD}) = 13.96\text{ m}\)</span>):</p>
 <p><span class="math display">\[k_w = \frac{1}{1.5 \times \max(z_{SD})} = \frac{1}{1.5 \times 13.96\text{ m}} = 0.04776\ \text{m}^{-1}\]</span></p>
 <p>This value of <span class="math inline">\(k_w\)</span> is used consistently across both model fitting and Secchi depth prediction (<span class="math inline">\(\hat{z}_{SD} = 1 / [\hat{k}_{d,\text{non-water}} + k_w]\)</span>).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:kd-hist"></span>
-<img src="ternary_clarity_pipeline_files/figure-html/kd-hist-1.png" alt="Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 274,439)." width="100%" />
+<img src="ternary_clarity_pipeline_files/figure-html/kd-hist-1.png" alt="Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 276,321)." width="100%" />
 <p class="caption">
-Figure 4.2: Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 274,439).
+Figure 4.2: Distribution of diffuse light attenuation (kd = 1 / z_SD) across estuaries, lakes, and streams in the final training dataset (n = 276,321).
 </p>
 </div>
 

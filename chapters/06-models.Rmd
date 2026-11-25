@@ -89,20 +89,43 @@ perf %>%
 ::: {.decision}
 **Why We Select Model 7 (`Level III Ecoregions`) for Continental Ternary Analysis**
 
-1. **Strong regional skill and parsimony:** Moving from the global model (Model 1, $R^2 = 0.45$) to Level III ecoregions (Model 7, `47` groups, $R^2 = 0.54$) increases $R^2$ by $+0.09$ and improves BIC by **$\Delta\text{BIC} = -55{,}486$**, while preserving a median group size of $n = 685$ (`107–120,350`).
-2. **Physical positivity:** In Model 7, **39 of 47 Level III ecoregions** have strictly positive slopes for all three constituents (all three with $p < 0.001$ in 27 of them; the eight remaining ecoregions have a non-positive Chl a slope and use the global coefficients). Subdividing further to Level IV (Models 9–10) pushes median group size down to $n = 341\text{–}364$—well below the $n \approx 1{,}000$ convergence threshold (`Figure S1`)—for only $+0.02\text{ to }+0.03$ gain in $R^2$.
-3. **Seamless river–estuary continuity:** Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only $+0.02$ in $R^2$ (`0.54` $\rightarrow$ `0.56`). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (`Figure 3`).
+```{r decision-numbers, include = FALSE}
+pf <- model_performance(models, get_training())
+m7c <- tidy_coefs(models) %>% filter(model == 7) %>% group_by(code) %>% summarize(pos = all(estimate > 0), n = first(n_group), sig = all(p_value < 0.001))
+r2 <- function(i) sprintf('%.2f', pf$r2[i])
+```
+
+1. **Regional skill and parsimony:** Moving from the global model (Model 1, $R^2 = `r r2(1)`$) to Level III ecoregions (Model 7, `r pf$n_groups[7]` groups, $R^2 = `r r2(7)`$) increases $R^2$ by `r sprintf('%.2f', pf$r2[7] - pf$r2[1])` and lowers BIC by `r fmt_n(round(pf$bic_common[1] - pf$bic_common[7]))`, while keeping a median group size of $n = `r fmt_n(pf$group_median[7])`$ (`r fmt_n(pf$group_min[7])`–`r fmt_n(pf$group_max[7])`).
+2. **Physical positivity:** In Model 7, **`r sum(m7c$pos)` of `r nrow(m7c)` Level III ecoregions** (`r sprintf('%.1f', 100 * sum(m7c$n[m7c$pos]) / sum(m7c$n))`% of observations) have positive slopes for all three constituents, with all three significant at $p < 0.001$ in `r sum(m7c$pos & m7c$sig)` of them. The remaining ecoregions use the global coefficients. Subdividing further to Level IV (Models 9–10) lowers the median group size to $n = `r fmt_n(pf$group_median[9])`\text{–}`r fmt_n(pf$group_median[10])`$, well below the $n \approx 1{,}000$ at which coefficients stabilize (`Figure S1`), for a gain in $R^2$ of `r sprintf('%.2f', pf$r2[9] - pf$r2[7])` to `r sprintf('%.2f', pf$r2[10] - pf$r2[7])`.
+3. **River–estuary continuity:** Separating water types within Level III ecoregions (Model 8 against Model 7) adds `r sprintf('%.2f', pf$r2[8] - pf$r2[7])` to $R^2$ (`r r2(7)` to `r r2(8)`). Because Model 7 uses one set of regional slopes for streams, lakes, and estuaries, it can be applied along a river-to-estuary network without a step at the boundary between water types (`Figure 3`).
 :::
 
 ## Comparison with Published Bio-Optical Benchmarks
 
-In global Model 1 ($n = 274{,}445$), $\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}$ (ratios $\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}$ in Model 1, and $\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}$ on average across the Level III ecoregion fits of Model 7). The table compares these values with published coefficients for diffuse attenuation of photosynthetically active radiation, $K_d(\text{PAR})$. The two are not on the same scale: our coefficients are fitted to $1/z_{SD}$, that is with $a = 1$ in $K_d = a / z_{SD}$, and $a$ is reported to range from 1 to 2 (Lee et al. 2018). The fifth column therefore gives the Model 1 values multiplied by 1 to 2. On that basis the Chl a and NAP coefficients overlap the published values, while the DOC coefficient is higher than the Chesapeake Bay values of Gallegos (2001):
+```{r compare-numbers, include = FALSE}
+c1 <- models$m1$coefs %>% select(term, estimate) %>% deframe()
+tcm <- tidy_coefs(models); mall <- tcm %>% group_by(term) %>% summarize(x = mean(estimate)) %>% deframe()
+```
+
+In global Model 1 ($n = `r fmt_n(nrow(get_training()))`$), $\alpha_{\text{DOC}} = `r sprintf('%.4f', c1[['DOC']])`\text{ m}^2\text{ g}^{-1}$, $\alpha_{\text{NAP}} = `r sprintf('%.4f', c1[['NAP']])`\text{ m}^2\text{ g}^{-1}$, and $\alpha_{\text{Chl }a} = `r sprintf('%.4f', c1[['Chl_a']])`\text{ m}^2\ (\text{mg Chl }a)^{-1}$. Averaged over every group in Table S1, $\alpha_{\text{DOC}} \approx `r sprintf('%.1f', mall[['DOC']] / mall[['NAP']])`\,\alpha_{\text{NAP}} \approx `r sprintf('%.0f', mall[['DOC']] / mall[['Chl_a']])`\,\alpha_{\text{Chl }a}$.
+
+**Putting our coefficients and published ones on one scale.** Published coefficients $k_i$ are per unit of diffuse attenuation $K_d$. Ours, $\alpha_i$, are per unit of $1/z_{SD}$. Because $K_d = a / z_{SD}$ (Section \@ref(screen-deep-dive)),
+
+$$k_i = a\,\alpha_i \qquad\text{and so}\qquad a_{\text{implied}} = \frac{k_i}{\alpha_i}$$
+
+For each constituent the table gives the published coefficient, our coefficient, and the conversion factor $a$ that would make them equal. Published measurements of $a = K_d \times z_{SD}$ have medians of 0.93 (turbid lakes), 1.86 (clear lakes) and 2.70 (stained lakes), with an overall range of 0.59 to 4.09 (Koenings and Edmundson 1991). If our coefficients agree with the published ones, the implied $a$ should fall in that range.
 
 ```{r bannister-table, echo = FALSE}
 compare_bannister_literature(models) %>%
-  kable(caption = 'Fitted specific attenuation coefficients (Models 1 and 2) compared with published coefficients for diffuse attenuation of PAR.') %>%
+  kable(caption = 'Fitted coefficients (per unit of 1/z_SD) and published coefficients (per unit of K_d), with the conversion factor a = K_d x z_SD that each pair implies.') %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
+
+```{r implied-a, include = FALSE}
+ia <- as.numeric(compare_bannister_literature(models)[[4]])
+```
+
+Every pair implies a conversion factor between `r sprintf('%.1f', min(ia))` and `r sprintf('%.1f', max(ia))`, inside the published range of 0.59 to 4.09. For Chl *a* and non-algal particles the implied factor is 1.5 to 2.6, close to the published medians for clear and stained lakes. For DOC the implied factor sits near the two ends of the published range: high in lakes and low in estuaries. Theory predicts that direction, because coloured dissolved matter absorbs light without scattering it (large $a$). Most of the gap, however, comes from the nearly five-fold difference between the two published DOC coefficients, while our own lake and estuary coefficients differ by about 9%. DOC is therefore the constituent for which agreement with published values is weakest. Overall, our coefficients are consistent with the published ones once the difference between attenuation and Secchi depth is accounted for; they are not the same numbers, and should not be expected to be.
 
 ## Table S1: Fitted Coefficients, Standard Errors, and Significance {#tableS1}
 

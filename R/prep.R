@@ -192,19 +192,25 @@ trim_simultaneous <- function(simul) {
   out
 }
 
+#' Reference attenuation used by the data screen: published coefficients for diffuse
+#' attenuation of PAR, exactly as printed in their sources (see P$lit_* in 00_setup.R).
+#' The DOC coefficient depends on water type: Morris et al. (1995) for lakes, also
+#' applied to streams, and Gallegos (2001) for estuaries.
+reference_attenuation <- function(df) {
+  k_doc <- ifelse(df$type == 'Estuary', P$lit_alpha_doc_estuary, P$lit_alpha_doc_inland)
+  P$lit_kw + P$lit_alpha_nap * pmax(0, df$tss_dead) + k_doc * df$doc + P$lit_alpha_chl * df$chl_a
+}
+
 #' Compute the mean and SD of the log10 Beer-Lambert residual r = log10(kd / kd_lit)
 #' across the simultaneous 4-variable dataset (`trimmed`) so residuals can be
-#' standardized into z-scores (|z_r| <= P$kd_discordance_sd, i.e., +/- 2.5 SD ~ 5-fold).
+#' standardized into z-scores (|z_r| <= P$kd_discordance_sd, i.e., +/- 2.5 SD, about 5.4-fold with the published reference).
 kd_discordance_stats <- function(trimmed = get_trimmed()) {
   d <- trimmed %>%
     add_nap() %>%
     mutate(
       secchi_r = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits),
       kd_obs   = round(1 / secchi_r, P$kd_digits),
-      kd_lit   = P$lit_kw +
-                 P$lit_alpha_nap * pmax(0, tss_dead) +
-                 P$lit_alpha_doc * doc +
-                 P$lit_alpha_chl * chl_a,
+      kd_lit   = reference_attenuation(.),
       log10_r  = log10(kd_obs / kd_lit)
     )
   mean_r <- mean(d$log10_r, na.rm = TRUE)
@@ -228,10 +234,7 @@ clean_wqp_discordance <- function(df, max_sd = P$kd_discordance_sd) {
   if (is.null(max_sd) || !is.finite(max_sd)) return(df)
   df %>%
     mutate(
-      kd_lit  = P$lit_kw +
-                P$lit_alpha_nap * pmax(0, tss_dead) +
-                P$lit_alpha_doc * doc +
-                P$lit_alpha_chl * chl_a,
+      kd_lit  = reference_attenuation(.),
       log10_r = log10(kd / kd_lit),
       z_r     = (log10_r - mean(log10_r, na.rm = TRUE)) / sd(log10_r, na.rm = TRUE)
     ) %>%
@@ -239,10 +242,73 @@ clean_wqp_discordance <- function(df, max_sd = P$kd_discordance_sd) {
     select(-kd_lit, -log10_r, -z_r)
 }
 
+# ---- Tests of the data screen ----------------------------------------------------
+
+#' The 4-variable matchups with NAP, rounded Secchi and kd = 1/z_SD, before the screen.
+screen_input <- function(trimmed = get_trimmed()) {
+  trimmed %>% add_nap() %>%
+    mutate(secchi = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits),
+           kd = round(1 / secchi, P$kd_digits))
+}
+
+#' Apply the screen rule to a vector of kd values and a reference attenuation.
+screen_keep <- function(kd, ref, max_sd = P$kd_discordance_sd) {
+  r <- log10(kd / ref)
+  abs((r - mean(r)) / sd(r)) <= max_sd
+}
+
+#' R2 of the global model (Model 1 form) on the rows kept.
+global_r2 <- function(d, kd = d$kd, keep = rep(TRUE, nrow(d))) {
+  X <- cbind(d$tss_dead, d$doc, d$chl_a)[keep, , drop = FALSE]; y <- kd[keep]
+  k_w <- 1 / P$k_w_divisor / max(1 / y)
+  cor(y, X %*% lm.fit(X, y - k_w)$coefficients)^2
+}
+
+#' Shuffled-Secchi null test. Secchi depth is shuffled among the matchups, which
+#' destroys any real relation with the constituents; the screen is then applied and
+#' the global model fitted. If the screen created fit by itself, R2 would be well
+#' above zero. Returns one row per repeat.
+screen_null_test <- function(trimmed = get_trimmed(), ref = NULL, n_rep = 20, seed = P$random_seed) {
+  d <- screen_input(trimmed); if (is.null(ref)) ref <- reference_attenuation(d)
+  set.seed(seed)
+  map_dfr(seq_len(n_rep), function(i) {
+    kd <- sample(d$kd); keep <- screen_keep(kd, ref)
+    tibble(rep = i, pct_flagged = 100 * mean(!keep), r2_unscreened = global_r2(d, kd), r2_screened = global_r2(d, kd, keep))
+  })
+}
+
+#' How the results depend on which published coefficients form the reference.
+#' Refits all ten models for each alternative. `no screen` keeps every matchup.
+screen_reference_sensitivity <- function(trimmed = get_trimmed(), eco = get_eco()) {
+  d <- screen_input(trimmed)
+  lin <- function(kw, nap, doc, chl) kw + nap * pmax(0, d$tss_dead) + doc * d$doc + chl * d$chl_a
+  refs <- list(
+    'Adopted: DOC 0.22 in lakes and streams (Morris), 0.047 in estuaries (Gallegos)' = reference_attenuation(d),
+    'DOC 0.22 in all waters (Morris)'                                                = lin(P$lit_kw, P$lit_alpha_nap, P$lit_alpha_doc_inland, P$lit_alpha_chl),
+    'DOC 0.047 in all waters (Gallegos)'                                             = lin(P$lit_kw, P$lit_alpha_nap, P$lit_alpha_doc_estuary, P$lit_alpha_chl),
+    'Earlier, unsourced values (0.08, 0.040, 0.070, 0.016)'                          = lin(0.08, 0.040, 0.070, 0.016),
+    'No screen'                                                                      = NULL)
+  imap_dfr(refs, function(ref, nm) {
+    keep <- if (is.null(ref)) rep(TRUE, nrow(d)) else screen_keep(d$kd, ref)
+    tr <- d[keep, ]; k_w <- k_w_from_training(tr)
+    m <- fit_all_models(build_zone_sets(tr, eco), k_w); p <- model_performance(m, tr)
+    c1 <- m$m1$coefs %>% select(term, estimate) %>% deframe()
+    a <- if (is.null(ref)) rep(NA_real_, nrow(d)) else ref * d$secchi
+    r <- if (is.null(ref)) NA_real_ else log10(d$kd / ref)
+    nul <- if (is.null(ref)) NA_real_ else mean(screen_null_test(trimmed, ref, n_rep = 5)$r2_screened)
+    tibble(reference = nm, kept = sum(keep), flagged = sum(!keep), pct_flagged = 100 * mean(!keep),
+           fold_band = if (is.null(ref)) NA_real_ else 10^(P$kd_discordance_sd * sd(r)),
+           r2_m1 = p$r2[1], r2_m7 = p$r2[7], r2_m10 = p$r2[10],
+           a_NAP = c1[['NAP']], a_DOC = c1[['DOC']], a_Chl_a = c1[['Chl_a']],
+           kxsd_estuary = median(a[d$type == 'Estuary']), kxsd_lake = median(a[d$type == 'Lake']), kxsd_stream = median(a[d$type == 'Stream']),
+           r2_shuffled = nul)
+  })
+}
+
 #' Step 2 of training data:
 #'   3. NAP from Chl a
 #'   4. secchi floored at 0.01 m, rounded to 2 dp; kd = round(1/secchi, 5)
-#'   5. a priori Beer-Lambert physical plausibility screen (`clean_wqp_discordance`)
+#'   5. screen against the published reference attenuation (`clean_wqp_discordance`)
 build_training <- function(trimmed) {
   trimmed %>%
     add_nap() %>%
@@ -290,8 +356,7 @@ build_application <- function(no_secchi, training, stats = kd_discordance_stats(
     mutate(type = ifelse(grepl('Lake', type), 'Lake', type)) %>%
     add_nap()
   if (!is.null(stats$max_sd) && is.finite(stats$max_sd)) {
-    kd_lit <- P$lit_kw + P$lit_alpha_nap * pmax(0, out$tss_dead) +
-              P$lit_alpha_doc * out$doc + P$lit_alpha_chl * out$chl_a
+    kd_lit <- reference_attenuation(out)
     kd_obs <- ifelse(!is.na(out$secchi) & out$secchi > 0,
                      round(1 / round(out$secchi, P$secchi_digits), P$kd_digits),
                      NA_real_)

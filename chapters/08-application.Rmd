@@ -138,7 +138,7 @@ dom$summary %>%
   kable_styling(bootstrap_options = c('condensed', 'striped'), full_width = TRUE)
 ```
 
-`r sum(dom$pairwise$pass_p01_welch & dom$pairwise$pass_p01_wilcoxon)` of the 6 pairwise differences in mean Secchi depth are significant at $p < 0.01$ under both the Welch and the Wilcoxon test`r if (any(!(dom$pairwise$pass_p01_welch & dom$pairwise$pass_p01_wilcoxon))) paste0('. The exception is ', paste(dom$pairwise$Comparison[!(dom$pairwise$pass_p01_welch & dom$pairwise$pass_p01_wilcoxon)], collapse = ' and '), ', which is significant under the Wilcoxon test only: the Chl *a*-dominant class is small and combines blooms with clear, low-particle waters (see above)') else ''`.
+`r sum(dom$pairwise$pass_p01_welch & dom$pairwise$pass_p01_wilcoxon)` of the 6 pairwise differences in mean Secchi depth are significant at $p < 0.01$ under both the Welch and the Wilcoxon test`r if (any(!(dom$pairwise$pass_p01_welch & dom$pairwise$pass_p01_wilcoxon))) {ex <- dom$pairwise[!(dom$pairwise$pass_p01_welch & dom$pairwise$pass_p01_wilcoxon), ]; paste0('. Not significant: ', paste(sprintf('%s (Welch p = %.2f, Wilcoxon p = %.2f)', ex$Comparison, ex$p_welch_holm, ex$p_wilcoxon_holm), collapse = '; '), '. Mean Secchi depth in those classes cannot be told apart')} else ''`.
 
 ```{r secchi-pairwise, echo = FALSE}
 dom$pairwise %>%

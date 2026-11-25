@@ -95,36 +95,29 @@ test_dominance_secchi <- function(fd) {
   list(summary = summary_tbl, omnibus = omnibus_tbl, pairwise = pairs)
 }
 
-#' Compare fitted attenuation coefficients with published coefficients for diffuse
-#' attenuation of PAR. Published values were read from the sources themselves:
-#' Bannister (1974) k_c; Gohin et al. (2005) Eq. 21; Gallegos (2001) Table 5.
-#' Our coefficients are fitted to 1/z_SD (a = 1 in Kd = a / z_SD); a is reported to
-#' range from 1 to 2, so the comparison column gives Model 1 values times 1 to 2.
+#' Compare fitted coefficients (per unit of 1/z_SD) with published coefficients (per
+#' unit of K_d). Since K_d = a / z_SD, a published k and our alpha are related by
+#' k = a * alpha, so each pair implies a conversion factor a = k / alpha, which can be
+#' checked against measured values of K_d x z_SD (Koenings and Edmundson 1991).
+#' Every published value was read in the source: page or table given.
 compare_bannister_literature <- function(models = get_models()) {
   c1 <- models$m1$coefs %>% select(term, estimate) %>% deframe()
   c2 <- models$m2$coefs %>% select(type, term, estimate) %>%
-    pivot_wider(names_from = type, values_from = estimate) %>%
-    column_to_rownames('term')
-  by_type <- function(term) sprintf('Estuary: %.4f; Lake: %.4f; Stream: %.4f', c2[term, 'Estuary'], c2[term, 'Lake'], c2[term, 'Stream'])
-  times_a <- function(term, fmt = '%.3f - %.3f') sprintf(fmt, c1[[term]], 2 * c1[[term]])
-
-  tribble(
-    ~Constituent, ~Units, ~`AquaMatch Global (Model 1)`, ~`AquaMatch by Type (Model 2)`, ~`Model 1 x a, for a = 1 to 2`, ~`Published values for Kd(PAR)`, ~`Sources`,
-    'Chl a (alpha_Chl)', 'm^2 (mg Chl a)^-1',
-    sprintf('%.4f', c1[['Chl_a']]), by_type('Chl_a'), times_a('Chl_a', '%.4f - %.4f'),
-    '0.016 (Bannister 1974); 0.012 - 0.019 (Gallegos 2001, Chesapeake Bay)',
-    'Bannister (1974) Limnol. Oceanogr. 19:1-12; Gallegos (2001) Estuaries 24:381-397',
-
-    'NAP (alpha_NAP)', 'm^2 g^-1',
-    sprintf('%.4f', c1[['NAP']]), by_type('NAP'), times_a('NAP'),
-    '0.0625 for non-living suspended matter (Gohin et al. 2005, Bay of Biscay shelf); 0.074 - 0.095 for total suspended solids (Gallegos 2001)',
-    'Gohin et al. (2005) Remote Sens. Environ. 95:29-46; Gallegos (2001)',
-
-    'DOC (alpha_DOC)', 'm^2 g^-1',
-    sprintf('%.4f', c1[['DOC']]), by_type('DOC'), times_a('DOC'),
-    '0.037 - 0.051 (Gallegos 2001, Chesapeake Bay)',
-    'Gallegos (2001)'
-  )
+    pivot_wider(names_from = type, values_from = estimate) %>% column_to_rownames('term')
+  rows <- tribble(
+    ~Constituent, ~term, ~ours, ~published, ~source,
+    'Chl a (m² mg⁻¹)', 'Chl_a', c1[['Chl_a']], 0.016,  'Bannister (1974), p. 6; mean of four estimates, 0.013–0.020 (p. 10)',
+    'Chl a (m² mg⁻¹)', 'Chl_a', c1[['Chl_a']], 0.014,  'Atlas and Bannister (1980), p. 157; 0.014 ± 0.002 at the surface, 0.005–0.021 overall',
+    'Chl a (m² mg⁻¹)', 'Chl_a', c2['Chl_a', 'Estuary'], 0.0154, 'Gallegos (2001), Table 5; estuary coefficient, mean of 0.012–0.019',
+    'NAP (m² g⁻¹)',    'NAP',   c1[['NAP']],   0.0625, 'Gohin et al. (2005), Eq. 21; non-living suspended matter',
+    'NAP (m² g⁻¹)',    'NAP',   c2['NAP', 'Estuary'], 0.0806, 'Gallegos (2001), Table 5; total suspended solids, estuary, mean of 0.074–0.095',
+    'DOC (m² g⁻¹)',    'DOC',   c2['DOC', 'Lake'],    0.22,   'Morris et al. (1995), Table 3; 63 lakes',
+    'DOC (m² g⁻¹)',    'DOC',   c2['DOC', 'Estuary'], 0.0471, 'Gallegos (2001), Table 5; estuary, mean of 0.037–0.051')
+  which_ours <- c('Model 1, all waters', 'Model 1, all waters', 'Model 2, estuaries', 'Model 1, all waters', 'Model 2, estuaries', 'Model 2, lakes', 'Model 2, estuaries')
+  rows %>% mutate(`Our coefficient` = sprintf('%.4f (%s)', ours, which_ours),
+                  `Published coefficient` = sprintf('%s', format(published, drop0trailing = TRUE)),
+                  `Implied a = published / ours` = sprintf('%.1f', published / ours)) %>%
+    select(Constituent, `Our coefficient`, `Published coefficient`, `Implied a = published / ours`, Source = source)
 }
 
 #' PaperOrchestra Literature Verification Table: documents the peer-reviewed
@@ -157,16 +150,20 @@ verified_literature_table <- function() {
     'Nonlinear power-law conversion accounting for lower C:Chl ratios at high algal concentrations; prevents over-subtraction of algal mass.',
 
     'Published Chl a attenuation coefficient', 'k_c = 0.016 m^2 (mg Chl a)^-1 for diffuse attenuation of PAR',
-    'Bannister (1974)', '10.4319/lo.1974.19.1.0001',
-    'An estimate, not an upper limit. Our global alpha_Chl (0.0088 m^2/mg) is fitted to 1/z_SD (a = 1); multiplied by a = 1 to 2 it is 0.009 to 0.018.',
+    'Bannister (1974); Atlas and Bannister (1980)', '10.4319/lo.1974.19.1.0001; 10.4319/lo.1980.25.1.0157',
+    'An estimate, not an upper limit (Bannister p. 6 and p. 10). It is per unit of K_d; ours is per unit of 1/z_SD, so the two differ by the factor a = K_d x z_SD.',
 
     'Values below reporting limits', 'Chl a, DOC, TSS (and NAP where algal mass >= TSS) below the limit replaced by draws from a fitted lognormal truncated at the limit',
     'Lubin et al. (2004); Helsel (2006)', '10.1289/ehp.7199; 10.1016/j.chemosphere.2006.04.051',
     'Fill-in from a fitted distribution instead of substituting the limit; fewer than 3% of values are affected. Draws are tied to the record so training and application use the same value.',
 
-    'A priori WQP Beer-Lambert residual screen', '|z_r| <= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using reference coefficients set a priori (k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016), within about a factor of two of published values',
-    'Bannister (1974); Gallegos (2001); Gohin et al. (2005)', '10.4319/lo.1974.19.1.0001; 10.2307/1353240; 10.1016/j.rse.2004.11.007',
-    'Flags 2.49% discordant records: 1.84% where Secchi depth is much shallower than expected (Secchi set to NA so the 3-LAC chemistry is retained in application) and 0.65% where it is much deeper than expected (dropped).',
+    'Data screen against a published reference attenuation', 'K_ref = 0.1 + 0.0625 NAP + k_DOC DOC + 0.016 Chl a, k_DOC = 0.22 (lakes, streams) or 0.047 (estuaries); keep |z_r| <= 2.5 on r = log10[(1/z_SD) / K_ref]',
+    'Gohin et al. (2005); Morris et al. (1995); Gallegos (2001); Bannister (1974)', '10.1016/j.rse.2004.11.007; 10.4319/lo.1995.40.8.1381; 10.2307/1353240; 10.4319/lo.1974.19.1.0001',
+    'Every coefficient is a published value used as printed (Gohin Eq. 21; Morris Table 3; Gallegos Table 5; Bannister p. 6). A constant Secchi conversion factor cancels in z_r. Shuffled-Secchi test and reference sensitivity: Section 4.',
+
+    'Secchi depth and attenuation', 'z_SD = Gamma / (alpha + K), Gamma ~ 8-9; K_d x z_SD = 0.59 to 4.09 across studies',
+    'Tyler (1968); Preisendorfer (1986); Koenings and Edmundson (1991)', '10.4319/lo.1968.13.1.0001; 10.4319/lo.1986.31.5.0909; 10.4319/lo.1991.36.1.0091',
+    'Theory and measurements behind the conversion factor a in Eq. 1 and the comparison of our coefficients with published ones.',
 
     'DOC as CDOM proxy & regional SUVA variation', 'alpha_DOC varies across ecoregions with DOM aromaticity',
     'Spencer et al. (2012); Griffin et al. (2018)', '10.1029/2011JG001928; 10.1016/j.watres.2018.08.007',

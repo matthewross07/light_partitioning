@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-11-20" />
+<meta name="date" content="2026-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,8 +173,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#screen"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Screen Against a Published Reference Attenuation &amp; “Odd-One-Out” Rule</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#screen-deep-dive"><i class="fa fa-check"></i><b>4.3</b> Deep Dive: Is the Screen Sourced, and Is It Circular?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#converting-between-attenuation-and-secchi-depth"><i class="fa fa-check"></i><b>4.3.1</b> Converting between attenuation and Secchi depth</a></li>
+<li class="chapter" data-level="4.3.2" data-path="training.html"><a href="training.html#does-the-screen-create-the-fit"><i class="fa fa-check"></i><b>4.3.2</b> Does the screen create the fit?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.4</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
@@ -304,16 +309,16 @@ Global R²
 0.7343
 </td>
 <td style="text-align:right;">
-0.0441
+0.0429
 </td>
 <td style="text-align:right;">
-0.0699
+0.0741
 </td>
 <td style="text-align:right;">
-0.0097
+0.0088
 </td>
 <td style="text-align:right;">
-0.4515
+0.4053
 </td>
 </tr>
 <tr>
@@ -324,16 +329,16 @@ Global R²
 1.7079
 </td>
 <td style="text-align:right;">
-0.0442
+0.0430
 </td>
 <td style="text-align:right;">
-0.0700
+0.0743
 </td>
 <td style="text-align:right;">
-0.0117
+0.0108
 </td>
 <td style="text-align:right;">
-0.4513
+0.4049
 </td>
 </tr>
 <tr>
@@ -344,16 +349,16 @@ Global R²
 6.0928
 </td>
 <td style="text-align:right;">
-0.0444
+0.0432
 </td>
 <td style="text-align:right;">
-0.0708
+0.0751
 </td>
 <td style="text-align:right;">
-0.0146
+0.0135
 </td>
 <td style="text-align:right;">
-0.4488
+0.4022
 </td>
 </tr>
 <tr>
@@ -364,16 +369,16 @@ Global R²
 1.3267
 </td>
 <td style="text-align:right;">
-0.0442
+0.0430
 </td>
 <td style="text-align:right;">
-0.0711
+0.0753
 </td>
 <td style="text-align:right;">
-0.0087
+0.0079
 </td>
 <td style="text-align:right;">
-0.4505
+0.4044
 </td>
 </tr>
 </tbody>
@@ -420,7 +425,7 @@ Gohin et al. (2005)
 &lt; 3
 </td>
 <td style="text-align:left;">
-14,551
+14,382
 </td>
 <td style="text-align:right;">
 115
@@ -432,7 +437,7 @@ Gohin et al. (2005)
 400
 </td>
 <td style="text-align:right;">
-1,423
+1,429
 </td>
 <td style="text-align:right;">
 182
@@ -443,7 +448,7 @@ Gohin et al. (2005)
 3–10
 </td>
 <td style="text-align:left;">
-24,518
+24,434
 </td>
 <td style="text-align:right;">
 45
@@ -455,7 +460,7 @@ Gohin et al. (2005)
 199
 </td>
 <td style="text-align:right;">
-583
+584
 </td>
 <td style="text-align:right;">
 109
@@ -466,7 +471,7 @@ Gohin et al. (2005)
 10–30
 </td>
 <td style="text-align:left;">
-24,324
+24,282
 </td>
 <td style="text-align:right;">
 32
@@ -489,7 +494,7 @@ Gohin et al. (2005)
 30–100
 </td>
 <td style="text-align:left;">
-17,339
+17,341
 </td>
 <td style="text-align:right;">
 38
@@ -512,16 +517,16 @@ Gohin et al. (2005)
 &gt; 100
 </td>
 <td style="text-align:left;">
-3,753
+3,771
 </td>
 <td style="text-align:right;">
-26
+25
 </td>
 <td style="text-align:right;">
-63
+62
 </td>
 <td style="text-align:right;">
-89
+88
 </td>
 <td style="text-align:right;">
 195
@@ -532,7 +537,7 @@ Gohin et al. (2005)
 </tr>
 </tbody>
 </table>
-<p><strong>The partition moves by a few points.</strong> Refitting Models 1 and 7 (Section <a href="models.html#models">6</a>) and re-running the continental application (Section <a href="application.html#application">8</a>) under five rules gives the table below (<code>algal_mass_sensitivity()</code> in <code>R/models.R</code>; the Gohin row is the canonical pipeline). From no subtraction at all to a constant <code>100:1</code>, the mean Chl <em>a</em> share goes from about 7% to 10% nationally and from 15% to 19% in lakes, while the DOC share stays between 56% and 58%.</p>
+<p><strong>The partition moves by a few points.</strong> Refitting Models 1 and 7 (Section <a href="models.html#models">6</a>) and re-running the continental application (Section <a href="application.html#application">8</a>) under five rules gives the table below (<code>algal_mass_sensitivity()</code> in <code>R/models.R</code>; the Gohin row is the canonical pipeline). From no subtraction at all to a constant <code>100:1</code>, the mean Chl <em>a</em> share goes from about 7% to 9% nationally and from 14% to 18% in lakes, while the DOC share stays between 58% and 60%.</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:algal-sensitivity">Table 3.3: </span><span id="tab:algal-sensitivity">Table 3.4: </span>Sensitivity of model fit and mean non-water attenuation shares to the assumed algal dry mass : Chl a relation (Supplemental Table S2 of the manuscript).
@@ -580,31 +585,31 @@ Samples with algal mass ≥ TSS (NAP drawn below 0.5 mg/L)
 None (TSS used directly)
 </td>
 <td style="text-align:left;">
-0.0441
+0.0429
 </td>
 <td style="text-align:left;">
-0.0699
+0.0741
 </td>
 <td style="text-align:left;">
-0.0075
+0.0067
 </td>
 <td style="text-align:left;">
-0.45
+0.41
 </td>
 <td style="text-align:left;">
-0.53
+0.49
 </td>
 <td style="text-align:left;">
-7.3 / 56.2 / 36.4
+6.6 / 58.3 / 35.1
 </td>
 <td style="text-align:left;">
-14.6 / 57.4 / 28.0
+13.8 / 59.8 / 26.5
 </td>
 <td style="text-align:left;">
-35.6 / 34.3 / 30.1
+33.6 / 36.7 / 29.7
 </td>
 <td style="text-align:left;">
-419
+344
 </td>
 <td style="text-align:left;">
 0.0%
@@ -615,31 +620,31 @@ None (TSS used directly)
 Gohin et al. (2005): 0.234 Chl^0.57
 </td>
 <td style="text-align:left;">
-0.0442
+0.0430
 </td>
 <td style="text-align:left;">
-0.0711
+0.0753
 </td>
 <td style="text-align:left;">
-0.0087
+0.0079
 </td>
 <td style="text-align:left;">
-0.45
+0.40
 </td>
 <td style="text-align:left;">
-0.54
+0.49
 </td>
 <td style="text-align:left;">
-8.3 / 57.7 / 34.0
+7.6 / 59.5 / 32.9
 </td>
 <td style="text-align:left;">
-16.4 / 59.5 / 24.1
+15.4 / 61.3 / 23.2
 </td>
 <td style="text-align:left;">
-38.6 / 35.3 / 26.1
+36.9 / 37.4 / 25.7
 </td>
 <td style="text-align:left;">
-717
+596
 </td>
 <td style="text-align:left;">
 1.0%
@@ -650,31 +655,31 @@ Gohin et al. (2005): 0.234 Chl^0.57
 Constant 50:1
 </td>
 <td style="text-align:left;">
-0.0441
+0.0429
 </td>
 <td style="text-align:left;">
-0.0699
+0.0741
 </td>
 <td style="text-align:left;">
-0.0097
+0.0088
 </td>
 <td style="text-align:left;">
-0.45
+0.41
 </td>
 <td style="text-align:left;">
-0.54
+0.49
 </td>
 <td style="text-align:left;">
-8.8 / 56.7 / 34.5
+8.1 / 58.3 / 33.6
 </td>
 <td style="text-align:left;">
-16.9 / 58.6 / 24.4
+16.4 / 59.7 / 23.9
 </td>
 <td style="text-align:left;">
-42.2 / 35.0 / 22.8
+40.3 / 37.2 / 22.5
 </td>
 <td style="text-align:left;">
-1,006
+867
 </td>
 <td style="text-align:left;">
 0.4%
@@ -685,31 +690,31 @@ Constant 50:1
 Constant 67:1
 </td>
 <td style="text-align:left;">
-0.0442
+0.0430
 </td>
 <td style="text-align:left;">
-0.0699
+0.0741
 </td>
 <td style="text-align:left;">
-0.0104
+0.0095
 </td>
 <td style="text-align:left;">
-0.45
+0.41
 </td>
 <td style="text-align:left;">
-0.54
+0.49
 </td>
 <td style="text-align:left;">
-9.3 / 56.7 / 34.0
+8.6 / 58.4 / 33.0
 </td>
 <td style="text-align:left;">
-17.9 / 58.6 / 23.5
+17.3 / 59.7 / 23.0
 </td>
 <td style="text-align:left;">
-44.5 / 35.0 / 20.5
+42.5 / 37.3 / 20.2
 </td>
 <td style="text-align:left;">
-1,327
+1,101
 </td>
 <td style="text-align:left;">
 0.7%
@@ -720,31 +725,31 @@ Constant 67:1
 Constant 100:1
 </td>
 <td style="text-align:left;">
-0.0442
+0.0430
 </td>
 <td style="text-align:left;">
-0.0700
+0.0743
 </td>
 <td style="text-align:left;">
-0.0117
+0.0108
 </td>
 <td style="text-align:left;">
-0.45
+0.40
 </td>
 <td style="text-align:left;">
-0.54
+0.50
 </td>
 <td style="text-align:left;">
-10.1 / 56.9 / 33.0
+9.2 / 58.8 / 31.9
 </td>
 <td style="text-align:left;">
-19.3 / 59.0 / 21.7
+18.2 / 61.0 / 20.8
 </td>
 <td style="text-align:left;">
-48.3 / 35.3 / 16.4
+46.1 / 37.7 / 16.2
 </td>
 <td style="text-align:left;">
-2,121
+1,760
 </td>
 <td style="text-align:left;">
 1.4%
@@ -754,8 +759,8 @@ Constant 100:1
 </table>
 <p>Two consequences for how the results should be read:</p>
 <ul>
-<li>The Chl <em>a</em> term is a conservative estimate of the algal contribution. In the greenest lakes (<span class="math inline">\(&gt; 100\ \mu\text{g L}^{-1}\)</span>) its mean share is the largest of the three under every rule (36–48%), but that mean never reaches the 70% we use to call a sample dominated by one constituent.</li>
-<li>That is not mainly a matter of the ratio. In those lakes DOC carries about 35% and particles 16–30% whichever rule is used, because dissolved organic matter and detritus rise together with algae in eutrophic water and a statistical partition cannot separate algal-derived material from other sources.</li>
+<li>The Chl <em>a</em> term is a conservative estimate of the algal contribution. In the greenest lakes (<span class="math inline">\(&gt; 100\ \mu\text{g L}^{-1}\)</span>) its mean share is the largest of the three under every rule (34–46%), but that mean never reaches the 70% we use to call a sample dominated by one constituent.</li>
+<li>That is not mainly a matter of the ratio. In those lakes DOC carries about 37% and particles 16–30% whichever rule is used, because dissolved organic matter and detritus rise together with algae in eutrophic water and a statistical partition cannot separate algal-derived material from other sources.</li>
 </ul>
 <p>We keep the Gohin et al. (2005) relation as the canonical choice: it never assigns more mass to algae than the samples contain, and the conclusions above hold under any of the alternatives.</p>
 <p>Similarly, restricting calibration strictly to top-tier analytical methods (<code>Tier 1</code> chemistry and <code>Tier 1–2</code> Secchi) yields nearly identical attenuation slopes while pooling all harmonized AquaMatch tiers nearly triples spatial coverage:</p>
@@ -788,19 +793,19 @@ Unique Sites
 All harmonized AquaMatch tiers (canonical training set)
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:left;">
-22,356
+22,481
 </td>
 <td style="text-align:right;">
-0.0442
+0.043
 </td>
 <td style="text-align:right;">
-0.0711
+0.0753
 </td>
 <td style="text-align:right;">
-0.0087
+0.0079
 </td>
 </tr>
 <tr>
@@ -808,19 +813,19 @@ All harmonized AquaMatch tiers (canonical training set)
 Strict top analytical tiers only (Tier 1 chemistry, Tier 1–2 Secchi)
 </td>
 <td style="text-align:left;">
-45,849
+46,639
 </td>
 <td style="text-align:left;">
-10,198
+10,283
 </td>
 <td style="text-align:right;">
-0.0388
+0.036
 </td>
 <td style="text-align:right;">
-0.0774
+0.0831
 </td>
 <td style="text-align:right;">
-0.0082
+0.0070
 </td>
 </tr>
 </tbody>

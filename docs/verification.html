@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-11-20" />
+<meta name="date" content="2026-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,8 +173,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#screen"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Screen Against a Published Reference Attenuation &amp; “Odd-One-Out” Rule</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#screen-deep-dive"><i class="fa fa-check"></i><b>4.3</b> Deep Dive: Is the Screen Sourced, and Is It Circular?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#converting-between-attenuation-and-secchi-depth"><i class="fa fa-check"></i><b>4.3.1</b> Converting between attenuation and Secchi depth</a></li>
+<li class="chapter" data-level="4.3.2" data-path="training.html"><a href="training.html#does-the-screen-create-the-fit"><i class="fa fa-check"></i><b>4.3.2</b> Does the screen create the fit?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.4</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
@@ -229,7 +234,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="verification" class="section level1 hasAnchor" number="10">
 <h1><span class="header-section-number">Section 10</span> Automated Pipeline Verification &amp; Literature Provenance<a href="verification.html#verification" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Every dataset, spatial join, model fit, simplex constraint, and statistical claim in the manuscript is verified against 13 automated checks in <code>R/verify.R</code> and <code>R/claims.R</code>:</p>
+<p>Every dataset, spatial join, model fit, simplex constraint, and statistical claim in the manuscript is verified against automated checks in <code>R/verify.R</code> and <code>R/claims.R</code>:</p>
 <div id="automated-pipeline-verification-checklist" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> Automated Pipeline Verification Checklist<a href="verification.html#automated-pipeline-verification-checklist" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
@@ -319,7 +324,7 @@ Analytical-floor &amp; Beer-Lambert screened training obs.
 &gt; 250,000
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -331,13 +336,31 @@ Analytical-floor &amp; Beer-Lambert screened training obs.
 <li>Training set
 </td>
 <td style="text-align:left;">
-A priori Beer-Lambert residual screen (&amp;#124;z_r&amp;#124; &lt;= 2.5 SD, ~5-fold)
+Residual screen against the published reference attenuation (&amp;#124;z_r&amp;#124; &lt;= 2.5 SD)
 </td>
 <td style="text-align:left;">
-&lt;= 2.50 SD (~4.7x)
+&lt;= 2.50 SD
 </td>
 <td style="text-align:left;">
 max &amp;#124;z_r&amp;#124; = 2.50 SD
+</td>
+<td style="text-align:left;">
+&lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<ol start="3" style="list-style-type: decimal">
+<li>Training set
+</td>
+<td style="text-align:left;">
+Shuffled-Secchi null test: the screen creates no fit by itself
+</td>
+<td style="text-align:left;">
+R2 &lt; 0.01
+</td>
+<td style="text-align:left;">
+R2 = 0.0019 (max of 20 repeats 0.0024)
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -370,10 +393,10 @@ Pure-water offset k_w = 1 / (1.5 * max Secchi) [m^-1]
 1-to-1 site assignment (no boundary row duplication)
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -439,13 +462,13 @@ Consistent k_w used in both model fit and Secchi prediction
 <li>Dominance classes
 </td>
 <td style="text-align:left;">
-Secchi ordering: NAP &lt; Chl a &lt; DOC &lt; Mixed
+Secchi ordering: NAP-dominant lowest, then Chl a-dominant, then DOC-dominant and Mixed
 </td>
 <td style="text-align:left;">
-Monotonic increase
+NAP &lt; Chl a &lt; DOC, Mixed
 </td>
 <td style="text-align:left;">
-NAP dominant: 0.60 m &lt; Chl a dominant: 0.86 m &lt; DOC dominant: 1.22 m &lt; Mixed: 1.24 m
+NAP dominant: 0.58 m; Chl a dominant: 0.92 m; DOC dominant: 1.22 m; Mixed: 1.22 m
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -457,13 +480,13 @@ NAP dominant: 0.60 m &lt; Chl a dominant: 0.86 m &lt; DOC dominant: 1.22 m &lt; 
 <li>Dominance classes
 </td>
 <td style="text-align:left;">
-All 6 pairwise class differences significant at p &lt; 0.01 (Welch &amp; Wilcoxon)
+NAP-dominant waters less clear than each other class at p &lt; 0.01 (Welch &amp; Wilcoxon)
 </td>
 <td style="text-align:left;">
-6 / 6 pairs p &lt; 0.01
+3 / 3 pairs p &lt; 0.01
 </td>
 <td style="text-align:left;">
-Welch max p = 0.0000; Wilcoxon max p = 1.45e-08
+3 / 3 pairs; all six pairs: 5 / 6 (not different: Mixed vs. DOC dominant)
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -481,7 +504,7 @@ Exact ternary area fraction (normalized by sqrt(3)/4): Streams &amp; Estuaries &
 Stream, Estuary (~10%) &lt; Lake (~15%)
 </td>
 <td style="text-align:left;">
-Stream 10.5%, Estuary 11.5% &lt; Lake 16.5%
+Stream 9.1%, Estuary 10.1% &lt; Lake 14.8%
 </td>
 <td style="text-align:left;">
 &lt;span class=“pass”&gt;✔ PASS&lt;/span&gt;
@@ -501,8 +524,9 @@ Stream 10.5%, Estuary 11.5% &lt; Lake 16.5%
 </ol></li>
 </ol></li>
 </ol></li>
+</ol></li>
 </ol>
-<p>All 13 checks pass.</p>
+<p>All 14 checks pass.</p>
 <hr />
 </div>
 <div id="literature-provenance-table" class="section level2 hasAnchor" number="10.2">
@@ -641,13 +665,13 @@ Published Chl a attenuation coefficient
 k_c = 0.016 m^2 (mg Chl a)^-1 for diffuse attenuation of PAR
 </td>
 <td style="text-align:left;">
-Bannister (1974)
+Bannister (1974); Atlas and Bannister (1980)
 </td>
 <td style="text-align:left;">
-10.4319/lo.1974.19.1.0001
+10.4319/lo.1974.19.1.0001; 10.4319/lo.1980.25.1.0157
 </td>
 <td style="text-align:left;">
-An estimate, not an upper limit. Our global alpha_Chl (0.0088 m^2/mg) is fitted to 1/z_SD (a = 1); multiplied by a = 1 to 2 it is 0.009 to 0.018.
+An estimate, not an upper limit (Bannister p. 6 and p. 10). It is per unit of K_d; ours is per unit of 1/z_SD, so the two differ by the factor a = K_d x z_SD.
 </td>
 </tr>
 <tr>
@@ -669,19 +693,36 @@ Fill-in from a fitted distribution instead of substituting the limit; fewer than
 </tr>
 <tr>
 <td style="text-align:left;">
-A priori WQP Beer-Lambert residual screen
+Data screen against a published reference attenuation
 </td>
 <td style="text-align:left;">
-&amp;#124;z_r&amp;#124; &lt;= 2.5 SD (~4.7-fold [~5x]) on r = log10(K_d / K_d,lit) using reference coefficients set a priori (k_w=0.08, k_NAP=0.04, k_DOC=0.07, k_Chl=0.016), within about a factor of two of published values
+K_ref = 0.1 + 0.0625 NAP + k_DOC DOC + 0.016 Chl a, k_DOC = 0.22 (lakes, streams) or 0.047 (estuaries); keep &amp;#124;z_r&amp;#124; &lt;= 2.5 on r = log10[(1/z_SD) / K_ref]
 </td>
 <td style="text-align:left;">
-Bannister (1974); Gallegos (2001); Gohin et al. (2005)
+Gohin et al. (2005); Morris et al. (1995); Gallegos (2001); Bannister (1974)
 </td>
 <td style="text-align:left;">
-10.4319/lo.1974.19.1.0001; 10.2307/1353240; 10.1016/j.rse.2004.11.007
+10.1016/j.rse.2004.11.007; 10.4319/lo.1995.40.8.1381; 10.2307/1353240; 10.4319/lo.1974.19.1.0001
 </td>
 <td style="text-align:left;">
-Flags 2.49% discordant records: 1.84% where Secchi depth is much shallower than expected (Secchi set to NA so the 3-LAC chemistry is retained in application) and 0.65% where it is much deeper than expected (dropped).
+Every coefficient is a published value used as printed (Gohin Eq. 21; Morris Table 3; Gallegos Table 5; Bannister p. 6). A constant Secchi conversion factor cancels in z_r. Shuffled-Secchi test and reference sensitivity: Section 4.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Secchi depth and attenuation
+</td>
+<td style="text-align:left;">
+z_SD = Gamma / (alpha + K), Gamma ~ 8-9; K_d x z_SD = 0.59 to 4.09 across studies
+</td>
+<td style="text-align:left;">
+Tyler (1968); Preisendorfer (1986); Koenings and Edmundson (1991)
+</td>
+<td style="text-align:left;">
+10.4319/lo.1968.13.1.0001; 10.4319/lo.1986.31.5.0909; 10.4319/lo.1991.36.1.0091
+</td>
+<td style="text-align:left;">
+Theory and measurements behind the conversion factor a in Eq. 1 and the comparison of our coefficients with published ones.
 </td>
 </tr>
 <tr>

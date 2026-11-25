@@ -277,8 +277,7 @@ fig_qc_discordance <- function(trimmed) {
       secchi = round(ifelse(secchi < P$secchi_floor, P$secchi_floor, secchi), P$secchi_digits),
       kd_obs = round(1 / secchi, P$kd_digits),
       kd = kd_obs,
-      kd_lit = P$lit_kw + P$lit_alpha_nap * pmax(0, tss_dead) +
-        P$lit_alpha_doc * doc + P$lit_alpha_chl * chl_a,
+      kd_lit = reference_attenuation(.),
       log_ratio = log10(kd_obs / kd_lit)
     )
   mean_r <- mean(d$log_ratio, na.rm = TRUE)
@@ -289,8 +288,8 @@ fig_qc_discordance <- function(trimmed) {
   n_ret <- sum(abs(d$z_r) <= max_sd)
   pct_ret <- 100 * n_ret / nrow(d)
   ret_lbl <- sprintf('Retained within +/-%.1f SD (%.2f%%, n = %s)', max_sd, pct_ret, fmt_n(n_ret))
-  up_lbl  <- sprintf('Upper tail (> +%.1f SD, ~5x): Secchi much shallower than expected (LACs kept)', max_sd)
-  lo_lbl  <- sprintf('Lower tail (< -%.1f SD, ~1/5x): Secchi much deeper than expected (dropped)', max_sd)
+  up_lbl  <- sprintf('Upper tail (> +%.1f SD): Secchi much shallower than expected (LACs kept)', max_sd)
+  lo_lbl  <- sprintf('Lower tail (< -%.1f SD): Secchi much deeper than expected (dropped)', max_sd)
 
   d <- d %>%
     mutate(
@@ -322,7 +321,7 @@ fig_qc_discordance <- function(trimmed) {
     scale_colour_manual(values = col_vals, name = NULL) +
     guides(colour = guide_legend(override.aes = list(size = 2.5, alpha = 0.9))) +
     labs(
-      title = 'a) Beer-Lambert residual screen (+/-2.5 SD ~ 5-fold)',
+      title = sprintf('a) Screen against the published reference (+/-%.1f SD = %.1f-fold)', max_sd, 10^(max_sd * sd_r)),
       x = expression(Reference~k[d*","*lit]~(m^-1)),
       y = expression(Observed~k[d] == 1/z[SD]~(m^-1))
     ) +

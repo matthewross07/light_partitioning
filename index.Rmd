@@ -100,7 +100,7 @@ tribble(
   '2. 3-Constituent Matchups', 'Same-site, same-day Chl a + DOC + TSS/SSC', fmt_n(nrow(no_sdd)), fmt_n(n_distinct(no_sdd$SiteID)), 'Ambient Stream, Lake, and Estuary stations (Section 2)',
   '3. 4-Variable Matchups', 'Same-site, same-day Secchi + Chl a + DOC + TSS/SSC', fmt_n(nrow(simul)), fmt_n(n_distinct(simul$SiteID)), 'Excludes turbidity tubes & <=0.01 m floor flags (Section 2)',
   '4. Values Below Reporting Limits', 'Chl a, DOC and TSS below reporting limits drawn below the limit', fmt_n(nrow(trimmed)), fmt_n(n_distinct(trimmed$SiteID)), 'Chl a 0.10 µg/L, DOC 0.25 mg/L, TSS 0.50 mg/L (Section 4)',
-  '5. Beer–Lambert QC Screen', 'A priori residual screen |z_r| <= 2.5 SD (~5-fold)', fmt_n(nrow(tr)), fmt_n(n_distinct(tr$SiteID)), 'Final Training Set: removes 2.49% discordant outliers (Section 4)',
+  '5. Beer–Lambert QC Screen', sprintf('Screen against a published reference attenuation, |z_r| <= 2.5 SD (%.1f-fold)', 10^(P$kd_discordance_sd * kd_discordance_stats(get_trimmed())$sd_r)), fmt_n(nrow(tr)), fmt_n(n_distinct(tr$SiteID)), sprintf('Final Training Set: removes %.2f%% discordant outliers (Section 4)', 100 * get_screen_counts()$flagged / get_screen_counts()$n),
   '6. Continental Application', 'All 3-constituent matchups inside training bounds (Model 7)', fmt_n(nrow(fd)), fmt_n(n_distinct(fd$SiteID)), sprintf('%s Measured + %s Modeled Secchi (Section 8)', fmt_n(sum(fd$secchi_status == 'Measured')), fmt_n(sum(fd$secchi_status == 'Modeled'))),
   '7. Temporal Stability Set', 'Long-term stations with > 7 matchups (Fig. 4)', fmt_n(sum(areas$n)), fmt_n(nrow(areas)), sprintf('%s streams, %s lakes, %s estuaries (Section 9)', fmt_n(sum(areas$type == 'Stream')), fmt_n(sum(areas$type == 'Lake')), fmt_n(sum(areas$type == 'Estuary')))
 ) %>%
@@ -125,4 +125,4 @@ bookdown::render_book()      # Runs pipeline, saves figs/*.png & *.pdf, builds d
 | `R/ecoregions.R`, `R/models.R` | EPA Level I–IV ecoregion joins, Models 1–10 OLS fitting, stability cones, and Model 7 ternary projection |
 | `R/ternary.R`, `R/figures.R` | Ternary geometry, Sutherland–Hodgman $\pm k\text{ SD}$ polygon clipping, and Figures 1–4 / S1 |
 | `R/sonicray_lake.R` | Apple Silicon Metal GPU 3D lake optical titration renderer (`{sonicray}`) |
-| `R/claims.R`, `R/verify.R` | Dominance-regime hypothesis tests and automated 13-point verification audit (`Section 10`) |
+| `R/claims.R`, `R/verify.R` | Dominance-regime hypothesis tests and automated verification audit (`Section 10`) |

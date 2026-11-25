@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-11-20" />
+<meta name="date" content="2026-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,8 +173,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#screen"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Screen Against a Published Reference Attenuation &amp; “Odd-One-Out” Rule</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#screen-deep-dive"><i class="fa fa-check"></i><b>4.3</b> Deep Dive: Is the Screen Sourced, and Is It Circular?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#converting-between-attenuation-and-secchi-depth"><i class="fa fa-check"></i><b>4.3.1</b> Converting between attenuation and Secchi depth</a></li>
+<li class="chapter" data-level="4.3.2" data-path="training.html"><a href="training.html#does-the-screen-create-the-fit"><i class="fa fa-check"></i><b>4.3.2</b> Does the screen create the fit?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.4</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
@@ -230,7 +235,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="stability" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Section 7</span> Coefficient Stability &amp; Sample-Size Convergence (Fig. S1)<a href="stability.html#stability" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Do regional differences in fitted attenuation slopes (<span class="math inline">\(\alpha_{\text{NAP}}, \alpha_{\text{DOC}}, \alpha_{\text{Chl }a}\)</span>) reflect real biogeochemical differences across ecoregions, or just small-sample estimation noise?</p>
-<p>To answer this, we randomly partition the <strong>274,439</strong> training matchups into <span class="math inline">\(G\)</span> subsets of varying sample size (<span class="math inline">\(n/50, n/100, \dots, n/10{,}000\)</span>, plus <span class="math inline">\(G=1\)</span>) and refit the three-constituent model across 10 independent Monte Carlo replicates (<code>random_subset_coefs()</code> in <code>R/models.R</code>, seed <code>P$random_seed = 20240826</code>).</p>
+<p>To answer this, we randomly partition the <strong>276,321</strong> training matchups into <span class="math inline">\(G\)</span> subsets of varying sample size (<span class="math inline">\(n/50, n/100, \dots, n/10{,}000\)</span>, plus <span class="math inline">\(G=1\)</span>) and refit the three-constituent model across 10 independent Monte Carlo replicates (<code>random_subset_coefs()</code> in <code>R/models.R</code>, seed <code>P$random_seed = 20240826</code>).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:figS1"></span>
 <img src="ternary_clarity_pipeline_files/figure-html/figS1-1.png" alt="Figure S1: Coefficient coherence cones across sample sizes. Grey ribbons span the 0.001%–99.999% quantiles of slopes fitted to random subsets of size n across all data and by water-body type. Colored circles mark Level III ecoregion fits (Models 7 and 8)." width="100%" />
 <p class="caption">
@@ -255,7 +260,7 @@ Monte Carlo Parameter Estimates
 50
 </td>
 <td style="text-align:left;">
-164,670
+165,780
 </td>
 </tr>
 <tr>
@@ -263,7 +268,7 @@ Monte Carlo Parameter Estimates
 100
 </td>
 <td style="text-align:left;">
-82,320
+82,890
 </td>
 </tr>
 <tr>
@@ -271,7 +276,7 @@ Monte Carlo Parameter Estimates
 250
 </td>
 <td style="text-align:left;">
-32,940
+33,150
 </td>
 </tr>
 <tr>
@@ -279,28 +284,28 @@ Monte Carlo Parameter Estimates
 500
 </td>
 <td style="text-align:left;">
-16,470
+16,590
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-1,002
+1,001
 </td>
 <td style="text-align:left;">
-8,220
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2,003
-</td>
-<td style="text-align:left;">
-4,110
+8,280
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-4,990
+2,002
+</td>
+<td style="text-align:left;">
+4,140
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5,024
 </td>
 <td style="text-align:left;">
 1,650
@@ -308,15 +313,15 @@ Monte Carlo Parameter Estimates
 </tr>
 <tr>
 <td style="text-align:left;">
-10,164
+9,869
 </td>
 <td style="text-align:left;">
-810
+840
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:left;">
 30

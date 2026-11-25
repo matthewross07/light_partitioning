@@ -9,6 +9,9 @@ tab:algal-sensitivity
 tab:below-limit-fits
 fig:qc-fig
 tab:extremes-preserved
+tab:kxsd-check
+tab:screen-null
+tab:screen-sensitivity
 fig:kd-hist
 fig:eco-map
 fig:models-fig
@@ -36,7 +39,10 @@ sensitivity-to-biomass-formulation-method-tiers
 algal-mass-sensitivity
 training
 below-limits
-stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule
+screen
+screen-deep-dive
+converting-between-attenuation-and-secchi-depth
+does-the-screen-create-the-fit
 pure-water-attenuation-offset-k_w-and-k_d-distributions
 ecoregions
 minimum-sample-size-rule-zone_min-100

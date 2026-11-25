@@ -23,7 +23,7 @@
 <meta name="author" content="James W. Jawitz, Matthew J. Cohen, and Matthew R.V. Ross" />
 
 
-<meta name="date" content="2026-11-20" />
+<meta name="date" content="2026-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -173,8 +173,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="training.html"><a href="training.html"><i class="fa fa-check"></i><b>4</b> Values Below Reporting Limits &amp; Beer–Lambert Plausibility Screening</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="training.html"><a href="training.html#below-limits"><i class="fa fa-check"></i><b>4.1</b> Stage 1: Values Below Reporting Limits (<code>trim_simultaneous()</code>)</a></li>
-<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#stage-2-beerlambert-residual-screen-pm-2.5text-sd-approx-5text-fold-odd-one-out-rule"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Beer–Lambert Residual Screen (<span class="math inline">\(\pm 2.5\text{ SD} \approx 5\text{-fold}\)</span>) &amp; “Odd-One-Out” Rule</a></li>
-<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.3</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
+<li class="chapter" data-level="4.2" data-path="training.html"><a href="training.html#screen"><i class="fa fa-check"></i><b>4.2</b> Stage 2: Screen Against a Published Reference Attenuation &amp; “Odd-One-Out” Rule</a></li>
+<li class="chapter" data-level="4.3" data-path="training.html"><a href="training.html#screen-deep-dive"><i class="fa fa-check"></i><b>4.3</b> Deep Dive: Is the Screen Sourced, and Is It Circular?</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="training.html"><a href="training.html#converting-between-attenuation-and-secchi-depth"><i class="fa fa-check"></i><b>4.3.1</b> Converting between attenuation and Secchi depth</a></li>
+<li class="chapter" data-level="4.3.2" data-path="training.html"><a href="training.html#does-the-screen-create-the-fit"><i class="fa fa-check"></i><b>4.3.2</b> Does the screen create the fit?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="training.html"><a href="training.html#pure-water-attenuation-offset-k_w-and-k_d-distributions"><i class="fa fa-check"></i><b>4.4</b> Pure-Water Attenuation Offset (<span class="math inline">\(k_w\)</span>) and <span class="math inline">\(k_d\)</span> Distributions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="ecoregions.html"><a href="ecoregions.html"><i class="fa fa-check"></i><b>5</b> Hierarchical Ecoregion Stratification (<code>ecoregions.R</code>)</a>
 <ul>
@@ -243,10 +248,10 @@ Figure 6.1: (a) Explained variance (R²) across Models 1–10, comparing ecoregi
 </div>
 <div id="table1" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Table 1: Performance of Candidate Bio-Optical Models (Models 1–10)<a href="models.html#table1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across all <strong>274,439</strong> training matchups:</p>
+<p>Every model’s explained variance (<span class="math inline">\(R^2\)</span>), root-mean-square error (<span class="math inline">\(\text{RMSE}_{k_d}\)</span>), and common-sample Bayesian Information Criterion (<span class="math inline">\(\text{BIC}\)</span>) are evaluated across all <strong>276,321</strong> training matchups:</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:table1-aquamatch">Table 6.1: </span><span id="tab:table1-aquamatch">Table 6.2: </span>Table 1: Summary of the 10 hierarchical general linear models evaluated across all 274,439 training observations.
+<span id="tab:table1-aquamatch">Table 6.1: </span><span id="tab:table1-aquamatch">Table 6.2: </span>Table 1: Summary of the 10 hierarchical general linear models evaluated across all 276,321 training observations.
 </caption>
 <thead>
 <tr>
@@ -300,16 +305,16 @@ No
 1
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:right;">
-0.45
+0.40
 </td>
 <td style="text-align:right;">
-0.450
+0.404
 </td>
 <td style="text-align:right;">
-1.23
+1.32
 </td>
 <td style="text-align:right;">
 3
@@ -335,16 +340,16 @@ Yes
 3
 </td>
 <td style="text-align:left;">
-63,208 (60,867 – 150,364)
+63,335 (60,745 – 152,241)
 </td>
 <td style="text-align:right;">
-0.48
+0.43
 </td>
 <td style="text-align:right;">
-0.476
+0.433
 </td>
 <td style="text-align:right;">
-1.21
+1.29
 </td>
 <td style="text-align:right;">
 9
@@ -353,7 +358,7 @@ Yes
 3 / 3
 </td>
 <td style="text-align:left;">
--11,936
+-11,746
 </td>
 </tr>
 <tr>
@@ -370,16 +375,16 @@ No
 7
 </td>
 <td style="text-align:left;">
-1,361 (261 – 239,564)
+1,362 (262 – 241,729)
 </td>
 <td style="text-align:right;">
-0.49
+0.44
 </td>
 <td style="text-align:right;">
-0.486
+0.441
 </td>
 <td style="text-align:right;">
-1.20
+1.29
 </td>
 <td style="text-align:right;">
 21
@@ -388,7 +393,7 @@ No
 5 / 7
 </td>
 <td style="text-align:left;">
--15,261
+-14,376
 </td>
 </tr>
 <tr>
@@ -405,25 +410,25 @@ Yes
 16
 </td>
 <td style="text-align:left;">
-1,322 (104 – 136,932)
+1,338 (103 – 138,930)
 </td>
 <td style="text-align:right;">
-0.52
+0.48
 </td>
 <td style="text-align:right;">
-0.522
+0.479
 </td>
 <td style="text-align:right;">
-1.15
+1.24
 </td>
 <td style="text-align:right;">
 48
 </td>
 <td style="text-align:left;">
-12 / 16
+13 / 16
 </td>
 <td style="text-align:left;">
--35,738
+-34,114
 </td>
 </tr>
 <tr>
@@ -440,16 +445,16 @@ No
 16
 </td>
 <td style="text-align:left;">
-1,912 (118 – 187,531)
+1,988 (119 – 188,958)
 </td>
 <td style="text-align:right;">
-0.51
+0.46
 </td>
 <td style="text-align:right;">
-0.509
+0.464
 </td>
 <td style="text-align:right;">
-1.16
+1.25
 </td>
 <td style="text-align:right;">
 48
@@ -458,7 +463,7 @@ No
 14 / 16
 </td>
 <td style="text-align:left;">
--31,336
+-30,020
 </td>
 </tr>
 <tr>
@@ -475,25 +480,25 @@ Yes
 31
 </td>
 <td style="text-align:left;">
-1,315 (104 – 106,119)
+1,319 (103 – 107,547)
 </td>
 <td style="text-align:right;">
-0.53
+0.49
 </td>
 <td style="text-align:right;">
-0.534
+0.491
 </td>
 <td style="text-align:right;">
-1.13
+1.22
 </td>
 <td style="text-align:right;">
 93
 </td>
 <td style="text-align:left;">
-25 / 31
+26 / 31
 </td>
 <td style="text-align:left;">
--45,913
+-43,919
 </td>
 </tr>
 <tr>
@@ -510,25 +515,25 @@ No
 47
 </td>
 <td style="text-align:left;">
-685 (107 – 120,348)
+687 (109 – 121,664)
 </td>
 <td style="text-align:right;">
-0.54
+0.50
 </td>
 <td style="text-align:right;">
-0.540
+0.495
 </td>
 <td style="text-align:right;">
-1.11
+1.20
 </td>
 <td style="text-align:right;">
 141
 </td>
 <td style="text-align:left;">
-39 / 47
+38 / 47
 </td>
 <td style="text-align:left;">
--55,486
+-52,184
 </td>
 </tr>
 <tr>
@@ -542,28 +547,28 @@ Level 3
 Yes
 </td>
 <td style="text-align:right;">
-70
+69
 </td>
 <td style="text-align:left;">
-550 (102 – 58,064)
+581 (108 – 59,352)
 </td>
 <td style="text-align:right;">
-0.56
+0.52
 </td>
 <td style="text-align:right;">
-0.564
+0.520
 </td>
 <td style="text-align:right;">
-1.08
+1.17
 </td>
 <td style="text-align:right;">
-210
+207
 </td>
 <td style="text-align:left;">
-57 / 70
+57 / 69
 </td>
 <td style="text-align:left;">
--68,530
+-64,831
 </td>
 </tr>
 <tr>
@@ -580,25 +585,25 @@ No
 123
 </td>
 <td style="text-align:left;">
-341 (102 – 51,715)
+342 (102 – 52,138)
 </td>
 <td style="text-align:right;">
-0.56
+0.51
 </td>
 <td style="text-align:right;">
-0.558
+0.511
 </td>
 <td style="text-align:right;">
-1.08
+1.17
 </td>
 <td style="text-align:right;">
 369
 </td>
 <td style="text-align:left;">
-106 / 123
+105 / 123
 </td>
 <td style="text-align:left;">
--67,120
+-62,033
 </td>
 </tr>
 <tr>
@@ -612,28 +617,28 @@ Level 4
 Yes
 </td>
 <td style="text-align:right;">
-161
+162
 </td>
 <td style="text-align:left;">
-364 (102 – 36,809)
+348 (102 – 36,918)
 </td>
 <td style="text-align:right;">
-0.57
+0.53
 </td>
 <td style="text-align:right;">
-0.574
+0.531
 </td>
 <td style="text-align:right;">
-1.06
+1.15
 </td>
 <td style="text-align:right;">
-483
+486
 </td>
 <td style="text-align:left;">
-134 / 161
+134 / 162
 </td>
 <td style="text-align:left;">
--74,513
+-70,208
 </td>
 </tr>
 </tbody>
@@ -641,18 +646,21 @@ Yes
 <div class="decision">
 <p><strong>Why We Select Model 7 (<code>Level III Ecoregions</code>) for Continental Ternary Analysis</strong></p>
 <ol style="list-style-type: decimal">
-<li><strong>Strong regional skill and parsimony:</strong> Moving from the global model (Model 1, <span class="math inline">\(R^2 = 0.45\)</span>) to Level III ecoregions (Model 7, <code>47</code> groups, <span class="math inline">\(R^2 = 0.54\)</span>) increases <span class="math inline">\(R^2\)</span> by <span class="math inline">\(+0.09\)</span> and improves BIC by <strong><span class="math inline">\(\Delta\text{BIC} = -55{,}486\)</span></strong>, while preserving a median group size of <span class="math inline">\(n = 685\)</span> (<code>107–120,350</code>).</li>
-<li><strong>Physical positivity:</strong> In Model 7, <strong>39 of 47 Level III ecoregions</strong> have strictly positive slopes for all three constituents (all three with <span class="math inline">\(p &lt; 0.001\)</span> in 27 of them; the eight remaining ecoregions have a non-positive Chl a slope and use the global coefficients). Subdividing further to Level IV (Models 9–10) pushes median group size down to <span class="math inline">\(n = 341\text{–}364\)</span>—well below the <span class="math inline">\(n \approx 1{,}000\)</span> convergence threshold (<code>Figure S1</code>)—for only <span class="math inline">\(+0.02\text{ to }+0.03\)</span> gain in <span class="math inline">\(R^2\)</span>.</li>
-<li><strong>Seamless river–estuary continuity:</strong> Separating water types within Level III ecoregions (Model 8 vs. Model 7) adds only <span class="math inline">\(+0.02\)</span> in <span class="math inline">\(R^2\)</span> (<code>0.54</code> <span class="math inline">\(\rightarrow\)</span> <code>0.56</code>). Because Model 7 uses a single set of regional slopes across streams, lakes, and estuaries, it can be applied across connected river-to-estuary networks without artificial step changes at water-type boundaries (<code>Figure 3</code>).</li>
+<li><strong>Regional skill and parsimony:</strong> Moving from the global model (Model 1, <span class="math inline">\(R^2 = 0.40\)</span>) to Level III ecoregions (Model 7, 47 groups, <span class="math inline">\(R^2 = 0.50\)</span>) increases <span class="math inline">\(R^2\)</span> by 0.09 and lowers BIC by 52,184, while keeping a median group size of <span class="math inline">\(n = 687\)</span> (109–121,664).</li>
+<li><strong>Physical positivity:</strong> In Model 7, <strong>38 of 47 Level III ecoregions</strong> (98.1% of observations) have positive slopes for all three constituents, with all three significant at <span class="math inline">\(p &lt; 0.001\)</span> in 26 of them. The remaining ecoregions use the global coefficients. Subdividing further to Level IV (Models 9–10) lowers the median group size to <span class="math inline">\(n = 342\text{–}348\)</span>, well below the <span class="math inline">\(n \approx 1{,}000\)</span> at which coefficients stabilize (<code>Figure S1</code>), for a gain in <span class="math inline">\(R^2\)</span> of 0.02 to 0.04.</li>
+<li><strong>River–estuary continuity:</strong> Separating water types within Level III ecoregions (Model 8 against Model 7) adds 0.03 to <span class="math inline">\(R^2\)</span> (0.50 to 0.52). Because Model 7 uses one set of regional slopes for streams, lakes, and estuaries, it can be applied along a river-to-estuary network without a step at the boundary between water types (<code>Figure 3</code>).</li>
 </ol>
 </div>
 </div>
 <div id="comparison-with-published-bio-optical-benchmarks" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Comparison with Published Bio-Optical Benchmarks<a href="models.html#comparison-with-published-bio-optical-benchmarks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In global Model 1 (<span class="math inline">\(n = 274{,}445\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0711\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0442\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0088\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span> (ratios <span class="math inline">\(\alpha_{\text{DOC}} \approx 1.6\,\alpha_{\text{NAP}} \approx 8.1\,\alpha_{\text{Chl }a}\)</span> in Model 1, and <span class="math inline">\(\alpha_{\text{DOC}} \approx 2.0\,\alpha_{\text{NAP}} \approx 11\,\alpha_{\text{Chl }a}\)</span> on average across the Level III ecoregion fits of Model 7). The table compares these values with published coefficients for diffuse attenuation of photosynthetically active radiation, <span class="math inline">\(K_d(\text{PAR})\)</span>. The two are not on the same scale: our coefficients are fitted to <span class="math inline">\(1/z_{SD}\)</span>, that is with <span class="math inline">\(a = 1\)</span> in <span class="math inline">\(K_d = a / z_{SD}\)</span>, and <span class="math inline">\(a\)</span> is reported to range from 1 to 2 (Lee et al. 2018). The fifth column therefore gives the Model 1 values multiplied by 1 to 2. On that basis the Chl a and NAP coefficients overlap the published values, while the DOC coefficient is higher than the Chesapeake Bay values of Gallegos (2001):</p>
+<p>In global Model 1 (<span class="math inline">\(n = 276,321\)</span>), <span class="math inline">\(\alpha_{\text{DOC}} = 0.0753\text{ m}^2\text{ g}^{-1}\)</span>, <span class="math inline">\(\alpha_{\text{NAP}} = 0.0430\text{ m}^2\text{ g}^{-1}\)</span>, and <span class="math inline">\(\alpha_{\text{Chl }a} = 0.0079\text{ m}^2\ (\text{mg Chl }a)^{-1}\)</span>. Averaged over every group in Table S1, <span class="math inline">\(\alpha_{\text{DOC}} \approx 2.4\,\alpha_{\text{NAP}} \approx 13\,\alpha_{\text{Chl }a}\)</span>.</p>
+<p><strong>Putting our coefficients and published ones on one scale.</strong> Published coefficients <span class="math inline">\(k_i\)</span> are per unit of diffuse attenuation <span class="math inline">\(K_d\)</span>. Ours, <span class="math inline">\(\alpha_i\)</span>, are per unit of <span class="math inline">\(1/z_{SD}\)</span>. Because <span class="math inline">\(K_d = a / z_{SD}\)</span> (Section <a href="training.html#screen-deep-dive">4.3</a>),</p>
+<p><span class="math display">\[k_i = a\,\alpha_i \qquad\text{and so}\qquad a_{\text{implied}} = \frac{k_i}{\alpha_i}\]</span></p>
+<p>For each constituent the table gives the published coefficient, our coefficient, and the conversion factor <span class="math inline">\(a\)</span> that would make them equal. Published measurements of <span class="math inline">\(a = K_d \times z_{SD}\)</span> have medians of 0.93 (turbid lakes), 1.86 (clear lakes) and 2.70 (stained lakes), with an overall range of 0.59 to 4.09 (Koenings and Edmundson 1991). If our coefficients agree with the published ones, the implied <span class="math inline">\(a\)</span> should fall in that range.</p>
 <table class="table table-condensed table-striped" style="margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:bannister-table">Table 6.3: </span><span id="tab:bannister-table">Table 6.4: </span>Fitted specific attenuation coefficients (Models 1 and 2) compared with published coefficients for diffuse attenuation of PAR.
+<span id="tab:bannister-table">Table 6.3: </span><span id="tab:bannister-table">Table 6.4: </span>Fitted coefficients (per unit of 1/z_SD) and published coefficients (per unit of K_d), with the conversion factor a = K_d x z_SD that each pair implies.
 </caption>
 <thead>
 <tr>
@@ -660,97 +668,142 @@ Yes
 Constituent
 </th>
 <th style="text-align:left;">
-Units
+Our coefficient
 </th>
 <th style="text-align:left;">
-AquaMatch Global (Model 1)
+Published coefficient
 </th>
 <th style="text-align:left;">
-AquaMatch by Type (Model 2)
+Implied a = published / ours
 </th>
 <th style="text-align:left;">
-Model 1 x a, for a = 1 to 2
-</th>
-<th style="text-align:left;">
-Published values for Kd(PAR)
-</th>
-<th style="text-align:left;">
-Sources
+Source
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-Chl a (alpha_Chl)
+Chl a (m² mg⁻¹)
 </td>
 <td style="text-align:left;">
-m^2 (mg Chl a)^-1
+0.0079 (Model 1, all waters)
 </td>
 <td style="text-align:left;">
-0.0087
+0.016
 </td>
 <td style="text-align:left;">
-Estuary: 0.0122; Lake: 0.0080; Stream: 0.0110
+2.0
 </td>
 <td style="text-align:left;">
-0.0087 - 0.0175
-</td>
-<td style="text-align:left;">
-0.016 (Bannister 1974); 0.012 - 0.019 (Gallegos 2001, Chesapeake Bay)
-</td>
-<td style="text-align:left;">
-Bannister (1974) Limnol. Oceanogr. 19:1-12; Gallegos (2001) Estuaries 24:381-397
+Bannister (1974), p. 6; mean of four estimates, 0.013–0.020 (p. 10)
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-NAP (alpha_NAP)
+Chl a (m² mg⁻¹)
 </td>
 <td style="text-align:left;">
-m^2 g^-1
+0.0079 (Model 1, all waters)
 </td>
 <td style="text-align:left;">
-0.0442
+0.014
 </td>
 <td style="text-align:left;">
-Estuary: 0.0320; Lake: 0.0462; Stream: 0.0491
+1.8
 </td>
 <td style="text-align:left;">
-0.044 - 0.088
-</td>
-<td style="text-align:left;">
-0.0625 for non-living suspended matter (Gohin et al. 2005, Bay of Biscay shelf); 0.074 - 0.095 for total suspended solids (Gallegos 2001)
-</td>
-<td style="text-align:left;">
-Gohin et al. (2005) Remote Sens. Environ. 95:29-46; Gallegos (2001)
+Atlas and Bannister (1980), p. 157; 0.014 ± 0.002 at the surface, 0.005–0.021 overall
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-DOC (alpha_DOC)
+Chl a (m² mg⁻¹)
 </td>
 <td style="text-align:left;">
-m^2 g^-1
+0.0099 (Model 2, estuaries)
 </td>
 <td style="text-align:left;">
-0.0711
+0.0154
 </td>
 <td style="text-align:left;">
-Estuary: 0.0654; Lake: 0.0577; Stream: 0.0752
+1.5
 </td>
 <td style="text-align:left;">
-0.071 - 0.142
+Gallegos (2001), Table 5; estuary coefficient, mean of 0.012–0.019
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NAP (m² g⁻¹)
 </td>
 <td style="text-align:left;">
-0.037 - 0.051 (Gallegos 2001, Chesapeake Bay)
+0.0430 (Model 1, all waters)
 </td>
 <td style="text-align:left;">
-Gallegos (2001)
+0.0625
+</td>
+<td style="text-align:left;">
+1.5
+</td>
+<td style="text-align:left;">
+Gohin et al. (2005), Eq. 21; non-living suspended matter
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NAP (m² g⁻¹)
+</td>
+<td style="text-align:left;">
+0.0311 (Model 2, estuaries)
+</td>
+<td style="text-align:left;">
+0.0806
+</td>
+<td style="text-align:left;">
+2.6
+</td>
+<td style="text-align:left;">
+Gallegos (2001), Table 5; total suspended solids, estuary, mean of 0.074–0.095
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DOC (m² g⁻¹)
+</td>
+<td style="text-align:left;">
+0.0600 (Model 2, lakes)
+</td>
+<td style="text-align:left;">
+0.22
+</td>
+<td style="text-align:left;">
+3.7
+</td>
+<td style="text-align:left;">
+Morris et al. (1995), Table 3; 63 lakes
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DOC (m² g⁻¹)
+</td>
+<td style="text-align:left;">
+0.0656 (Model 2, estuaries)
+</td>
+<td style="text-align:left;">
+0.0471
+</td>
+<td style="text-align:left;">
+0.7
+</td>
+<td style="text-align:left;">
+Gallegos (2001), Table 5; estuary, mean of 0.037–0.051
 </td>
 </tr>
 </tbody>
 </table>
+<p>Every pair implies a conversion factor between 0.7 and 3.7, inside the published range of 0.59 to 4.09. For Chl <em>a</em> and non-algal particles the implied factor is 1.5 to 2.6, close to the published medians for clear and stained lakes. For DOC the implied factor sits near the two ends of the published range: high in lakes and low in estuaries. Theory predicts that direction, because coloured dissolved matter absorbs light without scattering it (large <span class="math inline">\(a\)</span>). Most of the gap, however, comes from the nearly five-fold difference between the two published DOC coefficients, while our own lake and estuary coefficients differ by about 9%. DOC is therefore the constituent for which agreement with published values is weakest. Overall, our coefficients are consistent with the published ones once the difference between attenuation and Secchi depth is accounted for; they are not the same numbers, and should not be expected to be.</p>
 </div>
 <div id="tableS1" class="section level2 hasAnchor" number="6.4">
 <h2><span class="header-section-number">6.4</span> Table S1: Fitted Coefficients, Standard Errors, and Significance<a href="models.html#tableS1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -802,16 +855,16 @@ USA
 All
 </td>
 <td style="text-align:left;">
-274,439
+276,321
 </td>
 <td style="text-align:right;">
-0.0442
+0.0430
 </td>
 <td style="text-align:right;">
-0.0711
+0.0753
 </td>
 <td style="text-align:right;">
-0.0087
+0.0079
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -834,16 +887,16 @@ USA
 Estuary
 </td>
 <td style="text-align:left;">
-63,208
+63,335
 </td>
 <td style="text-align:right;">
-0.0320
+0.0311
 </td>
 <td style="text-align:right;">
-0.0654
+0.0656
 </td>
 <td style="text-align:right;">
-0.0122
+0.0099
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -866,16 +919,16 @@ USA
 Lake
 </td>
 <td style="text-align:left;">
-60,867
+60,745
 </td>
 <td style="text-align:right;">
-0.0462
+0.0456
 </td>
 <td style="text-align:right;">
-0.0577
+0.0600
 </td>
 <td style="text-align:right;">
-0.0080
+0.0076
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -898,16 +951,16 @@ USA
 Stream
 </td>
 <td style="text-align:left;">
-150,364
+152,241
 </td>
 <td style="text-align:right;">
-0.0491
+0.0482
 </td>
 <td style="text-align:right;">
-0.0752
+0.0806
 </td>
 <td style="text-align:right;">
-0.0110
+0.0097
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -930,25 +983,25 @@ Stream
 All
 </td>
 <td style="text-align:left;">
-107
+109
 </td>
 <td style="text-align:right;">
-0.0244
+0.0041
 </td>
 <td style="text-align:right;">
-0.0534
+0.0595
 </td>
 <td style="text-align:right;">
-0.0029
+0.0067
 </td>
 <td style="text-align:left;">
-0.0013
+7.3e-06
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0951
+5.5e-10
 </td>
 </tr>
 <tr>
@@ -994,25 +1047,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-199
+207
 </td>
 <td style="text-align:right;">
-0.0089
+0.0053
 </td>
 <td style="text-align:right;">
-0.1074
+0.1082
 </td>
 <td style="text-align:right;">
-0.0097
+0.0115
 </td>
 <td style="text-align:left;">
-2.3e-12
+2.6e-11
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-5.5e-07
+2.4e-09
 </td>
 </tr>
 <tr>
@@ -1026,13 +1079,13 @@ All
 All
 </td>
 <td style="text-align:left;">
-325
+326
 </td>
 <td style="text-align:right;">
 0.0756
 </td>
 <td style="text-align:right;">
-0.2351
+0.2349
 </td>
 <td style="text-align:right;">
 0.0102
@@ -1041,10 +1094,10 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-4.5e-05
+4.4e-05
 </td>
 <td style="text-align:left;">
-0.3160
+0.31642
 </td>
 </tr>
 <tr>
@@ -1058,16 +1111,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-9,579
+9,423
 </td>
 <td style="text-align:right;">
-0.0843
+0.0855
 </td>
 <td style="text-align:right;">
-0.0485
+0.0535
 </td>
 <td style="text-align:right;">
-0.0062
+0.0047
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1076,7 +1129,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-1.8e-16
+2.3e-08
 </td>
 </tr>
 <tr>
@@ -1090,16 +1143,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,313
+1,181
 </td>
 <td style="text-align:right;">
-0.0587
+0.0560
 </td>
 <td style="text-align:right;">
-0.0253
+0.0289
 </td>
 <td style="text-align:right;">
-0.0094
+0.0081
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1108,7 +1161,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-1.3e-13
+5.6e-10
 </td>
 </tr>
 <tr>
@@ -1122,25 +1175,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-152
+150
 </td>
 <td style="text-align:right;">
-0.1159
+0.1157
 </td>
 <td style="text-align:right;">
-0.0039
+0.0093
 </td>
 <td style="text-align:right;">
-0.0018
+0.0007
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.7014
+0.4274
 </td>
 <td style="text-align:left;">
-0.6867
+0.88697
 </td>
 </tr>
 <tr>
@@ -1157,13 +1210,13 @@ All
 799
 </td>
 <td style="text-align:right;">
-0.0473
+0.0469
 </td>
 <td style="text-align:right;">
-0.0584
+0.0640
 </td>
 <td style="text-align:right;">
-0.0085
+0.0068
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1186,16 +1239,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-798
+787
 </td>
 <td style="text-align:right;">
-0.1117
+0.1095
 </td>
 <td style="text-align:right;">
-0.0286
+0.0373
 </td>
 <td style="text-align:right;">
-0.0044
+0.0026
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1204,7 +1257,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-9.7e-05
+0.02529
 </td>
 </tr>
 <tr>
@@ -1218,16 +1271,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-405
+393
 </td>
 <td style="text-align:right;">
-0.0320
+0.0317
 </td>
 <td style="text-align:right;">
-0.0432
+0.0445
 </td>
 <td style="text-align:right;">
-0.0100
+0.0099
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1250,16 +1303,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,145
+1,318
 </td>
 <td style="text-align:right;">
-0.0100
+0.0077
 </td>
 <td style="text-align:right;">
-0.0855
+0.0955
 </td>
 <td style="text-align:right;">
-0.0102
+0.0070
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1282,16 +1335,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-685
+687
 </td>
 <td style="text-align:right;">
-0.0261
+0.0259
 </td>
 <td style="text-align:right;">
-0.0822
+0.0820
 </td>
 <td style="text-align:right;">
-0.0099
+0.0100
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1314,16 +1367,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,719
+1,738
 </td>
 <td style="text-align:right;">
-0.0295
+0.0284
 </td>
 <td style="text-align:right;">
-0.0742
+0.0779
 </td>
 <td style="text-align:right;">
-0.0057
+0.0033
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1332,7 +1385,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0003
+0.00369
 </td>
 </tr>
 <tr>
@@ -1346,16 +1399,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-587
+588
 </td>
 <td style="text-align:right;">
-0.1011
+0.1018
 </td>
 <td style="text-align:right;">
-0.0746
+0.0759
 </td>
 <td style="text-align:right;">
-0.0094
+0.0092
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1378,13 +1431,13 @@ All
 All
 </td>
 <td style="text-align:left;">
-2,465
+2,466
 </td>
 <td style="text-align:right;">
 0.0524
 </td>
 <td style="text-align:right;">
-0.0816
+0.0817
 </td>
 <td style="text-align:right;">
 0.0215
@@ -1410,16 +1463,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-3,000
+3,014
 </td>
 <td style="text-align:right;">
-0.0277
+0.0227
 </td>
 <td style="text-align:right;">
-0.1256
+0.1297
 </td>
 <td style="text-align:right;">
-0.0158
+0.0160
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1442,16 +1495,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-33,732
+34,273
 </td>
 <td style="text-align:right;">
-0.0477
+0.0471
 </td>
 <td style="text-align:right;">
-0.1252
+0.1344
 </td>
 <td style="text-align:right;">
-0.0098
+0.0086
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1474,25 +1527,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-503
+506
 </td>
 <td style="text-align:right;">
-0.0506
+0.0510
 </td>
 <td style="text-align:right;">
-0.0969
+0.0971
 </td>
 <td style="text-align:right;">
-0.0182
+0.0185
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-3.1e-16
+2.5e-15
 </td>
 <td style="text-align:left;">
-2.7e-09
+4.7e-09
 </td>
 </tr>
 <tr>
@@ -1570,25 +1623,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-394
+395
 </td>
 <td style="text-align:right;">
-0.0704
+0.0319
 </td>
 <td style="text-align:right;">
-0.1251
+0.1470
 </td>
 <td style="text-align:right;">
 0.0160
 </td>
 <td style="text-align:left;">
-&lt; 1e-16
+1.1e-12
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-6.5e-16
+1.1e-13
 </td>
 </tr>
 <tr>
@@ -1602,13 +1655,13 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,308
+1,305
 </td>
 <td style="text-align:right;">
 0.0937
 </td>
 <td style="text-align:right;">
-0.0635
+0.0640
 </td>
 <td style="text-align:right;">
 0.0135
@@ -1652,7 +1705,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0013
+0.00133
 </td>
 </tr>
 <tr>
@@ -1698,16 +1751,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-63,814
+63,909
 </td>
 <td style="text-align:right;">
-0.0355
+0.0346
 </td>
 <td style="text-align:right;">
-0.1863
+0.1944
 </td>
 <td style="text-align:right;">
-0.0064
+0.0047
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1730,16 +1783,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,252
+1,256
 </td>
 <td style="text-align:right;">
-0.0226
+0.0222
 </td>
 <td style="text-align:right;">
-0.1053
+0.1103
 </td>
 <td style="text-align:right;">
-0.0186
+0.0181
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1762,16 +1815,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-120,348
+121,664
 </td>
 <td style="text-align:right;">
-0.0252
+0.0236
 </td>
 <td style="text-align:right;">
-0.0735
+0.0770
 </td>
 <td style="text-align:right;">
-0.0076
+0.0070
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1794,16 +1847,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-2,141
+2,153
 </td>
 <td style="text-align:right;">
-0.0211
+0.0205
 </td>
 <td style="text-align:right;">
-0.1350
+0.1320
 </td>
 <td style="text-align:right;">
-0.0061
+0.0067
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1812,7 +1865,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-6.1e-08
+2.3e-09
 </td>
 </tr>
 <tr>
@@ -1826,25 +1879,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-276
+274
 </td>
 <td style="text-align:right;">
-0.0981
+0.0980
 </td>
 <td style="text-align:right;">
-0.0200
+0.0211
 </td>
 <td style="text-align:right;">
-0.0028
+0.0027
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0064
+0.0044
 </td>
 <td style="text-align:left;">
-0.0267
+0.03161
 </td>
 </tr>
 <tr>
@@ -1858,16 +1911,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-6,157
+6,101
 </td>
 <td style="text-align:right;">
-0.0320
+0.0319
 </td>
 <td style="text-align:right;">
-0.0498
+0.0552
 </td>
 <td style="text-align:right;">
-0.0137
+0.0130
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1890,16 +1943,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-3,173
+3,168
 </td>
 <td style="text-align:right;">
-0.0678
+0.0680
 </td>
 <td style="text-align:right;">
-0.0803
+0.0859
 </td>
 <td style="text-align:right;">
-0.0075
+0.0069
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1922,25 +1975,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-212
+211
 </td>
 <td style="text-align:right;">
-0.0672
+0.0667
 </td>
 <td style="text-align:right;">
-0.0564
+0.0601
 </td>
 <td style="text-align:right;">
-0.0066
+0.0063
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-2.7e-09
+8.4e-10
 </td>
 <td style="text-align:left;">
-6.7e-05
+0.00013
 </td>
 </tr>
 <tr>
@@ -1954,16 +2007,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,117
+1,121
 </td>
 <td style="text-align:right;">
-0.0400
+0.0401
 </td>
 <td style="text-align:right;">
-0.0656
+0.0689
 </td>
 <td style="text-align:right;">
-0.0300
+0.0273
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -1986,57 +2039,25 @@ All
 All
 </td>
 <td style="text-align:left;">
-199
+200
 </td>
 <td style="text-align:right;">
-0.0704
+0.0699
 </td>
 <td style="text-align:right;">
-0.0633
+0.0670
 </td>
 <td style="text-align:right;">
-0.0049
+0.0048
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0016
+0.0010
 </td>
 <td style="text-align:left;">
-0.0071
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:left;">
-9.4.2
-</td>
-<td style="text-align:left;">
-All
-</td>
-<td style="text-align:left;">
-885
-</td>
-<td style="text-align:right;">
-0.0532
-</td>
-<td style="text-align:right;">
-0.2019
-</td>
-<td style="text-align:right;">
-0.0001
-</td>
-<td style="text-align:left;">
-&lt; 1e-16
-</td>
-<td style="text-align:left;">
-&lt; 1e-16
-</td>
-<td style="text-align:left;">
-0.9589
+0.00926
 </td>
 </tr>
 <tr>
@@ -2050,16 +2071,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-575
+578
 </td>
 <td style="text-align:right;">
-0.0542
+0.0538
 </td>
 <td style="text-align:right;">
 0.1849
 </td>
 <td style="text-align:right;">
-0.0011
+0.0010
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -2068,7 +2089,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.7329
+0.76197
 </td>
 </tr>
 <tr>
@@ -2082,16 +2103,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,543
+1,560
 </td>
 <td style="text-align:right;">
-0.0461
+0.0422
 </td>
 <td style="text-align:right;">
-0.2003
+0.2191
 </td>
 <td style="text-align:right;">
-0.0144
+0.0145
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -2100,7 +2121,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-1.1e-08
+5.5e-08
 </td>
 </tr>
 <tr>
@@ -2114,16 +2135,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-1,127
+1,131
 </td>
 <td style="text-align:right;">
 0.0276
 </td>
 <td style="text-align:right;">
-0.2531
+0.2538
 </td>
 <td style="text-align:right;">
-0.0018
+0.0017
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -2132,7 +2153,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.4058
+0.42037
 </td>
 </tr>
 <tr>
@@ -2146,16 +2167,16 @@ All
 All
 </td>
 <td style="text-align:left;">
-5,562
+5,582
 </td>
 <td style="text-align:right;">
-0.0444
+0.0440
 </td>
 <td style="text-align:right;">
-0.2473
+0.2550
 </td>
 <td style="text-align:right;">
-0.0024
+0.0013
 </td>
 <td style="text-align:left;">
 &lt; 1e-16
@@ -2164,7 +2185,7 @@ All
 &lt; 1e-16
 </td>
 <td style="text-align:left;">
-0.0190
+0.20719
 </td>
 </tr>
 </tbody>
@@ -2237,22 +2258,22 @@ p (Chl a)
 127
 </td>
 <td style="text-align:right;">
-0.0309
+0.0303
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-0.1079
+0.1218
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
--0.0031
+-0.0065
 </td>
 <td style="text-align:right;">
-0.7173
+0.3221
 </td>
 </tr>
 <tr>
@@ -2286,94 +2307,16 @@ p (Chl a)
 8.3.7
 </td>
 <td style="text-align:left;">
-2,493
+2,501
 </td>
 <td style="text-align:right;">
-0.0348
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0.1871
+0.0269
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
--0.0002
-</td>
-<td style="text-align:right;">
-0.8528
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-8.3.8
-</td>
-<td style="text-align:left;">
-916
-</td>
-<td style="text-align:right;">
-0.0367
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0.1769
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
--0.0016
-</td>
-<td style="text-align:right;">
-0.5422
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-9.4.4
-</td>
-<td style="text-align:left;">
-144
-</td>
-<td style="text-align:right;">
-0.0491
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0.1235
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
--0.0034
-</td>
-<td style="text-align:right;">
-0.0970
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-9.4.6
-</td>
-<td style="text-align:left;">
-270
-</td>
-<td style="text-align:right;">
-0.0731
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0.1583
+0.2050
 </td>
 <td style="text-align:right;">
 0
@@ -2382,7 +2325,111 @@ p (Chl a)
 -0.0011
 </td>
 <td style="text-align:right;">
-0.7553
+0.4308
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8.3.8
+</td>
+<td style="text-align:left;">
+918
+</td>
+<td style="text-align:right;">
+0.0367
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1783
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-0.0018
+</td>
+<td style="text-align:right;">
+0.4993
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.4.2
+</td>
+<td style="text-align:left;">
+889
+</td>
+<td style="text-align:right;">
+0.0536
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2079
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-0.0004
+</td>
+<td style="text-align:right;">
+0.8640
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.4.4
+</td>
+<td style="text-align:left;">
+145
+</td>
+<td style="text-align:right;">
+0.0484
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1393
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-0.0049
+</td>
+<td style="text-align:right;">
+0.0996
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9.4.6
+</td>
+<td style="text-align:left;">
+276
+</td>
+<td style="text-align:right;">
+0.0726
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1733
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-0.0026
+</td>
+<td style="text-align:right;">
+0.5074
 </td>
 </tr>
 <tr>
@@ -2390,25 +2437,25 @@ p (Chl a)
 9.6.1
 </td>
 <td style="text-align:left;">
-118
+119
 </td>
 <td style="text-align:right;">
-0.0442
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0.2412
+0.0443
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
--0.0094
+0.2444
 </td>
 <td style="text-align:right;">
-0.1917
+0
+</td>
+<td style="text-align:right;">
+-0.0097
+</td>
+<td style="text-align:right;">
+0.1823
 </td>
 </tr>
 </tbody>

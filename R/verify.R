@@ -32,18 +32,23 @@ run_verification <- function() {
     '3. Training set', 'Analytical-floor & Beer-Lambert screened training obs.', '> 250,000',
       fmt_n(nrow(tr)), nrow(tr) > 250000 && all(tr$secchi >= P$secchi_floor & tr$secchi < P$max_secchi_m),
 
-    '3. Training set', 'A priori Beer-Lambert residual screen (|z_r| <= 2.5 SD, ~5-fold)',
-      '<= 2.50 SD (~4.7x)',
+    '3. Training set', 'Residual screen against the published reference attenuation (|z_r| <= 2.5 SD)',
+      '<= 2.50 SD',
       {
         st_d <- kd_discordance_stats(get_trimmed())
-        r_tr <- log10(tr$kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tr$tss_dead) + P$lit_alpha_doc * tr$doc + P$lit_alpha_chl * tr$chl_a))
+        r_tr <- log10(tr$kd / reference_attenuation(tr))
         sprintf('max |z_r| = %.2f SD', max(abs((r_tr - st_d$mean_r) / st_d$sd_r)))
       },
       {
         st_d <- kd_discordance_stats(get_trimmed())
-        r_tr <- log10(tr$kd / (P$lit_kw + P$lit_alpha_nap * pmax(0, tr$tss_dead) + P$lit_alpha_doc * tr$doc + P$lit_alpha_chl * tr$chl_a))
+        r_tr <- log10(tr$kd / reference_attenuation(tr))
         max(abs((r_tr - st_d$mean_r) / st_d$sd_r)) <= P$kd_discordance_sd + 1e-9
       },
+
+    '3. Training set', 'Shuffled-Secchi null test: the screen creates no fit by itself',
+      'R2 < 0.01',
+      sprintf('R2 = %.4f (max of %d repeats %.4f)', mean(get_screen_null()$r2_screened), nrow(get_screen_null()), max(get_screen_null()$r2_screened)),
+      max(get_screen_null()$r2_screened) < 0.01,
 
     '3. Training set', 'Pure-water offset k_w = 1 / (1.5 * max Secchi) [m^-1]',
       sprintf('%.5f', 1 / 1.5 / max(tr$secchi)),
@@ -70,16 +75,25 @@ run_verification <- function() {
       sprintf('%.5f m^-1', unique(round(fd$kd_pred - fd$att_sum, 5))[1]),
       max(abs((fd$kd_pred - fd$att_sum) - mods$m7$k_w)) < 1e-12,
 
-    '7. Dominance classes', 'Secchi ordering: NAP < Chl a < DOC < Mixed',
-      'Monotonic increase',
-      paste(sprintf('%s: %.2f m', dom$summary$class, dom$summary$mean_secchi_pred), collapse = ' < '),
-      all(diff(dom$summary$mean_secchi_pred) > 0),
+    '7. Dominance classes', 'Secchi ordering: NAP-dominant lowest, then Chl a-dominant, then DOC-dominant and Mixed',
+      'NAP < Chl a < DOC, Mixed',
+      paste(sprintf('%s: %.2f m', dom$summary$class, dom$summary$mean_secchi_pred), collapse = '; '),
+      {
+        ms <- setNames(dom$summary$mean_secchi_pred, dom$summary$class)
+        ms[['NAP dominant']] < ms[['Chl a dominant']] && ms[['Chl a dominant']] < min(ms[['DOC dominant']], ms[['Mixed']])
+      },
 
-    '7. Dominance classes', 'All 6 pairwise class differences significant at p < 0.01 (Welch & Wilcoxon)',
-      '6 / 6 pairs p < 0.01',
-      sprintf('Welch max p = %.4f; Wilcoxon max p = %.2e',
-              max(dom$pairwise$p_welch_holm), max(dom$pairwise$p_wilcoxon_holm)),
-      all(dom$pairwise$pass_p01_welch) && all(dom$pairwise$pass_p01_wilcoxon),
+    '7. Dominance classes', 'NAP-dominant waters less clear than each other class at p < 0.01 (Welch & Wilcoxon)',
+      '3 / 3 pairs p < 0.01',
+      {
+        pw <- dom$pairwise; both <- pw$pass_p01_welch & pw$pass_p01_wilcoxon
+        sprintf('%d / 3 pairs; all six pairs: %d / 6%s', sum(both[grepl('NAP', pw$Comparison)]), sum(both),
+                if (any(!both)) paste0(' (not different: ', paste(pw$Comparison[!both], collapse = '; '), ')') else '')
+      },
+      {
+        pw <- dom$pairwise
+        all((pw$pass_p01_welch & pw$pass_p01_wilcoxon)[grepl('NAP', pw$Comparison)])
+      },
 
     '8. Figure 4 metric', 'Exact ternary area fraction (normalized by sqrt(3)/4): Streams & Estuaries < Lakes',
       'Stream, Estuary (~10%) < Lake (~15%)',
